@@ -1,0 +1,28 @@
+.login-container {
+  position: relative;
+  width: 100%;
+  height: 50rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  //   margin-top: 10rem;
+  .login-wrapper {
+    width: 15rem;
+    height: 15rem;
+    background-color: rgba(219, 236, 236, 0.9);
+    border-radius: 1rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    .login-inputs {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+  }
+}
