@@ -6,7 +6,7 @@ import TextField from "@mui/material/TextField";
 import Error from "../commonUI/Error";
 import Succes from "../commonUI/Succes";
 
-const artistsDataUrl = "http://localhost/manager-app/api/v1/artists";
+const artistsDataUrl = process.env.REACT_APP_API_URL + "/v1/artists";
 
 const AddArtistModal = ({
   onHide,

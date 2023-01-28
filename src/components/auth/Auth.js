@@ -9,7 +9,7 @@ import Stack from "@mui/material/Stack";
 import CircularProgress from "@mui/material/CircularProgress";
 import Error from "../commonUI/Error";
 
-const url = "http://localhost/manager-app/api/v1/auth/login";
+const url = process.env.REACT_APP_API_URL + "/v1/auth/login";
 
 const Auth = () => {
   const [enteredName, setEnteredName] = useState("");

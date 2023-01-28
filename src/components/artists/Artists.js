@@ -20,7 +20,7 @@ import EditArtistModal from "./EditArtistModal";
 import Error from "../commonUI/Error";
 import { Loading } from "../commonUI/Loading";
 
-const artistsDataUrl = "http://localhost/manager-app/api/v1/artists";
+const artistsDataUrl = process.env.REACT_APP_API_URL + "/v1/artists";
 
 const columns = [
   { id: "fullName", label: "Full\u00a0Name", minWidth: 170 },
