@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react";
+import axios from "axios";
 
 const AuthContext = React.createContext({
   token: "",
@@ -36,12 +37,17 @@ export const AuthContextProvider = (props) => {
     localStorage.setItem("token", token);
   };
 
+ 
+
   const contextValue = {
     token: token,
     isLoggedIn: userIsLoggedIn,
     login: loginHandler,
     logout: logoutHandler,
   };
+
+  //Set Global Token in Axios
+  axios.defaults.headers.common['Authorization'] = token;
 
   return (
     <AuthContext.Provider value={contextValue}>

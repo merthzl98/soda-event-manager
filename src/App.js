@@ -8,20 +8,22 @@ import AuthContext from "./storage/auth-context";
 function App() {
   const authCtx = useContext(AuthContext);
 
+  const {isLoggedIn} = authCtx;
+
   return (
     <Switch>
       <Route path="/" exact>
         {/* <Redirect to="/login" /> */}
       </Route>
-      {!authCtx.isLoggedIn && (
+      {!isLoggedIn && (
         <Route path="/login">
           <LoginPage />
         </Route>
       )}
 
       <Route path="/menager">
-        {authCtx.isLoggedIn && <MenagerPage />}
-        {!authCtx.isLoggedIn && <Redirect to="/login" />}
+        {isLoggedIn && <MenagerPage />}
+        {!isLoggedIn && <Redirect to="/login" />}
       </Route>
 
       {/* <Route path="*">
