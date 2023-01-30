@@ -30,7 +30,8 @@ import Events from "../components/events/Events.js";
 import Venues from "../components/venues/Venues.js";
 import Artists from "../components/artists/Artists.js";
 import Posters from "../components/posters/Posters.js";
-
+import Error from "../components/commonUI/Error";
+import { Loading } from "../components/commonUI/Loading";
 
 const drawerWidth = 240;
 const openedMixin = (theme) => ({
@@ -98,11 +99,13 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const MenagerPage = () => {
+const ManagerPage = () => {
   const authCtx = useContext(AuthContext);
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const location = useLocation();
+
+  const { error, isLoading, errorContent } = authCtx;
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -114,131 +117,135 @@ const MenagerPage = () => {
 
   let content = null;
 
-  if (location.pathname === "/menager/announcements") {
+  if (location.pathname === "/manager/announcements") {
     content = <Announcements />;
   }
 
-  if (location.pathname === "/menager/artists") {
+  if (location.pathname === "/manager/artists") {
     content = <Artists />;
   }
 
-  if (location.pathname === "/menager/posters") {
+  if (location.pathname === "/manager/posters") {
     content = <Posters />;
   }
 
-  if (location.pathname === "/menager/venues") {
+  if (location.pathname === "/manager/venues") {
     content = <Venues />;
   }
 
-  if (location.pathname === "/menager/events") {
+  if (location.pathname === "/manager/events") {
     content = <Events />;
   }
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: 5,
-              ...(open && { display: "none" }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Menager Controller
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {["Announcements", "Artists", "Posters", "Venues", "Events"].map(
-            (text, index) => (
-              <ListItem key={text} disablePadding sx={{ display: "block" }}>
-                <Link
-                  to={`/menager/${text.toLowerCase()}`}
-                  style={{ textDecoration: "none", color: "black" }}
-                >
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
-                    }}
+    <>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <AppBar position="fixed" open={open}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{
+                marginRight: 5,
+                ...(open && { display: "none" }),
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" noWrap component="div">
+              Manager Edit Panel
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "rtl" ? (
+                <ChevronRightIcon />
+              ) : (
+                <ChevronLeftIcon />
+              )}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <List>
+            {["Announcements", "Artists", "Posters", "Venues", "Events"].map(
+              (text, index) => (
+                <ListItem key={text} disablePadding sx={{ display: "block" }}>
+                  <Link
+                    to={`/manager/${text.toLowerCase()}`}
+                    style={{ textDecoration: "none", color: "black" }}
                   >
-                    <ListItemIcon
+                    <ListItemButton
                       sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
+                        minHeight: 48,
+                        justifyContent: open ? "initial" : "center",
+                        px: 2.5,
                       }}
                     >
-                      {index === 0 && <CampaignIcon />}
-                      {index === 1 && <PersonIcon />}
-                      {index === 2 && <ImageIcon />}
-                      {index === 3 && <LocationOnIcon />}
-                      {index === 4 && <EventIcon />}
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={text}
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </Link>
-              </ListItem>
-            )
-          )}
-        </List>
-        <Divider />
-        <List>
-          {["Log out"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-                onClick={authCtx.logout}
-              >
-                <ListItemIcon
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 3 : "auto",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {index === 0 && <CampaignIcon />}
+                        {index === 1 && <PersonIcon />}
+                        {index === 2 && <ImageIcon />}
+                        {index === 3 && <LocationOnIcon />}
+                        {index === 4 && <EventIcon />}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={text}
+                        sx={{ opacity: open ? 1 : 0 }}
+                      />
+                    </ListItemButton>
+                  </Link>
+                </ListItem>
+              )
+            )}
+          </List>
+          <Divider />
+          <List>
+            {["Log out"].map((text, index) => (
+              <ListItem key={text} disablePadding sx={{ display: "block" }}>
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
                   }}
+                  onClick={authCtx.logout}
                 >
-                  <LogoutIcon />
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <LogoutIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Drawer>
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+          <DrawerHeader />
 
-        {content}
+          {content}
+        </Box>
       </Box>
-    </Box>
+      {error && <Error>{errorContent}</Error>}
+      {isLoading && <Loading />}
+    </>
   );
 };
 
-export default MenagerPage;
+export default ManagerPage;

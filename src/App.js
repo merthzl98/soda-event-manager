@@ -2,18 +2,18 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import "./App.scss";
 import { useContext } from "react";
 import LoginPage from "./pages/LoginPage";
-import MenagerPage from "./pages/MenagerPage";
+import ManagerPage from "./pages/ManagerPage";
 import AuthContext from "./storage/auth-context";
 
 function App() {
   const authCtx = useContext(AuthContext);
 
-  const {isLoggedIn} = authCtx;
+  const { isLoggedIn } = authCtx;
 
   return (
     <Switch>
       <Route path="/" exact>
-        {/* <Redirect to="/login" /> */}
+        <Redirect to="/login" />
       </Route>
       {!isLoggedIn && (
         <Route path="/login">
@@ -21,14 +21,14 @@ function App() {
         </Route>
       )}
 
-      <Route path="/menager">
-        {isLoggedIn && <MenagerPage />}
+      <Route path="/manager">
+        {isLoggedIn && <ManagerPage />}
         {!isLoggedIn && <Redirect to="/login" />}
       </Route>
 
-      {/* <Route path="*">
+      <Route path="*">
         <Redirect to="/" />
-      </Route> */}
+      </Route>
     </Switch>
   );
 }

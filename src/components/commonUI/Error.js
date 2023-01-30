@@ -1,20 +1,25 @@
-import React from "react";
+import React, { useContext } from "react";
 import Stack from "@mui/material/Stack";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import AuthContext from "../../storage/auth-context";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 const Error = (props) => {
-  const { vertical, horizontal, open } = props.error;
+  const authCtx = useContext(AuthContext);
+
+  const { error, setError } = authCtx;
+
+  const { vertical, horizontal, open } = error;
 
   const hideError = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-    props.setError({ ...props.error, open: false });
+    setError({ ...error, open: false });
   };
 
   return (

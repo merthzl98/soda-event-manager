@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -14,11 +14,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Fab from "@mui/material/Fab";
 import { Tooltip } from "@mui/material";
-// import AuthContext from "../../storage/auth-context";
 import AddArtistModal from "./AddArtistModal";
 import EditArtistModal from "./EditArtistModal";
-import Error from "../commonUI/Error";
-import { Loading } from "../commonUI/Loading";
+import AuthContext from "../../storage/auth-context";
+
+// const artistsDataUrl = process.env.REACT_APP_API_URL + "/v1/artists";
 
 const artistsDataUrl = "http://localhost/manager-app/api/v1/artists";
 
@@ -61,24 +61,14 @@ const Artists = () => {
   const [artistsData, setArtistsData] = useState([]);
   const [addArtistModal, setAddArtistModal] = useState(false);
   const [editArtistModal, setEditArtistModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState({
-    open: false,
-    vertical: "top",
-    horizontal: "center",
-  });
-  // const authCtx = useContext(AuthContext);
+  const authCtx = useContext(AuthContext);
 
-  const showError = (newState) => {
-    setError({ open: true, ...newState });
-  };
+  const { setErrorContent, showError, setIsLoading } = authCtx;
 
   useEffect(() => {
     getArtistsData();
     // eslint-disable-next-line
   }, []);
-
-  // const {  } = authCtx;
 
   const getArtistsData = async () => {
     setIsLoading(true);
@@ -87,6 +77,8 @@ const Artists = () => {
       setArtistsData(response.data.content);
     } catch (error) {
       console.log(error);
+      // setErrorContent(error.response.data.message);
+      setErrorContent(error.message);
       showError({
         vertical: "top",
         horizontal: "center",
@@ -94,8 +86,6 @@ const Artists = () => {
     }
     setIsLoading(false);
   };
-
-  // console.log("set artist data", artistsData);
 
   const showAddArtist = () => {
     setAddArtistModal(true);
@@ -243,14 +233,6 @@ const Artists = () => {
           openModal={showEditArtist}
           setEditArtistModal={setEditArtistModal}
         />
-      )}
-      {error && (
-        <Error error={error} setError={setError}>
-          Page can not load! Please try again!
-        </Error>
-      )}
-      {isLoading && (
-        <Loading isLoading={isLoading} setIsLoading={setIsLoading} />
       )}
     </>
   );

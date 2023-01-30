@@ -9,21 +9,25 @@ import Stack from "@mui/material/Stack";
 import CircularProgress from "@mui/material/CircularProgress";
 import Error from "../commonUI/Error";
 
+// const url = process.env.REACT_APP_API_URL + "/v1/auth/login"
+
 const url = "http://localhost/manager-app/api/v1/auth/login";
 
 const Auth = () => {
   const [enteredName, setEnteredName] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState({
-    open: false,
-    vertical: "top",
-    horizontal: "center",
-  });
   const authCtx = useContext(AuthContext);
   const history = useHistory();
 
-  const { login } = authCtx;
+  const {
+    login,
+    errorContent,
+    setErrorContent,
+    error,
+    showError,
+    isLoading,
+    setIsLoading,
+  } = authCtx;
 
   const handleNameChange = (e) => {
     setEnteredName(e.target.value);
@@ -31,10 +35,6 @@ const Auth = () => {
 
   const handlePasswordChange = (e) => {
     setEnteredPassword(e.target.value);
-  };
-
-  const showError = (newState) => {
-    setError({ open: true, ...newState });
   };
 
   const postUserInfo = async (event) => {
@@ -50,11 +50,12 @@ const Auth = () => {
       const response = await axios.post(url, userData);
       console.log(response);
       login(response.data);
-      history.replace("/menager");
+      history.replace("/manager");
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
       console.error(error);
+      setErrorContent(error.response.data.message);
       showError({
         vertical: "top",
         horizontal: "center",
@@ -95,11 +96,7 @@ const Auth = () => {
           </Button>
         </div>
       </div>
-      {error && (
-        <Error error={error} setError={setError}>
-          Entered username or password wrong!
-        </Error>
-      )}
+      {error && <Error>{errorContent}</Error>}
     </div>
   );
 };

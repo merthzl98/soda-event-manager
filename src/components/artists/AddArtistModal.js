@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Modal from "../commonUI/Modal";
 import axios from "axios";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import Error from "../commonUI/Error";
-import Succes from "../commonUI/Succes";
+import AuthContext from "../../storage/auth-context";
+
+// const artistsDataUrl = process.env.REACT_APP_API_URL + "/v1/artists";
 
 const artistsDataUrl = "http://localhost/manager-app/api/v1/artists";
 
@@ -22,24 +23,9 @@ const AddArtistModal = ({
     enteredSocial: "",
     enteredAdditionalInfo: "",
   });
-  const [error, setError] = useState({
-    open: false,
-    vertical: "top",
-    horizontal: "center",
-  });
-  const [success, setSuccess] = useState({
-    open: false,
-    vertical: "top",
-    horizontal: "center",
-  });
+  const authCtx = useContext(AuthContext);
 
-  const showSuccess = (newState) => {
-    setSuccess({ open: true, ...newState });
-  };
-
-  const showError = (newState) => {
-    setError({ open: true, ...newState });
-  };
+  const { setIsLoading, setErrorContent, showError } = authCtx;
 
   const postArtistData = async () => {
     const addArtistData = {
@@ -50,23 +36,20 @@ const AddArtistModal = ({
       social: state.enteredSocial,
       additionalInfo: state.enteredAdditionalInfo,
     };
+    setIsLoading(true);
 
     try {
       const response = await axios.post(artistsDataUrl, addArtistData);
       console.log(response);
-      console.log("posted");
-      showSuccess({
-        vertical: "top",
-        horizontal: "center",
-      });
     } catch (error) {
       console.error(error);
-      console.log("girdi");
+      setErrorContent(error.message);
       showError({
         vertical: "top",
         horizontal: "center",
       });
     }
+    setIsLoading(false);
     setAddArtistModal(false);
     getArtistsData();
   };
@@ -142,17 +125,6 @@ const AddArtistModal = ({
           />
         </Box>
       </Modal>
-      {error && (
-        <Error error={error} setError={setError}>
-          Artist was not added! Please try again!
-        </Error>
-      )}
-
-      {success && (
-        <Succes success={success} setSuccess={setSuccess}>
-          Artist added successfully!
-        </Succes>
-      )}
     </>
   );
 };
