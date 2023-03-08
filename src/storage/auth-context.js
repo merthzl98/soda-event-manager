@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from "react";
-import axios from "axios";
 
 const AuthContext = React.createContext({
   token: "",
@@ -44,9 +43,6 @@ export const AuthContextProvider = (props) => {
   const [token, setToken] = useState(initialToken);
 
   const userIsLoggedIn = !!token;
-
-  //Set Global Token in Axios
-  axios.defaults.headers.common["Authorization"] = token;
 
   const logoutHandler = useCallback(() => {
     setToken(null);

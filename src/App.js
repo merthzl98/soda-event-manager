@@ -5,7 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import ManagerPage from "./pages/ManagerPage";
 import AuthContext from "./storage/auth-context";
 
-function App() {
+const App = () => {
   const authCtx = useContext(AuthContext);
 
   const { isLoggedIn } = authCtx;
@@ -26,11 +26,11 @@ function App() {
         {!isLoggedIn && <Redirect to="/login" />}
       </Route>
 
-      <Route path="*">
+      {/* <Route path="*">
         <Redirect to="/" />
-      </Route>
+      </Route> */}
     </Switch>
   );
-}
+};
 
 export default App;

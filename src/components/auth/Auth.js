@@ -2,16 +2,14 @@ import React, { useState, useContext } from "react";
 import "./Auth.scss";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import axios from "axios";
+import http from "../../services/http-common";
 import AuthContext from "../../storage/auth-context";
 import { useHistory } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import CircularProgress from "@mui/material/CircularProgress";
 import Error from "../commonUI/Error";
 
-// const url = process.env.REACT_APP_API_URL + "/v1/auth/login"
-
-const url = "http://localhost/manager-app/api/v1/auth/login";
+const TOKEN_BASE = "/v1/auth/login";
 
 const Auth = () => {
   const [enteredName, setEnteredName] = useState("");
@@ -47,8 +45,7 @@ const Auth = () => {
     };
 
     try {
-      const response = await axios.post(url, userData);
-      console.log(response);
+      const response = await http.post(TOKEN_BASE, userData);
       login(response.data);
       history.replace("/manager");
       setIsLoading(false);

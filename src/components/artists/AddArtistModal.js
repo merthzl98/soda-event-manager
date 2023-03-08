@@ -1,13 +1,11 @@
 import React, { useState, useContext } from "react";
 import Modal from "../commonUI/Modal";
-import axios from "axios";
+import http from "../../services/http-common";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import AuthContext from "../../storage/auth-context";
 
-// const artistsDataUrl = process.env.REACT_APP_API_URL + "/v1/artists";
-
-const artistsDataUrl = "http://localhost/manager-app/api/v1/artists";
+const ARTIST_BASE = "/v1/artists";
 
 const AddArtistModal = ({
   onHide,
@@ -39,7 +37,7 @@ const AddArtistModal = ({
     setIsLoading(true);
 
     try {
-      const response = await axios.post(artistsDataUrl, addArtistData);
+      const response = await http.post(ARTIST_BASE, addArtistData);
       console.log(response);
     } catch (error) {
       console.error(error);

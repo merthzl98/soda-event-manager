@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import axios from "axios";
+import http from "../../services/http-common";
 import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -18,9 +18,7 @@ import AddArtistModal from "./AddArtistModal";
 import EditArtistModal from "./EditArtistModal";
 import AuthContext from "../../storage/auth-context";
 
-// const artistsDataUrl = process.env.REACT_APP_API_URL + "/v1/artists";
-
-const artistsDataUrl = "http://localhost/manager-app/api/v1/artists";
+const ARTIST_BASE = "/v1/artists";
 
 const columns = [
   { id: "fullName", label: "Full\u00a0Name", minWidth: 170 },
@@ -65,15 +63,10 @@ const Artists = () => {
 
   const { setErrorContent, showError, setIsLoading } = authCtx;
 
-  useEffect(() => {
-    getArtistsData();
-    // eslint-disable-next-line
-  }, []);
-
   const getArtistsData = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(artistsDataUrl);
+      const response = await http.get(ARTIST_BASE);
       setArtistsData(response.data.content);
     } catch (error) {
       console.log(error);
@@ -86,6 +79,11 @@ const Artists = () => {
     }
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    getArtistsData();
+    // eslint-disable-next-line
+  }, []);
 
   const showAddArtist = () => {
     setAddArtistModal(true);
