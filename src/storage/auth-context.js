@@ -5,13 +5,8 @@ const AuthContext = React.createContext({
   isLoggedIn: false,
   login: (token) => {},
   logout: () => {},
-  error: {},
-  setError: () => {},
-  showError: () => {},
   isLoading: false,
   setIsLoading: () => {},
-  errorContent: "",
-  setErrorContent: () => {},
 });
 
 const retrieveStoredToken = () => {
@@ -22,18 +17,9 @@ const retrieveStoredToken = () => {
 };
 
 export const AuthContextProvider = (props) => {
-  const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const [errorContent, setErrorContent] = useState(null);
-  const tokenData = retrieveStoredToken({
-    open: false,
-    vertical: "top",
-    horizontal: "center",
-  });
 
-  const showError = (newState) => {
-    setError({ open: true, ...newState });
-  };
+  const tokenData = retrieveStoredToken();
 
   let initialToken;
   if (tokenData) {
@@ -59,13 +45,8 @@ export const AuthContextProvider = (props) => {
     isLoggedIn: userIsLoggedIn,
     login: loginHandler,
     logout: logoutHandler,
-    error,
-    setError,
-    showError,
     isLoading,
     setIsLoading,
-    errorContent,
-    setErrorContent,
   };
 
   return (

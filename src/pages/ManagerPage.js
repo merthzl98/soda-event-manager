@@ -1,6 +1,6 @@
 import React from "react";
 import { useContext, useState } from "react";
-import AuthContext from "../storage/auth-context";
+import { Link, useLocation } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -24,7 +24,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import ImageIcon from "@mui/icons-material/Image";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import EventIcon from "@mui/icons-material/Event";
-import { Link, useLocation } from "react-router-dom";
+
+import AuthContext from "../storage/auth-context";
 import Announcements from "../components/announcements/Announcements.js";
 import Events from "../components/events/Events.js";
 import Venues from "../components/venues/Venues.js";
@@ -32,6 +33,7 @@ import Artists from "../components/artists/Artists.js";
 import Posters from "../components/posters/Posters.js";
 import Error from "../components/commonUI/Error";
 import { Loading } from "../components/commonUI/Loading";
+import AlertContext from "../storage/alert-context";
 
 const drawerWidth = 240;
 const openedMixin = (theme) => ({
@@ -100,12 +102,15 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const ManagerPage = () => {
-  const authCtx = useContext(AuthContext);
-  const theme = useTheme();
   const [open, setOpen] = useState(false);
+
+  const theme = useTheme();
+
   const location = useLocation();
 
-  const { error, isLoading, errorContent } = authCtx;
+  const { isLoading, logout } = useContext(AuthContext);
+
+  const { hasError } = useContext(AlertContext);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -219,7 +224,7 @@ const ManagerPage = () => {
                     justifyContent: open ? "initial" : "center",
                     px: 2.5,
                   }}
-                  onClick={authCtx.logout}
+                  onClick={logout}
                 >
                   <ListItemIcon
                     sx={{
@@ -242,7 +247,7 @@ const ManagerPage = () => {
           {content}
         </Box>
       </Box>
-      {error && <Error>{errorContent}</Error>}
+      {hasError.open && <Error />}
       {isLoading && <Loading />}
     </>
   );

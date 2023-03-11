@@ -1,31 +1,25 @@
 import React, { useState, useContext } from "react";
-import "./Auth.scss";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import http from "../../services/http-common";
-import AuthContext from "../../storage/auth-context";
 import { useHistory } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import CircularProgress from "@mui/material/CircularProgress";
-import Error from "../commonUI/Error";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
-const TOKEN_BASE = "/v1/auth/login";
+import AuthContext from "../../storage/auth-context";
+import Error from "../commonUI/Error";
+import AlertContext from "../../storage/alert-context";
+import "./Auth.scss";
+import AuthService from "../../services/AuthService";
 
 const Auth = () => {
   const [enteredName, setEnteredName] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
-  const authCtx = useContext(AuthContext);
+
   const history = useHistory();
 
-  const {
-    login,
-    errorContent,
-    setErrorContent,
-    error,
-    showError,
-    isLoading,
-    setIsLoading,
-  } = authCtx;
+  const { login, isLoading, setIsLoading } = useContext(AuthContext);
+
+  const { hasError, handleShowError } = useContext(AlertContext);
 
   const handleNameChange = (e) => {
     setEnteredName(e.target.value);
@@ -35,7 +29,7 @@ const Auth = () => {
     setEnteredPassword(e.target.value);
   };
 
-  const postUserInfo = async (event) => {
+  const postUserInfo = (event) => {
     event.preventDefault();
     setIsLoading(true);
 
@@ -44,20 +38,22 @@ const Auth = () => {
       password: enteredPassword,
     };
 
-    try {
-      const response = await http.post(TOKEN_BASE, userData);
-      login(response.data);
-      history.replace("/manager");
-      setIsLoading(false);
-    } catch (error) {
-      setIsLoading(false);
-      console.error(error);
-      setErrorContent(error.response.data.message);
-      showError({
-        vertical: "top",
-        horizontal: "center",
-      });
-    }
+    AuthService.postUserCredentials(userData)
+      .then((response) => {
+        login(response.data);
+        history.replace("/manager");
+      })
+      .catch((error) => {
+        const errorMeassage = error.response.data.message;
+        handleShowError(
+          {
+            vertical: "top",
+            horizontal: "center",
+          },
+          errorMeassage
+        );
+      })
+      .then(setIsLoading(false));
   };
 
   return (
@@ -93,7 +89,7 @@ const Auth = () => {
           </Button>
         </div>
       </div>
-      {error && <Error>{errorContent}</Error>}
+      {hasError.open && <Error />}
     </div>
   );
 };

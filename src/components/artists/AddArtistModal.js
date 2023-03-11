@@ -1,11 +1,11 @@
 import React, { useState, useContext } from "react";
-import Modal from "../commonUI/Modal";
-import http from "../../services/http-common";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import AuthContext from "../../storage/auth-context";
 
-const ARTIST_BASE = "/v1/artists";
+import AuthContext from "../../storage/auth-context";
+import Modal from "../commonUI/Modal";
+import AlertContext from "../../storage/alert-context";
+import ArtistService from "../../services/ArtistService";
 
 const AddArtistModal = ({
   onHide,
@@ -21,12 +21,13 @@ const AddArtistModal = ({
     enteredSocial: "",
     enteredAdditionalInfo: "",
   });
-  const authCtx = useContext(AuthContext);
 
-  const { setIsLoading, setErrorContent, showError } = authCtx;
+  const { setIsLoading } = useContext(AuthContext);
+
+  const { handleShowError } = useContext(AlertContext);
 
   const postArtistData = async () => {
-    const addArtistData = {
+    const artistData = {
       fullName: state.enteredFullName,
       genre: state.enteredGenre,
       description: state.enteredDescription,
@@ -34,22 +35,28 @@ const AddArtistModal = ({
       social: state.enteredSocial,
       additionalInfo: state.enteredAdditionalInfo,
     };
+
     setIsLoading(true);
 
-    try {
-      const response = await http.post(ARTIST_BASE, addArtistData);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-      setErrorContent(error.message);
-      showError({
-        vertical: "top",
-        horizontal: "center",
+    ArtistService.createArtist(artistData)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(error);
+        handleShowError(
+          {
+            vertical: "top",
+            horizontal: "center",
+          },
+          error
+        );
+      })
+      .then(() => {
+        setIsLoading(false);
+        setAddArtistModal(false);
+        getArtistsData();
       });
-    }
-    setIsLoading(false);
-    setAddArtistModal(false);
-    getArtistsData();
   };
 
   const handleChange = (e) => {

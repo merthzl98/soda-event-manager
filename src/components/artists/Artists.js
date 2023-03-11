@@ -7,18 +7,18 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import http from "../../services/http-common";
 import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Fab from "@mui/material/Fab";
 import { Tooltip } from "@mui/material";
+
 import AddArtistModal from "./AddArtistModal";
 import EditArtistModal from "./EditArtistModal";
 import AuthContext from "../../storage/auth-context";
-
-const ARTIST_BASE = "/v1/artists";
+import AlertContext from "../../storage/alert-context";
+import ArtistService from "../../services/ArtistService";
 
 const columns = [
   { id: "fullName", label: "Full\u00a0Name", minWidth: 170 },
@@ -59,31 +59,44 @@ const Artists = () => {
   const [artistsData, setArtistsData] = useState([]);
   const [addArtistModal, setAddArtistModal] = useState(false);
   const [editArtistModal, setEditArtistModal] = useState(false);
-  const authCtx = useContext(AuthContext);
 
-  const { setErrorContent, showError, setIsLoading } = authCtx;
+  const { setIsLoading } = useContext(AuthContext);
 
-  const getArtistsData = async () => {
+  const { handleShowError } = useContext(AlertContext);
+
+  const getArtistsData = () => {
     setIsLoading(true);
-    try {
-      const response = await http.get(ARTIST_BASE);
-      setArtistsData(response.data.content);
-    } catch (error) {
-      console.log(error);
-      // setErrorContent(error.response.data.message);
-      setErrorContent(error.message);
-      showError({
-        vertical: "top",
-        horizontal: "center",
-      });
-    }
-    setIsLoading(false);
+
+    ArtistService.getArtistsList()
+      .then((response) => {
+        setArtistsData(response.data.content);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("message", error.message);
+        const errorMessage = error.message;
+        handleShowError(
+          {
+            vertical: "top",
+            horizontal: "center",
+          },
+          errorMessage
+        );
+      })
+      .then(() => setIsLoading(false));
   };
+
+  // console.log(artistsData[0].id);
 
   useEffect(() => {
     getArtistsData();
     // eslint-disable-next-line
   }, []);
+
+  const handleDeleteArtist = (clickedIndex) => {
+    console.log(clickedIndex);
+  };
 
   const showAddArtist = () => {
     setAddArtistModal(true);
@@ -160,7 +173,7 @@ const Artists = () => {
             <TableBody>
               {artistsData
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
+                .map((row, index) => {
                   return (
                     <TableRow
                       hover
@@ -195,7 +208,11 @@ const Artists = () => {
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="delete">
-                          <IconButton aria-label="delete" size="large">
+                          <IconButton
+                            onClick={() => handleDeleteArtist(index)}
+                            aria-label="delete"
+                            size="large"
+                          >
                             <DeleteIcon fontSize="inherit" />
                           </IconButton>
                         </Tooltip>
@@ -219,7 +236,7 @@ const Artists = () => {
       {addArtistModal && (
         <AddArtistModal
           onHide={hideAddArtist}
-          openModal={showAddArtist}
+          openModal={addArtistModal}
           setAddArtistModal={setAddArtistModal}
           getArtistsData={getArtistsData}
         />
@@ -228,7 +245,7 @@ const Artists = () => {
       {editArtistModal && (
         <EditArtistModal
           onHide={hideEditArtist}
-          openModal={showEditArtist}
+          openModal={editArtistModal}
           setEditArtistModal={setEditArtistModal}
         />
       )}

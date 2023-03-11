@@ -16,7 +16,7 @@ const ModalOverlay = (props) => {
     <div>
       <Dialog
         fullScreen={fullScreen}
-        open={props.openModal ? true : false}
+        open={props.openModal}
         onClose={props.onHide}
         aria-labelledby="responsive-dialog-title"
       >

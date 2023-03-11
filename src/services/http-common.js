@@ -20,4 +20,26 @@ axiosApiGlobal.interceptors.request.use(
   }
 );
 
+const handleSuccessResponse = (response) => {
+  return response;
+};
+
+const handleErrorResponse = (error, setHasError) => {
+  const errorMessage = error.response.data.message;
+  // const errorTry = error.message;
+  console.log("error: " + errorMessage);
+  // console.log("errorTry", errorTry);
+  setHasError({
+    open: true,
+    message: errorMessage,
+  });
+  return Promise.reject(error);
+};
+
+export const registerIntercepts = (setHasError) => {
+  axiosApiGlobal.interceptors.response.use(handleSuccessResponse, (error) =>
+    handleErrorResponse(error, setHasError)
+  );
+};
+
 export default axiosApiGlobal;
