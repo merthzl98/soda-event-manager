@@ -9,7 +9,7 @@ const axiosApiGlobal = axios.create({
 axiosApiGlobal.interceptors.request.use(
   async (config) => {
     config.headers = {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: `${localStorage.getItem("token")}`,
       Accept: "application/json",
       "Content-Type": "application/json",
     };

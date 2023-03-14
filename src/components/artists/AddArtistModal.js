@@ -44,6 +44,7 @@ const AddArtistModal = ({
       })
       .catch((error) => {
         console.error(error);
+        console.log(error)
         handleShowError(
           {
             vertical: "top",
