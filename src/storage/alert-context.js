@@ -3,7 +3,6 @@ import React, { useState } from "react";
 const AlertContext = React.createContext({
   hasError: {},
   setHasError: () => {},
-  handleShowError: () => {},
 });
 
 export const AlertProvider = (props) => {
@@ -14,14 +13,9 @@ export const AlertProvider = (props) => {
     horizontal: "center",
   });
 
-  const handleShowError = (newState, errorMeassage) => {
-    setHasError({ open: true, message: errorMeassage, ...newState });
-  };
-
   const contextValue = {
     hasError,
     setHasError,
-    handleShowError,
   };
 
   return (

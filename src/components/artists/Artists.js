@@ -17,7 +17,6 @@ import { Tooltip } from "@mui/material";
 import AddArtistModal from "./AddArtistModal";
 import EditArtistModal from "./EditArtistModal";
 import AuthContext from "../../storage/auth-context";
-import AlertContext from "../../storage/alert-context";
 import ArtistService from "../../services/ArtistService";
 
 const columns = [
@@ -62,8 +61,6 @@ const Artists = () => {
 
   const { setIsLoading } = useContext(AuthContext);
 
-  const { handleShowError } = useContext(AlertContext);
-
   const getArtistsData = () => {
     setIsLoading(true);
 
@@ -71,18 +68,6 @@ const Artists = () => {
       .then((response) => {
         setArtistsData(response.data.content);
         console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log("message", error.message);
-        const errorMessage = error.message;
-        handleShowError(
-          {
-            vertical: "top",
-            horizontal: "center",
-          },
-          errorMessage
-        );
       })
       .then(() => setIsLoading(false));
   };

@@ -19,7 +19,7 @@ const Auth = () => {
 
   const { login, isLoading, setIsLoading } = useContext(AuthContext);
 
-  const { hasError, handleShowError } = useContext(AlertContext);
+  const { hasError } = useContext(AlertContext);
 
   const handleNameChange = (e) => {
     setEnteredName(e.target.value);
@@ -43,16 +43,7 @@ const Auth = () => {
         login(response.data);
         history.replace("/manager");
       })
-      .catch((error) => {
-        const errorMeassage = error.response.data.message;
-        handleShowError(
-          {
-            vertical: "top",
-            horizontal: "center",
-          },
-          errorMeassage
-        );
-      })
+
       .then(setIsLoading(false));
   };
 

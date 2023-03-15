@@ -4,7 +4,6 @@ import TextField from "@mui/material/TextField";
 
 import AuthContext from "../../storage/auth-context";
 import Modal from "../commonUI/Modal";
-import AlertContext from "../../storage/alert-context";
 import ArtistService from "../../services/ArtistService";
 
 const AddArtistModal = ({
@@ -24,8 +23,6 @@ const AddArtistModal = ({
 
   const { setIsLoading } = useContext(AuthContext);
 
-  const { handleShowError } = useContext(AlertContext);
-
   const postArtistData = async () => {
     const artistData = {
       fullName: state.enteredFullName,
@@ -42,17 +39,7 @@ const AddArtistModal = ({
       .then((response) => {
         console.log(response);
       })
-      .catch((error) => {
-        console.error(error);
-        console.log(error)
-        handleShowError(
-          {
-            vertical: "top",
-            horizontal: "center",
-          },
-          error
-        );
-      })
+
       .then(() => {
         setIsLoading(false);
         setAddArtistModal(false);

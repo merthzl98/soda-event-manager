@@ -26,12 +26,12 @@ const handleSuccessResponse = (response) => {
 
 const handleErrorResponse = (error, setHasError) => {
   const errorMessage = error.response.data.message;
-  // const errorTry = error.message;
   console.log("error: " + errorMessage);
-  // console.log("errorTry", errorTry);
   setHasError({
     open: true,
     message: errorMessage,
+    vertical: "top",
+    horizontal: "center",
   });
   return Promise.reject(error);
 };
