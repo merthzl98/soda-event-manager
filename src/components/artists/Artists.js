@@ -20,33 +20,33 @@ import AuthContext from "../../storage/auth-context";
 import ArtistService from "../../services/ArtistService";
 
 const columns = [
-  { id: "fullName", label: "Full\u00a0Name", minWidth: 170 },
+  { id: "fullName", label: "Full\u00a0Name", minWidth: 100 },
   { id: "genre", label: "Genre", minWidth: 100 },
   {
     id: "description",
     label: "Description",
-    minWidth: 170,
+    minWidth: 100,
     align: "right",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "posters",
     label: "Posters",
-    minWidth: 170,
+    minWidth: 100,
     align: "right",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "socials",
     label: "Socials",
-    minWidth: 170,
+    minWidth: 100,
     align: "right",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "additionalInfo",
     label: "Additional Info",
-    minWidth: 170,
+    minWidth: 100,
     align: "right",
     format: (value) => value.toLocaleString("en-US"),
   },
@@ -58,6 +58,7 @@ const Artists = () => {
   const [artistsData, setArtistsData] = useState([]);
   const [addArtistModal, setAddArtistModal] = useState(false);
   const [editArtistModal, setEditArtistModal] = useState(false);
+  const [artistData, setArtistData] = useState({});
 
   const { setIsLoading } = useContext(AuthContext);
 
@@ -67,12 +68,9 @@ const Artists = () => {
     ArtistService.getArtistsList()
       .then((response) => {
         setArtistsData(response.data.content);
-        console.log(response);
       })
       .then(() => setIsLoading(false));
   };
-
-  // console.log(artistsData[0].id);
 
   useEffect(() => {
     getArtistsData();
@@ -80,7 +78,10 @@ const Artists = () => {
   }, []);
 
   const handleDeleteArtist = (clickedIndex) => {
-    console.log(clickedIndex);
+    const artistId = artistsData[clickedIndex]?.id;
+    ArtistService.deleteArtist(artistId).then((response) => {
+      response.status === 200 && getArtistsData();
+    });
   };
 
   const showAddArtist = () => {
@@ -91,7 +92,9 @@ const Artists = () => {
     setAddArtistModal(false);
   };
 
-  const showEditArtist = () => {
+  const showEditArtist = (clickedIndex) => {
+    const artist = artistsData[clickedIndex];
+    setArtistData(artist);
     setEditArtistModal(true);
   };
 
@@ -185,7 +188,7 @@ const Artists = () => {
                       >
                         <Tooltip title="Edit">
                           <IconButton
-                            onClick={showEditArtist}
+                            onClick={() => showEditArtist(index)}
                             aria-label="edit"
                             size="large"
                           >
@@ -232,6 +235,8 @@ const Artists = () => {
           onHide={hideEditArtist}
           openModal={editArtistModal}
           setEditArtistModal={setEditArtistModal}
+          artistData={artistData}
+          getArtistsData={getArtistsData}
         />
       )}
     </>

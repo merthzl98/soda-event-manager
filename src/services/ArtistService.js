@@ -6,14 +6,28 @@ const getArtistsList = () => {
   return http.get(ARTIST_BASE);
 };
 
+const getArtistById = (artistId) => {
+  return http.get(ARTIST_BASE + `/${artistId}`);
+};
+
 const createArtist = (artistData) => {
   return http.post(ARTIST_BASE, artistData);
 };
 
-const updateArtist = () => {
-    return http.put()
-}
+const updateArtist = (updatedData) => {
+  return http.put(ARTIST_BASE, updatedData);
+};
 
-const ArtistService = { getArtistsList, createArtist, updateArtist };
+const deleteArtist = (artistId) => {
+  return http.delete(ARTIST_BASE + `/${artistId}`);
+};
+
+const ArtistService = {
+  getArtistsList,
+  getArtistById,
+  createArtist,
+  updateArtist,
+  deleteArtist,
+};
 
 export default ArtistService;

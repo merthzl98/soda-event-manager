@@ -35,16 +35,13 @@ const AddArtistModal = ({
 
     setIsLoading(true);
 
-    ArtistService.createArtist(artistData)
-      .then((response) => {
-        console.log(response);
-      })
-
-      .then(() => {
+    ArtistService.createArtist(artistData).then((response) => {
+      if (response.status === 200) {
         setIsLoading(false);
         setAddArtistModal(false);
         getArtistsData();
-      });
+      }
+    });
   };
 
   const handleChange = (e) => {
