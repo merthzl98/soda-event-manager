@@ -2,16 +2,40 @@ import http from "../services/http-common";
 
 const EVENT_BASE = "/events";
 
-const getEvents = () => {
-  return http.get(EVENT_BASE);
+const getEvents = (
+  artistId,
+  clientStatus,
+  dateRangeEnd,
+  dateRangeStart,
+  highlighted,
+  itemCount,
+  page,
+  eventStatus,
+  title,
+  venueId
+) => {
+  return http.get(EVENT_BASE, {
+    params: {
+      artistId: artistId,
+      clientStatus: clientStatus,
+      dateRangeEnd: dateRangeEnd,
+      dateRangeStart: dateRangeStart,
+      highlighted: highlighted,
+      itemCount: itemCount,
+      page: page,
+      status: eventStatus,
+      title: title,
+      venueId: venueId,
+    },
+  });
 };
 
-const createEvent = (event) => {
-  return http.post(EVENT_BASE, event);
+const createEvent = (eventData) => {
+  return http.post(EVENT_BASE, eventData);
 };
 
-const updateEvent = (eventId) => {
-  return http.put(EVENT_BASE, eventId);
+const updateEvent = (eventData) => {
+  return http.put(EVENT_BASE, eventData);
 };
 
 const getEventById = (eventId) => {
@@ -26,8 +50,8 @@ const getHighlightedEvents = () => {
   return http.get(EVENT_BASE + "/highlighted");
 };
 
-const orderHighlightedEvents = () => {
-  return http.put(EVENT_BASE + "/orderHighlighted");
+const orderHighlightedEvents = (eventIds) => {
+  return http.put(EVENT_BASE + "/orderHighlighted", eventIds);
 };
 
 const EventService = {

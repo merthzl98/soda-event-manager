@@ -2,8 +2,15 @@ import http from "./http-common";
 
 const ARTIST_BASE = "/artists";
 
-const getArtistsList = () => {
-  return http.get(ARTIST_BASE);
+const getArtistsList = (artistName, genre, artistCount, page) => {
+  return http.get(ARTIST_BASE, {
+    params: {
+      fullName: artistName,
+      genre: genre,
+      itemCount: artistCount,
+      page: page,
+    },
+  });
 };
 
 const getArtistById = (artistId) => {

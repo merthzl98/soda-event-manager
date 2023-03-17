@@ -64,8 +64,11 @@ const Artists = () => {
 
   const getArtistsData = () => {
     setIsLoading(true);
-
-    ArtistService.getArtistsList()
+    let artistName = null;
+    let genre = null;
+    let artistCount = null;
+    let page = null;
+    ArtistService.getArtistsList(artistName, genre, artistCount, page)
       .then((response) => {
         setArtistsData(response.data.content);
       })
