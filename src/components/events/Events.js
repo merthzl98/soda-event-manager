@@ -20,34 +20,44 @@ import EditEventModal from "./EditEventModal";
 import AddEventModal from "./AddEventModal";
 
 const columns = [
-  { id: "fullName", label: "Full\u00a0Name", minWidth: 100 },
-  { id: "genre", label: "Genre", minWidth: 100 },
+  { id: "clientStatus", label: "Client Status", minWidth: 100 },
+  { id: "dateRangeEnd", label: "End Date", minWidth: 100 },
   {
-    id: "description",
-    label: "Description",
+    id: "dateRangeStart",
+    label: "Start Date",
     minWidth: 100,
-    align: "right",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
-    id: "posters",
+    id: "highlighted",
+    label: "Highlighted",
+    minWidth: 100,
+    format: (value) => value.toLocaleString("en-US"),
+  },
+  {
+    id: "status",
+    label: "Status",
+    minWidth: 100,
+    format: (value) => value.toLocaleString("en-US"),
+  },
+  {
+    id: "title",
+    label: "Title",
+    minWidth: 100,
+    format: (value) => value.toLocaleString("en-US"),
+  },
+  {
+    id: "posterIds",
     label: "Posters",
     minWidth: 100,
-    align: "right",
+    // align: "right",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
-    id: "socials",
-    label: "Socials",
+    id: "ticketUrl",
+    label: "Ticket Url",
     minWidth: 100,
-    align: "right",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "additionalInfo",
-    label: "Additional Info",
-    minWidth: 100,
-    align: "right",
+    // align: "right",
     format: (value) => value.toLocaleString("en-US"),
   },
 ];
@@ -62,25 +72,25 @@ const Events = () => {
 
   const { setIsLoading } = useContext(AuthContext);
 
-  const geteventsData = () => {
+  const getEventsData = () => {
     setIsLoading(true);
-
-    EventService.geteventsList()
+    EventService.getEvents()
       .then((response) => {
+        console.log(response);
         setEventsData(response.data.content);
       })
       .then(() => setIsLoading(false));
   };
 
   useEffect(() => {
-    geteventsData();
+    getEventsData();
     // eslint-disable-next-line
   }, []);
 
   const handleDeleteevent = (clickedIndex) => {
     const eventId = eventsData[clickedIndex]?.id;
     EventService.deleteEvent(eventId).then((response) => {
-      response.status === 200 && geteventsData();
+      response.status === 200 && getEventsData();
     });
   };
 
@@ -113,22 +123,22 @@ const Events = () => {
 
   return (
     <>
-      <Paper sx={{ width: "100%" }}>
+      <Paper sx={{ width: "100%", position: "relative" }}>
         <TableContainer sx={{ maxHeight: 740 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
                 <TableCell
                   align="center"
-                  colSpan={6}
+                  colSpan={columns.length}
                   style={{ backgroundColor: "rgba(0,0,0, 0.2)" }}
                 >
-                  events
+                  Events
                 </TableCell>
                 <TableCell
                   align="right"
-                  colSpan={4}
-                  style={{ backgroundColor: "rgba(0,0,0, 0.2)" }}
+                  colSpan={1}
+                  style={{ backgroundColor: "rgba(0,0,0, 0.2)", width: "7rem" }}
                 >
                   <Tooltip title="Add New event">
                     <Fab
@@ -184,6 +194,7 @@ const Events = () => {
                         style={{
                           width: "7rem",
                           backgroundColor: "rgba(50,50,0, 0.1)",
+                          position: "absolute",
                         }}
                       >
                         <Tooltip title="Edit">
@@ -226,7 +237,7 @@ const Events = () => {
           onHide={hideAddevent}
           openModal={addEventModal}
           setAddeventModal={setAddEventModal}
-          geteventsData={geteventsData}
+          geteventsData={getEventsData}
         />
       )}
 
@@ -236,7 +247,7 @@ const Events = () => {
           openModal={editEventModal}
           setEditeventModal={setEditEventModal}
           eventData={eventData}
-          geteventsData={geteventsData}
+          geteventsData={getEventsData}
         />
       )}
     </>

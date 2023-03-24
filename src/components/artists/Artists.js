@@ -26,28 +26,14 @@ const columns = [
     id: "description",
     label: "Description",
     minWidth: 100,
-    align: "right",
+    // align: "right",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "posters",
     label: "Posters",
     minWidth: 100,
-    align: "right",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "socials",
-    label: "Socials",
-    minWidth: 100,
-    align: "right",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "additionalInfo",
-    label: "Additional Info",
-    minWidth: 100,
-    align: "right",
+    // align: "right",
     format: (value) => value.toLocaleString("en-US"),
   },
 ];
@@ -64,11 +50,8 @@ const Artists = () => {
 
   const getArtistsData = () => {
     setIsLoading(true);
-    let artistName = null;
-    let genre = null;
-    let artistCount = null;
-    let page = null;
-    ArtistService.getArtistsList(artistName, genre, artistCount, page)
+    //does not have any query ?
+    ArtistService.getArtistsList()
       .then((response) => {
         setArtistsData(response.data.content);
       })
@@ -116,22 +99,22 @@ const Artists = () => {
 
   return (
     <>
-      <Paper sx={{ width: "100%" }}>
+      <Paper sx={{ width: "100%", position: "relative" }}>
         <TableContainer sx={{ maxHeight: 740 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
                 <TableCell
                   align="center"
-                  colSpan={6}
+                  colSpan={columns.length}
                   style={{ backgroundColor: "rgba(0,0,0, 0.2)" }}
                 >
                   Artists
                 </TableCell>
                 <TableCell
                   align="right"
-                  colSpan={4}
-                  style={{ backgroundColor: "rgba(0,0,0, 0.2)" }}
+                  colSpan={1}
+                  style={{ backgroundColor: "rgba(0,0,0, 0.2)", width: "7rem" }}
                 >
                   <Tooltip title="Add New Artist">
                     <Fab
@@ -187,6 +170,8 @@ const Artists = () => {
                         style={{
                           width: "7rem",
                           backgroundColor: "rgba(50,50,0, 0.1)",
+                          position: "absolute",
+                          right: "0",
                         }}
                       >
                         <Tooltip title="Edit">

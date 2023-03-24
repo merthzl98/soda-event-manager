@@ -17,8 +17,6 @@ const EditArtistModal = ({
     enteredGenre: artistData.genre,
     enteredDescription: artistData.description,
     enteredPoster: "",
-    enteredSocial: "",
-    enteredAdditionalInfo: artistData.additionalInfo,
   });
 
   const updateArtistData = () => {
@@ -28,8 +26,6 @@ const EditArtistModal = ({
       genre: state.enteredGenre,
       description: state.enteredDescription,
       posters: null,
-      social: null,
-      additionalInfo: state.enteredAdditionalInfo,
     };
     ArtistService.updateArtist(updatedData).then((response) => {
       if (response.status === 200) {
@@ -89,22 +85,6 @@ const EditArtistModal = ({
           value={state.enteredPoster}
           id="standard-basic"
           label="Posters"
-          variant="standard"
-        />
-        <TextField
-          name="enteredSocial"
-          onChange={handleChange}
-          value={state.enteredSocial}
-          id="standard-basic"
-          label="Social"
-          variant="standard"
-        />
-        <TextField
-          name="enteredAdditionalInfo"
-          onChange={handleChange}
-          value={state.enteredAdditionalInfo}
-          id="standard-basic"
-          label="Additional Info"
           variant="standard"
         />
       </Box>

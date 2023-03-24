@@ -17,20 +17,16 @@ const AddArtistModal = ({
     enteredGenre: "",
     enteredDescription: "",
     enteredPoster: "",
-    enteredSocial: "",
-    enteredAdditionalInfo: "",
   });
 
   const { setIsLoading } = useContext(AuthContext);
 
-  const postArtistData = async () => {
+  const postArtistData = () => {
     const artistData = {
       fullName: state.enteredFullName,
       genre: state.enteredGenre,
       description: state.enteredDescription,
       posters: null,
-      social: state.enteredSocial,
-      additionalInfo: state.enteredAdditionalInfo,
     };
 
     setIsLoading(true);
@@ -95,22 +91,6 @@ const AddArtistModal = ({
             value={state.enteredPoster}
             id="standard-basic"
             label="Posters"
-            variant="standard"
-          />
-          <TextField
-            name="enteredSocial"
-            onChange={handleChange}
-            value={state.enteredSocial}
-            id="standard-basic"
-            label="Social"
-            variant="standard"
-          />
-          <TextField
-            name="enteredAdditionalInfo"
-            onChange={handleChange}
-            value={state.enteredAdditionalInfo}
-            id="standard-basic"
-            label="Additional Info"
             variant="standard"
           />
         </Box>
