@@ -30,6 +30,6 @@ const deleteVenue = (venueId) => {
   return http.delete(VENUE_BASE + `/${venueId}`);
 };
 
-const VenueService = { getVenues, createVenue, updateVenue, getVenueById };
+const VenueService = { getVenues, createVenue, updateVenue, getVenueById, deleteVenue };
 
 export default VenueService;
