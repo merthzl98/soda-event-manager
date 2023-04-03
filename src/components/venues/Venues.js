@@ -51,6 +51,10 @@ const Venues = () => {
   const [addVenueModal, setAddVenueModal] = useState(false);
   const [editVenueModal, setEditVenueModal] = useState(false);
   const [venueData, setVenueData] = useState({});
+  const [locationInfos, setLocationInfos] = useState({
+    country_id: "",
+    city_id: "",
+  });
 
   const { setIsLoading } = useContext(AuthContext);
 
@@ -58,7 +62,7 @@ const Venues = () => {
     setIsLoading(true);
     VenueService.getVenues()
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         setVenuesData(response.data.content);
       })
       .then(() => setIsLoading(false));
@@ -219,6 +223,7 @@ const Venues = () => {
           openModal={addVenueModal}
           setAddVenueModal={setAddVenueModal}
           getVenuesData={getVenuesData}
+          setLocationInfos={setLocationInfos}
         />
       )}
 
@@ -229,6 +234,7 @@ const Venues = () => {
           setEditVenueModal={setEditVenueModal}
           venueData={venueData}
           getVenuesData={getVenuesData}
+          locationInfos={locationInfos}
         />
       )}
     </>

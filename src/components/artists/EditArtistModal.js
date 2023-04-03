@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { TextField } from "@mui/material";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+// import DeleteIcon from "@mui/icons-material/Delete";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 import ArtistService from "../../services/ArtistService";
 import Modal from "../commonUI/Modal";
@@ -50,7 +53,13 @@ const EditArtistModal = ({
       <Box
         component="form"
         sx={{
-          "& > :not(style)": { m: 1, width: "25ch" },
+          "& > :not(style)": {
+            m: 1,
+            display: "flex",
+            flexDirection: "column",
+            width: "20rem",
+            margin: "16px",
+          },
         }}
         noValidate
         autoComplete="off"
@@ -59,35 +68,38 @@ const EditArtistModal = ({
           name="enteredFullName"
           onChange={handleChange}
           value={state.enteredFullName}
-          id="standard-basic"
+          id="outlined-basic"
           label="Full Name"
-          variant="standard"
+          variant="outlined"
+          multiline={true}
         />
         <TextField
           name="enteredGenre"
           onChange={handleChange}
           value={state.enteredGenre}
-          id="standard-basic"
+          id="outlined-basic"
           label="Genre"
-          variant="standard"
+          variant="outlined"
+          multiline={true}
         />
         <TextField
           name="enteredDescription"
           onChange={handleChange}
           value={state.enteredDescription}
-          id="standard-basic"
+          id="outlined-basic"
           label="Description"
-          variant="standard"
-        />
-        <TextField
-          name="enteredPoster"
-          onChange={handleChange}
-          value={state.enteredPoster}
-          id="standard-basic"
-          label="Posters"
-          variant="standard"
+          variant="outlined"
+          multiline={true}
+          minRows={3}
         />
       </Box>
+      <Button
+        sx={{ width: "10rem", margin: "8px 16px" }}
+        variant="contained"
+        startIcon={<AddCircleIcon />}
+      >
+        Add Poster
+      </Button>
     </Modal>
   );
 };

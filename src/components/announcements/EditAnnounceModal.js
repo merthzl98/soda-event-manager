@@ -17,7 +17,6 @@ const EditAnnounceModal = ({
   getAnnouncesData,
 }) => {
   const [state, setState] = useState({
-    enteredOrderNo: announceData.orderNo,
     enteredText: announceData.text,
   });
   const [announceStatus, setAnnounceStatus] = useState("");
@@ -26,7 +25,7 @@ const EditAnnounceModal = ({
     const updatedData = {
       id: announceData.id,
       text: state.enteredText,
-      orderNo: state.enteredOrderNo,
+      orderNo: 0,
       status: announceStatus,
     };
     AnnounceService.updateAnnouncement(updatedData).then((response) => {
@@ -56,27 +55,17 @@ const EditAnnounceModal = ({
       <Box
         component="form"
         sx={{
-          "& > :not(style)": { m: 1, width: "25ch" },
+          "& > :not(style)": {
+            m: 1,
+            display: "flex",
+            flexDirection: "column",
+            width: "20rem",
+            margin: "16px",
+          },
         }}
         noValidate
         autoComplete="off"
       >
-        <TextField
-          name="enteredText"
-          onChange={handleChange}
-          value={state.enteredText}
-          id="standard-basic"
-          label="Text"
-          variant="standard"
-        />
-        <TextField
-          name="enteredOrderNo"
-          onChange={handleChange}
-          value={state.enteredOrderNo}
-          id="standard-basic"
-          label="Order No"
-          variant="standard"
-        />
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">
             Annnounce Status
@@ -93,6 +82,16 @@ const EditAnnounceModal = ({
             <MenuItem value={"---"}>---</MenuItem>
           </Select>
         </FormControl>
+        <TextField
+          name="enteredText"
+          onChange={handleChange}
+          value={state.enteredText}
+          id="standard-basic"
+          label="Announce Text"
+          variant="outlined"
+          multiline={true}
+          minRows={3}
+        />
       </Box>
     </Modal>
   );

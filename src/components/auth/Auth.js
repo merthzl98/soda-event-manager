@@ -55,7 +55,7 @@ const Auth = () => {
             required
             id="standard-required"
             label="Username"
-            variant="standard"
+            variant="outlined"
             onChange={handleNameChange}
           />
 
@@ -64,7 +64,7 @@ const Auth = () => {
             label="Password"
             type="password"
             autoComplete="current-password"
-            variant="standard"
+            variant="outlined"
             onChange={handlePasswordChange}
           />
         </div>

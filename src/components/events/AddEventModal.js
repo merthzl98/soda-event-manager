@@ -8,6 +8,9 @@ import Select from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
+import { LocalizationProvider, DateTimePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
 import AuthContext from "../../storage/auth-context";
 import Modal from "../commonUI/Modal";
@@ -55,13 +58,14 @@ const AddEventModal = ({
   const [state, setState] = useState({
     endTime: "",
     posterIds: [""],
-    startTime: "",
     ticketUrl: "",
     title: "",
   });
 
   const [clientStatus, setClientStatus] = useState("");
   const [isHighlighted, setIsHighlighted] = useState(false);
+  const [startTime, setStartTime] = useState(dayjs("2023-06-17T20:30"));
+  const [endTime, setEndTime] = useState(dayjs("2023-06-17T22:30"));
 
   const { setIsLoading } = useContext(AuthContext);
 
@@ -100,6 +104,10 @@ const AddEventModal = ({
     setIsHighlighted(event.target.checked);
   };
 
+  // console.log("start time-->", startTime);
+
+  // console.log("end time-->", endTime);
+
   return (
     <>
       <Modal
@@ -111,62 +119,95 @@ const AddEventModal = ({
         <Box
           component="form"
           sx={{
-            "& > :not(style)": { m: 1, width: "100%" },
+            "& > :not(style)": {
+              m: 1,
+              display: "flex",
+              flexDirection: "column",
+              width: "20rem",
+              margin: "16px",
+            },
           }}
           noValidate
           autoComplete="off"
         >
-          <Box
-            sx={{
-              width: "100%",
-              display: "flex",
-              gap: "5rem",
-              justifyContent: "space-between",
-            }}
-          >
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">
-                Event Status
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={clientStatus}
-                label="Event Status"
-                onChange={changeClientStatus}
-              >
-                <MenuItem value={"CANCELLED"}>Cancelled</MenuItem>
-                <MenuItem value={"LAST_TICKETS"}>Last Tickets</MenuItem>
-                <MenuItem value={"SOLD_OUT"}>Sold Out</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControlLabel
-              control={
-                <SwitchHighlighted
-                  checked={isHighlighted}
-                  onChange={switchHighlighted}
-                />
-              }
-              label="Highlighted"
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Event Status</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={clientStatus}
+              label="Event Status"
+              onChange={changeClientStatus}
+            >
+              <MenuItem value={"CANCELLED"}>Cancelled</MenuItem>
+              <MenuItem value={"LAST_TICKETS"}>Last Tickets</MenuItem>
+              <MenuItem value={"SOLD_OUT"}>Sold Out</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Artist</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={clientStatus}
+              label="Event Status"
+              onChange={changeClientStatus}
+            >
+              <MenuItem value={"CANCELLED"}>Cancelled</MenuItem>
+              <MenuItem value={"LAST_TICKETS"}>Last Tickets</MenuItem>
+              <MenuItem value={"SOLD_OUT"}>Sold Out</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Venue</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={clientStatus}
+              label="Event Status"
+              onChange={changeClientStatus}
+            >
+              <MenuItem value={"CANCELLED"}>Cancelled</MenuItem>
+              <MenuItem value={"LAST_TICKETS"}>Last Tickets</MenuItem>
+              <MenuItem value={"SOLD_OUT"}>Sold Out</MenuItem>
+            </Select>
+          </FormControl>
+          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
+            <DateTimePicker
+              label="Start Time"
+              value={startTime}
+              onChange={(newValue) => setStartTime(newValue)}
+              renderInput={(props) => <TextField {...props} />}
             />
-          </Box>
+          </LocalizationProvider>
+          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
+            <DateTimePicker
+              label="End Time"
+              value={endTime}
+              onChange={(newValue) => setEndTime(newValue)}
+              renderInput={(props) => <TextField {...props} />}
+            />
+          </LocalizationProvider>
 
           <TextField
-            name="startTime"
+            name="ticket-url"
             onChange={handleChange}
-            value={state.startTime}
+            value={state.ticketUrl}
             id="standard-basic"
-            label="startTime"
-            variant="standard"
+            label="Ticket Url"
+            variant="outlined"
+            multiline={true}
           />
-          <TextField
-            name="endTime"
+            <TextField
+            name="title"
             onChange={handleChange}
-            value={state.endTime}
+            value={state.title}
             id="standard-basic"
-            label="endTime"
-            variant="standard"
+            label="Title"
+            variant="outlined"
+            multiline={true}
           />
+
           <TextField
             name="posterIds"
             onChange={handleChange}
@@ -175,13 +216,14 @@ const AddEventModal = ({
             label="posterIds"
             variant="standard"
           />
-          <TextField
-            name="ticketUrl"
-            onChange={handleChange}
-            value={state.ticketUrl}
-            id="standard-basic"
-            label="ticketUrl"
-            variant="standard"
+          <FormControlLabel
+            control={
+              <SwitchHighlighted
+                checked={isHighlighted}
+                onChange={switchHighlighted}
+              />
+            }
+            label="Highlighted"
           />
         </Box>
       </Modal>

@@ -20,12 +20,12 @@ import EditAnnounceModal from "./EditAnnounceModal";
 import AddAnnounceModal from "./AddAnnounceModal";
 
 const columns = [
-  { id: "orderNo", label: "OrderNo", minWidth: 100 },
   { id: "status", label: "Status", minWidth: 100 },
   {
     id: "text",
     label: "Text",
     minWidth: 100,
+    align: "left",
     format: (value) => value.toLocaleString("en-US"),
   },
 ];

@@ -20,7 +20,16 @@ const ModalOverlay = (props) => {
         onClose={props.onHide}
         aria-labelledby="responsive-dialog-title"
       >
-        <DialogTitle id="responsive-dialog-title">{props.title}</DialogTitle>
+        <DialogTitle
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          id="responsive-dialog-title"
+        >
+          {props.title}
+        </DialogTitle>
         <DialogContent>{props.children}</DialogContent>
         <DialogActions>
           <Button onClick={props.onHide} autoFocus>
