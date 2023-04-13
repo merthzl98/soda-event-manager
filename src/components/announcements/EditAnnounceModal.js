@@ -18,15 +18,19 @@ const EditAnnounceModal = ({
 }) => {
   const [state, setState] = useState({
     enteredText: announceData.text,
+    enteredTextFrench: announceData.textFrench,
+    enteredTextDutch: announceData.textDutch,
   });
-  const [announceStatus, setAnnounceStatus] = useState("");
+  const [announceStatus, setAnnounceStatus] = useState(announceData.status);
 
   const updateAnnounceData = () => {
     const updatedData = {
       id: announceData.id,
       text: state.enteredText,
-      orderNo: 0,
+      orderNo: announceData.orderNo,
       status: announceStatus,
+      textDutch: state.enteredTextDutch,
+      textFrench: state.enteredTextFrench,
     };
     AnnounceService.updateAnnouncement(updatedData).then((response) => {
       if (response.status === 200) {
@@ -87,7 +91,27 @@ const EditAnnounceModal = ({
           onChange={handleChange}
           value={state.enteredText}
           id="standard-basic"
-          label="Announce Text"
+          label="Announce English"
+          variant="outlined"
+          multiline={true}
+          minRows={3}
+        />
+        <TextField
+          name="enteredTextDutch"
+          onChange={handleChange}
+          value={state.enteredTextDutch}
+          id="standard-basic"
+          label="Announce Dutch"
+          variant="outlined"
+          multiline={true}
+          minRows={3}
+        />
+        <TextField
+          name="enteredTextFrench"
+          onChange={handleChange}
+          value={state.enteredTextFrench}
+          id="standard-basic"
+          label="Announce French"
           variant="outlined"
           multiline={true}
           minRows={3}

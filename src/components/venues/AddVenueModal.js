@@ -1,7 +1,6 @@
-import React, { useState, useContext, useRef } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -9,19 +8,19 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
+import Autocomplete from "@mui/material/Autocomplete";
 
 import AuthContext from "../../storage/auth-context";
 import Modal from "../commonUI/Modal";
 import VenueService from "../../services/VenueService";
-import countryData from "../../static/countryData.json";
 import ImageModal from "./ImageModal";
+import locationData from "../../static/locationData.json";
 
 const AddVenueModal = ({
   onHide,
   openModal,
   setAddVenueModal,
   getVenuesData,
-  setLocationInfos,
 }) => {
   const [state, setState] = useState({
     enteredFullAddress: "",
@@ -29,29 +28,31 @@ const AddVenueModal = ({
     enteredName: "",
   });
 
-  const [countryId, setCountryId] = useState("");
   const [cities, setCities] = useState([]);
-  const [cityId, setCityId] = useState("");
   const [posterList, setPosterList] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [imageData, setImageData] = useState(null);
+  const [country, setCountry] = useState("");
+  const [inputCountry, setInputCountry] = useState("");
+  const [city, setCity] = useState("");
+  const [inputCity, setInputCity] = useState("");
 
   const fileInputRef = useRef(null);
 
   const { setIsLoading } = useContext(AuthContext);
 
-  const city = cities.find((city) => cityId === city?.state_id);
+  useEffect(() => {
+    country && setCities(country.states);
+  }, [country]);
 
   const postVenueData = () => {
     const venueData = {
-      country: countryData[countryId - 1]?.country_name,
-      city: city?.state_name,
+      country: country.country_name,
+      city: city.state_name,
       fullAddress: state.enteredFullAddress,
       name: state.enteredName,
       posters: null,
     };
-
-    setLocationInfos({ country_id: countryId, city_id: cityId });
 
     setIsLoading(true);
 
@@ -67,20 +68,6 @@ const AddVenueModal = ({
   const handleChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
-  };
-
-  const handleCountry = (e) => {
-    const getCountryId = e.target.value;
-    const getStatedata = countryData.find(
-      (country) => country.country_id === getCountryId
-    ).states;
-    setCities(getStatedata);
-    setCountryId(getCountryId);
-  };
-
-  const handleCity = (e) => {
-    const cityId = e.target.value;
-    setCityId(cityId);
   };
 
   const handleCloseModal = () => {
@@ -115,6 +102,8 @@ const AddVenueModal = ({
     setPosterList(filteredPosters);
   };
 
+  console.log("country _name-->", country?.country_name);
+
   return (
     <>
       <Modal
@@ -130,46 +119,53 @@ const AddVenueModal = ({
               m: 1,
               display: "flex",
               flexDirection: "column",
-              width: "20rem",
+              width: "25rem",
               margin: "16px",
             },
           }}
           noValidate
           autoComplete="off"
         >
-          <FormControl fullWidth>
-            <InputLabel id="select-country">Country</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={countryId}
-              label="Country"
-              onChange={(e) => handleCountry(e)}
-            >
-              {countryData.map((getCountry, index) => (
-                <MenuItem value={getCountry.country_id} key={index}>
-                  {getCountry.country_name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <TextField
+            name="enteredName"
+            onChange={handleChange}
+            value={state.enteredName}
+            id="standard-basic"
+            label="Name"
+            variant="outlined"
+            multiline={true}
+          />
+          <Autocomplete
+            value={country?.country_name}
+            onChange={(event, newValue) => {
+              setCountry(newValue);
+            }}
+            inputValue={inputCountry}
+            onInputChange={(event, newInputValue) => {
+              setInputCountry(newInputValue);
+            }}
+            id="controllable-states-demo"
+            options={locationData}
+            getOptionLabel={(option) => option.country_name}
+            sx={{ width: 300 }}
+            renderInput={(params) => <TextField {...params} label="Country" />}
+          />
+          <Autocomplete
+            value={city?.state_name}
+            onChange={(event, newValue) => {
+              setCity(newValue);
+            }}
+            inputValue={inputCity}
+            onInputChange={(event, newInputValue) => {
+              setInputCity(newInputValue);
+            }}
+            id="controllable-states-demo"
+            options={cities}
+            getOptionLabel={(option) => option.state_name}
+            sx={{ width: 300 }}
+            renderInput={(params) => <TextField {...params} label="City" />}
+          />
 
-          <FormControl fullWidth>
-            <InputLabel id="select-city">City</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={cityId}
-              label="City"
-              onChange={(e) => handleCity(e)}
-            >
-              {cities.map((getCity, index) => (
-                <MenuItem value={getCity.state_id} key={index}>
-                  {getCity.state_name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
           <TextField
             name="enteredFullAddress"
             onChange={handleChange}
@@ -179,16 +175,6 @@ const AddVenueModal = ({
             variant="outlined"
             multiline={true}
             minRows={3}
-          />
-          <TextField
-            name="enteredName"
-            onChange={handleChange}
-            value={state.enteredName}
-            id="standard-basic"
-            label="Name"
-            variant="outlined"
-            multiline={true}
-            minRows={2}
           />
         </Box>
         <Button

@@ -20,26 +20,6 @@ import EditEventModal from "./EditEventModal";
 import AddEventModal from "./AddEventModal";
 
 const columns = [
-  { id: "clientStatus", label: "Client Status", minWidth: 100 },
-  { id: "dateRangeEnd", label: "End Date", minWidth: 100 },
-  {
-    id: "dateRangeStart",
-    label: "Start Date",
-    minWidth: 100,
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "highlighted",
-    label: "Highlighted",
-    minWidth: 100,
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "status",
-    label: "Status",
-    minWidth: 100,
-    format: (value) => value.toLocaleString("en-US"),
-  },
   {
     id: "title",
     label: "Title",
@@ -47,19 +27,32 @@ const columns = [
     format: (value) => value.toLocaleString("en-US"),
   },
   {
-    id: "posterIds",
-    label: "Posters",
+    id: "date",
+    label: "Date",
     minWidth: 100,
-    // align: "right",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
-    id: "ticketUrl",
-    label: "Ticket Url",
+    id: "starthour",
+    label: "Start Hour",
     minWidth: 100,
-    // align: "right",
     format: (value) => value.toLocaleString("en-US"),
   },
+
+  {
+    id: "status",
+    label: "Status",
+    minWidth: 100,
+    format: (value) => value.toLocaleString("en-US"),
+  },
+
+  // {
+  //   id: "posters",
+  //   label: "Posters",
+  //   minWidth: 100,
+  //   // align: "right",
+  //   format: (value) => value.toLocaleString("en-US"),
+  // },
 ];
 
 const Events = () => {

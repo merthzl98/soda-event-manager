@@ -20,28 +20,28 @@ import EditVenueModal from "./EditVenueModal";
 import AddVenueModal from "./AddVenueModal";
 
 const columns = [
-  { id: "city", label: "City", minWidth: 100 },
-  { id: "country", label: "Country", minWidth: 100 },
-  {
-    id: "fullAddress",
-    label: "Full Address",
-    minWidth: 100,
-    format: (value) => value.toLocaleString("en-US"),
-  },
   {
     id: "name",
     label: "Name",
     minWidth: 100,
     format: (value) => value.toLocaleString("en-US"),
   },
-
+  { id: "country", label: "Country", minWidth: 100 },
+  { id: "city", label: "City", minWidth: 100 },
   {
-    id: "posters",
-    label: "Posters",
+    id: "fullAddress",
+    label: "Full Address",
     minWidth: 100,
-    // align: "right",
     format: (value) => value.toLocaleString("en-US"),
   },
+
+  // {
+  //   id: "posters",
+  //   label: "Posters",
+  //   minWidth: 100,
+  //   // align: "right",
+  //   format: (value) => value.toLocaleString("en-US"),
+  // },
 ];
 
 const Venues = () => {
@@ -51,10 +51,6 @@ const Venues = () => {
   const [addVenueModal, setAddVenueModal] = useState(false);
   const [editVenueModal, setEditVenueModal] = useState(false);
   const [venueData, setVenueData] = useState({});
-  const [locationInfos, setLocationInfos] = useState({
-    country_id: "",
-    city_id: "",
-  });
 
   const { setIsLoading } = useContext(AuthContext);
 
@@ -223,7 +219,6 @@ const Venues = () => {
           openModal={addVenueModal}
           setAddVenueModal={setAddVenueModal}
           getVenuesData={getVenuesData}
-          setLocationInfos={setLocationInfos}
         />
       )}
 
@@ -234,7 +229,6 @@ const Venues = () => {
           setEditVenueModal={setEditVenueModal}
           venueData={venueData}
           getVenuesData={getVenuesData}
-          locationInfos={locationInfos}
         />
       )}
     </>

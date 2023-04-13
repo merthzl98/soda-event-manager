@@ -1,0 +1,329 @@
+[
+  {
+    "country_id": "21",
+    "sortname": "BE",
+    "country_name": "Belgium",
+    "states": [
+      { "state_id": "422", "state_name": "Antwerpen", "country_id": "21" },
+      { "state_id": "423", "state_name": "Berchem", "country_id": "21" },
+      { "state_id": "424", "state_name": "Brabant", "country_id": "21" },
+      { "state_id": "425", "state_name": "Brabant Wallon", "country_id": "21" },
+      { "state_id": "426", "state_name": "Brussel", "country_id": "21" },
+      { "state_id": "427", "state_name": "East Flanders", "country_id": "21" },
+      { "state_id": "428", "state_name": "Hainaut", "country_id": "21" },
+      { "state_id": "429", "state_name": "Liege", "country_id": "21" },
+      { "state_id": "430", "state_name": "Limburg", "country_id": "21" },
+      { "state_id": "431", "state_name": "Luxembourg", "country_id": "21" },
+      { "state_id": "432", "state_name": "Namur", "country_id": "21" },
+      { "state_id": "433", "state_name": "Ontario", "country_id": "21" },
+      {
+        "state_id": "434",
+        "state_name": "Oost-Vlaanderen",
+        "country_id": "21"
+      },
+      {
+        "state_id": "435",
+        "state_name": "Provincie Brabant",
+        "country_id": "21"
+      },
+      { "state_id": "436", "state_name": "Vlaams-Brabant", "country_id": "21" },
+      { "state_id": "437", "state_name": "Wallonne", "country_id": "21" },
+      { "state_id": "438", "state_name": "West-Vlaanderen", "country_id": "21" }
+    ]
+  },
+  {
+    "country_id": "75",
+    "sortname": "FR",
+    "country_name": "France",
+    "states": [
+      { "state_id": "1181", "state_name": "Ain", "country_id": "75" },
+      { "state_id": "1182", "state_name": "Aisne", "country_id": "75" },
+      {
+        "state_id": "1183",
+        "state_name": "Albi Le Sequestre",
+        "country_id": "75"
+      },
+      { "state_id": "1184", "state_name": "Allier", "country_id": "75" },
+      {
+        "state_id": "1185",
+        "state_name": "Alpes-Cote dAzur",
+        "country_id": "75"
+      },
+      {
+        "state_id": "1186",
+        "state_name": "Alpes-Maritimes",
+        "country_id": "75"
+      },
+      {
+        "state_id": "1187",
+        "state_name": "Alpes-de-Haute-Provence",
+        "country_id": "75"
+      },
+      { "state_id": "1188", "state_name": "Alsace", "country_id": "75" },
+      { "state_id": "1189", "state_name": "Aquitaine", "country_id": "75" },
+      { "state_id": "1190", "state_name": "Ardeche", "country_id": "75" },
+      { "state_id": "1191", "state_name": "Ardennes", "country_id": "75" },
+      { "state_id": "1192", "state_name": "Ariege", "country_id": "75" },
+      { "state_id": "1193", "state_name": "Aube", "country_id": "75" },
+      { "state_id": "1194", "state_name": "Aude", "country_id": "75" },
+      { "state_id": "1195", "state_name": "Auvergne", "country_id": "75" },
+      { "state_id": "1196", "state_name": "Aveyron", "country_id": "75" },
+      { "state_id": "1197", "state_name": "Bas-Rhin", "country_id": "75" },
+      {
+        "state_id": "1198",
+        "state_name": "Basse-Normandie",
+        "country_id": "75"
+      },
+      {
+        "state_id": "1199",
+        "state_name": "Bouches-du-Rhone",
+        "country_id": "75"
+      },
+      { "state_id": "1200", "state_name": "Bourgogne", "country_id": "75" },
+      { "state_id": "1201", "state_name": "Bretagne", "country_id": "75" },
+      { "state_id": "1202", "state_name": "Brittany", "country_id": "75" },
+      { "state_id": "1203", "state_name": "Burgundy", "country_id": "75" },
+      { "state_id": "1204", "state_name": "Calvados", "country_id": "75" },
+      { "state_id": "1205", "state_name": "Cantal", "country_id": "75" },
+      { "state_id": "1206", "state_name": "Cedex", "country_id": "75" },
+      { "state_id": "1207", "state_name": "Centre", "country_id": "75" },
+      { "state_id": "1208", "state_name": "Charente", "country_id": "75" },
+      {
+        "state_id": "1209",
+        "state_name": "Charente-Maritime",
+        "country_id": "75"
+      },
+      { "state_id": "1210", "state_name": "Cher", "country_id": "75" },
+      { "state_id": "1211", "state_name": "Correze", "country_id": "75" },
+      { "state_id": "1212", "state_name": "Corse-du-Sud", "country_id": "75" },
+      { "state_id": "1213", "state_name": "Cote-d'Or", "country_id": "75" },
+      { "state_id": "1214", "state_name": "Cotes-d'Armor", "country_id": "75" },
+      { "state_id": "1215", "state_name": "Creuse", "country_id": "75" },
+      { "state_id": "1216", "state_name": "Crolles", "country_id": "75" },
+      { "state_id": "1217", "state_name": "Deux-Sevres", "country_id": "75" },
+      { "state_id": "1218", "state_name": "Dordogne", "country_id": "75" },
+      { "state_id": "1219", "state_name": "Doubs", "country_id": "75" },
+      { "state_id": "1220", "state_name": "Drome", "country_id": "75" },
+      { "state_id": "1221", "state_name": "Essonne", "country_id": "75" },
+      { "state_id": "1222", "state_name": "Eure", "country_id": "75" },
+      { "state_id": "1223", "state_name": "Eure-et-Loir", "country_id": "75" },
+      { "state_id": "1224", "state_name": "Feucherolles", "country_id": "75" },
+      { "state_id": "1225", "state_name": "Finistere", "country_id": "75" },
+      { "state_id": "1226", "state_name": "Franche-Comte", "country_id": "75" },
+      { "state_id": "1227", "state_name": "Gard", "country_id": "75" },
+      { "state_id": "1228", "state_name": "Gers", "country_id": "75" },
+      { "state_id": "1229", "state_name": "Gironde", "country_id": "75" },
+      { "state_id": "1230", "state_name": "Haut-Rhin", "country_id": "75" },
+      { "state_id": "1231", "state_name": "Haute-Corse", "country_id": "75" },
+      { "state_id": "1232", "state_name": "Haute-Garonne", "country_id": "75" },
+      { "state_id": "1233", "state_name": "Haute-Loire", "country_id": "75" },
+      { "state_id": "1234", "state_name": "Haute-Marne", "country_id": "75" },
+      { "state_id": "1235", "state_name": "Haute-Saone", "country_id": "75" },
+      { "state_id": "1236", "state_name": "Haute-Savoie", "country_id": "75" },
+      { "state_id": "1237", "state_name": "Haute-Vienne", "country_id": "75" },
+      { "state_id": "1238", "state_name": "Hautes-Alpes", "country_id": "75" },
+      {
+        "state_id": "1239",
+        "state_name": "Hautes-Pyrenees",
+        "country_id": "75"
+      },
+      {
+        "state_id": "1240",
+        "state_name": "Hauts-de-Seine",
+        "country_id": "75"
+      },
+      { "state_id": "1241", "state_name": "Herault", "country_id": "75" },
+      { "state_id": "1242", "state_name": "Ile-de-France", "country_id": "75" },
+      {
+        "state_id": "1243",
+        "state_name": "Ille-et-Vilaine",
+        "country_id": "75"
+      },
+      { "state_id": "1244", "state_name": "Indre", "country_id": "75" },
+      {
+        "state_id": "1245",
+        "state_name": "Indre-et-Loire",
+        "country_id": "75"
+      },
+      { "state_id": "1246", "state_name": "Isere", "country_id": "75" },
+      { "state_id": "1247", "state_name": "Jura", "country_id": "75" },
+      { "state_id": "1248", "state_name": "Klagenfurt", "country_id": "75" },
+      { "state_id": "1249", "state_name": "Landes", "country_id": "75" },
+      {
+        "state_id": "1250",
+        "state_name": "Languedoc-Roussillon",
+        "country_id": "75"
+      },
+      { "state_id": "1251", "state_name": "Larcay", "country_id": "75" },
+      { "state_id": "1252", "state_name": "Le Castellet", "country_id": "75" },
+      { "state_id": "1253", "state_name": "Le Creusot", "country_id": "75" },
+      { "state_id": "1254", "state_name": "Limousin", "country_id": "75" },
+      { "state_id": "1255", "state_name": "Loir-et-Cher", "country_id": "75" },
+      { "state_id": "1256", "state_name": "Loire", "country_id": "75" },
+      {
+        "state_id": "1257",
+        "state_name": "Loire-Atlantique",
+        "country_id": "75"
+      },
+      { "state_id": "1258", "state_name": "Loiret", "country_id": "75" },
+      { "state_id": "1259", "state_name": "Lorraine", "country_id": "75" },
+      { "state_id": "1260", "state_name": "Lot", "country_id": "75" },
+      {
+        "state_id": "1261",
+        "state_name": "Lot-et-Garonne",
+        "country_id": "75"
+      },
+      {
+        "state_id": "1262",
+        "state_name": "Lower Normandy",
+        "country_id": "75"
+      },
+      { "state_id": "1263", "state_name": "Lozere", "country_id": "75" },
+      {
+        "state_id": "1264",
+        "state_name": "Maine-et-Loire",
+        "country_id": "75"
+      },
+      { "state_id": "1265", "state_name": "Manche", "country_id": "75" },
+      { "state_id": "1266", "state_name": "Marne", "country_id": "75" },
+      { "state_id": "1267", "state_name": "Mayenne", "country_id": "75" },
+      {
+        "state_id": "1268",
+        "state_name": "Meurthe-et-Moselle",
+        "country_id": "75"
+      },
+      { "state_id": "1269", "state_name": "Meuse", "country_id": "75" },
+      { "state_id": "1270", "state_name": "Midi-Pyrenees", "country_id": "75" },
+      { "state_id": "1271", "state_name": "Morbihan", "country_id": "75" },
+      { "state_id": "1272", "state_name": "Moselle", "country_id": "75" },
+      { "state_id": "1273", "state_name": "Nievre", "country_id": "75" },
+      { "state_id": "1274", "state_name": "Nord", "country_id": "75" },
+      {
+        "state_id": "1275",
+        "state_name": "Nord-Pas-de-Calais",
+        "country_id": "75"
+      },
+      { "state_id": "1276", "state_name": "Oise", "country_id": "75" },
+      { "state_id": "1277", "state_name": "Orne", "country_id": "75" },
+      { "state_id": "1278", "state_name": "Paris", "country_id": "75" },
+      { "state_id": "1279", "state_name": "Pas-de-Calais", "country_id": "75" },
+      {
+        "state_id": "1280",
+        "state_name": "Pays de la Loire",
+        "country_id": "75"
+      },
+      {
+        "state_id": "1281",
+        "state_name": "Pays-de-la-Loire",
+        "country_id": "75"
+      },
+      { "state_id": "1282", "state_name": "Picardy", "country_id": "75" },
+      { "state_id": "1283", "state_name": "Puy-de-Dome", "country_id": "75" },
+      {
+        "state_id": "1284",
+        "state_name": "Pyrenees-Atlantiques",
+        "country_id": "75"
+      },
+      {
+        "state_id": "1285",
+        "state_name": "Pyrenees-Orientales",
+        "country_id": "75"
+      },
+      { "state_id": "1286", "state_name": "Quelmes", "country_id": "75" },
+      { "state_id": "1287", "state_name": "Rhone", "country_id": "75" },
+      { "state_id": "1288", "state_name": "Rhone-Alpes", "country_id": "75" },
+      { "state_id": "1289", "state_name": "Saint Ouen", "country_id": "75" },
+      { "state_id": "1290", "state_name": "Saint Viatre", "country_id": "75" },
+      {
+        "state_id": "1291",
+        "state_name": "Saone-et-Loire",
+        "country_id": "75"
+      },
+      { "state_id": "1292", "state_name": "Sarthe", "country_id": "75" },
+      { "state_id": "1293", "state_name": "Savoie", "country_id": "75" },
+      {
+        "state_id": "1294",
+        "state_name": "Seine-Maritime",
+        "country_id": "75"
+      },
+      {
+        "state_id": "1295",
+        "state_name": "Seine-Saint-Denis",
+        "country_id": "75"
+      },
+      {
+        "state_id": "1296",
+        "state_name": "Seine-et-Marne",
+        "country_id": "75"
+      },
+      { "state_id": "1297", "state_name": "Somme", "country_id": "75" },
+      {
+        "state_id": "1298",
+        "state_name": "Sophia Antipolis",
+        "country_id": "75"
+      },
+      { "state_id": "1299", "state_name": "Souvans", "country_id": "75" },
+      { "state_id": "1300", "state_name": "Tarn", "country_id": "75" },
+      {
+        "state_id": "1301",
+        "state_name": "Tarn-et-Garonne",
+        "country_id": "75"
+      },
+      {
+        "state_id": "1302",
+        "state_name": "Territoire de Belfort",
+        "country_id": "75"
+      },
+      { "state_id": "1303", "state_name": "Treignac", "country_id": "75" },
+      {
+        "state_id": "1304",
+        "state_name": "Upper Normandy",
+        "country_id": "75"
+      },
+      { "state_id": "1305", "state_name": "Val-d'Oise", "country_id": "75" },
+      { "state_id": "1306", "state_name": "Val-de-Marne", "country_id": "75" },
+      { "state_id": "1307", "state_name": "Var", "country_id": "75" },
+      { "state_id": "1308", "state_name": "Vaucluse", "country_id": "75" },
+      { "state_id": "1309", "state_name": "Vellise", "country_id": "75" },
+      { "state_id": "1310", "state_name": "Vendee", "country_id": "75" },
+      { "state_id": "1311", "state_name": "Vienne", "country_id": "75" },
+      { "state_id": "1312", "state_name": "Vosges", "country_id": "75" },
+      { "state_id": "1313", "state_name": "Yonne", "country_id": "75" },
+      { "state_id": "1314", "state_name": "Yvelines", "country_id": "75" }
+    ]
+  },
+  {
+    "country_id": "155",
+    "sortname": "NL",
+    "country_name": "Netherlands The",
+    "states": [
+      { "state_id": "2585", "state_name": "Amsterdam", "country_id": "155" },
+      { "state_id": "2586", "state_name": "Benelux", "country_id": "155" },
+      { "state_id": "2587", "state_name": "Drenthe", "country_id": "155" },
+      { "state_id": "2588", "state_name": "Flevoland", "country_id": "155" },
+      { "state_id": "2589", "state_name": "Friesland", "country_id": "155" },
+      { "state_id": "2590", "state_name": "Gelderland", "country_id": "155" },
+      { "state_id": "2591", "state_name": "Groningen", "country_id": "155" },
+      { "state_id": "2592", "state_name": "Limburg", "country_id": "155" },
+      {
+        "state_id": "2593",
+        "state_name": "Noord-Brabant",
+        "country_id": "155"
+      },
+      {
+        "state_id": "2594",
+        "state_name": "Noord-Holland",
+        "country_id": "155"
+      },
+      { "state_id": "2595", "state_name": "Overijssel", "country_id": "155" },
+      {
+        "state_id": "2596",
+        "state_name": "South Holland",
+        "country_id": "155"
+      },
+      { "state_id": "2597", "state_name": "Utrecht", "country_id": "155" },
+      { "state_id": "2598", "state_name": "Zeeland", "country_id": "155" },
+      { "state_id": "2599", "state_name": "Zuid-Holland", "country_id": "155" }
+    ]
+  }
+]

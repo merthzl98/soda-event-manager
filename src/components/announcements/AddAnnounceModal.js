@@ -15,9 +15,12 @@ const AddAnnounceModal = ({
   openModal,
   setAddAnnounceModal,
   getAnnouncesData,
+  orderLength,
 }) => {
   const [state, setState] = useState({
     enteredText: "",
+    enteredTextFrench: "",
+    enteredTextDutch: "",
   });
   const [announceStatus, setAnnounceStatus] = useState("DRAFT");
 
@@ -25,8 +28,10 @@ const AddAnnounceModal = ({
 
   const postAnnounceData = () => {
     const announceData = {
-      orderNo: 0,
+      orderNo: orderLength,
       text: state.enteredText,
+      textDutch: state.enteredTextDutch,
+      textFrench: state.enteredTextFrench,
       announceStatus: announceStatus,
     };
 
@@ -65,14 +70,14 @@ const AddAnnounceModal = ({
               m: 1,
               display: "flex",
               flexDirection: "column",
-              width: "20rem",
-              margin: "16px",
+              width: "25rem",
+              margin: "32px 16px",
             },
           }}
           noValidate
           autoComplete="off"
         >
-          <FormControl fullWidth>
+          <FormControl sx={{ marginTop: "5rem" }}>
             <InputLabel id="demo-simple-select-label">
               Annnounce Status
             </InputLabel>
@@ -93,7 +98,27 @@ const AddAnnounceModal = ({
             onChange={handleChange}
             value={state.enteredText}
             id="standard-basic"
-            label="Announce Text"
+            label="Announce English"
+            variant="outlined"
+            multiline={true}
+            minRows={3}
+          />
+          <TextField
+            name="enteredTextDutch"
+            onChange={handleChange}
+            value={state.enteredTextDutch}
+            id="standard-basic"
+            label="Announce Dutch"
+            variant="outlined"
+            multiline={true}
+            minRows={3}
+          />
+          <TextField
+            name="enteredTextFrench"
+            onChange={handleChange}
+            value={state.enteredTextFrench}
+            id="standard-basic"
+            label="Announce French"
             variant="outlined"
             multiline={true}
             minRows={3}

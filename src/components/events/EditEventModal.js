@@ -53,14 +53,16 @@ const EditEventModal = ({
   getEventsData,
 }) => {
   const [state, setState] = useState({
-    endTime: "",
+    endTime: eventData.endTime,
     posterIds: [""],
-    startTime: "",
-    ticketUrl: "",
-    title: "",
+    startTime: eventData.startTime,
+    ticketUrl: eventData.ticketUrl,
+    title: eventData.title,
+    titleDutch: eventData.titleDutch,
+    titleFrench: eventData.titleFrench,
   });
-  const [clientStatus, setClientStatus] = useState("");
-  const [isHighlighted, setIsHighlighted] = useState(false);
+  const [clientStatus, setClientStatus] = useState(eventData.clientStatus);
+  const [isHighlighted, setIsHighlighted] = useState(eventData.highlighted);
 
   const updateEventData = () => {
     const updatedData = {
@@ -72,6 +74,8 @@ const EditEventModal = ({
       startTime: state.startTime,
       ticketUrl: state.ticketUrl,
       title: state.title,
+      titleFrench: state.titleFrench,
+      titleDutch: state.titleDutch,
     };
     EventService.updateEvent(updatedData).then((response) => {
       if (response.status === 200) {
@@ -117,20 +121,34 @@ const EditEventModal = ({
             justifyContent: "space-between",
           }}
         >
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Event Status</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={clientStatus}
-              label="Event Status"
-              onChange={changeClientStatus}
-            >
-              <MenuItem value={"CANCELLED"}>Cancelled</MenuItem>
-              <MenuItem value={"LAST_TICKETS"}>Last Tickets</MenuItem>
-              <MenuItem value={"SOLD_OUT"}>Sold Out</MenuItem>
-            </Select>
-          </FormControl>
+          <TextField
+            name="title"
+            onChange={handleChange}
+            value={state.title}
+            id="standard-basic"
+            label="Title"
+            variant="outlined"
+            multiline={true}
+          />
+          <TextField
+            name="titleFrench"
+            onChange={handleChange}
+            value={state.titleFrench}
+            id="standard-basic"
+            label="Title French"
+            variant="outlined"
+            multiline={true}
+          />
+          <TextField
+            name="titleDutch"
+            onChange={handleChange}
+            value={state.titleDutch}
+            id="standard-basic"
+            label="Title Dutch"
+            variant="outlined"
+            multiline={true}
+          />
+
           <FormControlLabel
             control={
               <SwitchHighlighted
@@ -165,6 +183,20 @@ const EditEventModal = ({
           label="posterIds"
           variant="standard"
         />
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Event Status</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={clientStatus}
+            label="Event Status"
+            onChange={changeClientStatus}
+          >
+            <MenuItem value={"CANCELLED"}>Cancelled</MenuItem>
+            <MenuItem value={"LAST_TICKETS"}>Last Tickets</MenuItem>
+            <MenuItem value={"SOLD_OUT"}>Sold Out</MenuItem>
+          </Select>
+        </FormControl>
         <TextField
           name="ticketUrl"
           onChange={handleChange}

@@ -29,13 +29,13 @@ const columns = [
     // align: "right",
     format: (value) => value.toLocaleString("en-US"),
   },
-  {
-    id: "posters",
-    label: "Posters",
-    minWidth: 100,
-    // align: "right",
-    format: (value) => value.toLocaleString("en-US"),
-  },
+  // {
+  //   id: "posters",
+  //   label: "Posters",
+  //   minWidth: 100,
+  //   // align: "right",
+  //   format: (value) => value.toLocaleString("en-US"),
+  // },
 ];
 
 const Artists = () => {
@@ -50,7 +50,7 @@ const Artists = () => {
 
   const getArtistsData = () => {
     setIsLoading(true);
-    //does not have any query ?
+    // has not any query 
     ArtistService.getArtistsList()
       .then((response) => {
         setArtistsData(response.data.content);
