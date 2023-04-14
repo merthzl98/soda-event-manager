@@ -1,0 +1,14 @@
+.upload-image-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      max-width: 30rem;
+      height: auto;
+      box-shadow: 10px 10px 5px -3px rgba(0, 0, 0, 0.12);
+      -webkit-box-shadow: 10px 10px 5px -3px rgba(0, 0, 0, 0.12);
+      -moz-box-shadow: 10px 10px 5px -3px rgba(0, 0, 0, 0.12);
+    }
+  }

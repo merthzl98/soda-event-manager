@@ -70,29 +70,13 @@ const AddAnnounceModal = ({
               m: 1,
               display: "flex",
               flexDirection: "column",
-              width: "25rem",
-              margin: "32px 16px",
+              width: "35rem",
+              margin: "24px 16px",
             },
           }}
           noValidate
           autoComplete="off"
         >
-          <FormControl sx={{ marginTop: "5rem" }}>
-            <InputLabel id="demo-simple-select-label">
-              Annnounce Status
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={announceStatus}
-              label="Announce Status"
-              onChange={changeAnnounceStatus}
-            >
-              <MenuItem value={"DRAFT"}>Draft</MenuItem>
-              <MenuItem value={"..."}>...</MenuItem>
-              <MenuItem value={"---"}>---</MenuItem>
-            </Select>
-          </FormControl>
           <TextField
             name="enteredText"
             onChange={handleChange}
@@ -123,6 +107,22 @@ const AddAnnounceModal = ({
             multiline={true}
             minRows={3}
           />
+          <FormControl sx={{ marginTop: "5rem" }}>
+            <InputLabel id="demo-simple-select-label">
+              Annnounce Status
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={announceStatus}
+              label="Announce Status"
+              onChange={changeAnnounceStatus}
+            >
+              <MenuItem value={"DRAFT"}>Draft</MenuItem>
+              <MenuItem value={"..."}>...</MenuItem>
+              <MenuItem value={"---"}>---</MenuItem>
+            </Select>
+          </FormControl>
         </Box>
       </Modal>
     </>

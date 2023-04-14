@@ -5,8 +5,13 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
+import { useTheme, styled } from "@mui/material/styles";
 import React, { Fragment } from "react";
+import { Paper } from "@mui/material";
+
+const MyPaper = styled(Paper)(({ theme }) => ({
+  maxWidth: "1000px !important",
+}));
 
 const ModalOverlay = (props) => {
   const theme = useTheme();
@@ -19,6 +24,7 @@ const ModalOverlay = (props) => {
         open={props.openModal}
         onClose={props.onHide}
         aria-labelledby="responsive-dialog-title"
+        PaperComponent={MyPaper}
       >
         <DialogTitle
           sx={{
@@ -32,7 +38,7 @@ const ModalOverlay = (props) => {
         </DialogTitle>
         <DialogContent>{props.children}</DialogContent>
         <DialogActions>
-          <Button onClick={props.onHide} autoFocus>
+          <Button onClick={props.onHide} color="error" autoFocus>
             Cancel
           </Button>
           <Button autoFocus onClick={props.onRequest}>

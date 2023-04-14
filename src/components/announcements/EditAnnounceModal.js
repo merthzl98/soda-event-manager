@@ -63,29 +63,13 @@ const EditAnnounceModal = ({
             m: 1,
             display: "flex",
             flexDirection: "column",
-            width: "20rem",
-            margin: "16px",
+            margin: "24px 16px",
+            width: "35rem",
           },
         }}
         noValidate
         autoComplete="off"
       >
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">
-            Annnounce Status
-          </InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={announceStatus}
-            label="Announce Status"
-            onChange={changeAnnounceStatus}
-          >
-            <MenuItem value={"DRAFT"}>Draft</MenuItem>
-            <MenuItem value={"..."}>...</MenuItem>
-            <MenuItem value={"---"}>---</MenuItem>
-          </Select>
-        </FormControl>
         <TextField
           name="enteredText"
           onChange={handleChange}
@@ -117,6 +101,20 @@ const EditAnnounceModal = ({
           minRows={3}
         />
       </Box>
+      <FormControl sx={{ width: "30%", margin: "8px 16px" }}>
+        <InputLabel id="demo-simple-select-label">Annnounce Status</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={announceStatus}
+          label="Announce Status"
+          onChange={changeAnnounceStatus}
+        >
+          <MenuItem value={"DRAFT"}>Draft</MenuItem>
+          <MenuItem value={"..."}>...</MenuItem>
+          <MenuItem value={"---"}>---</MenuItem>
+        </Select>
+      </FormControl>
     </Modal>
   );
 };

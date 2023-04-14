@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
@@ -11,21 +11,15 @@ import Switch from "@mui/material/Switch";
 import { LocalizationProvider, DateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import Button from "@mui/material/Button";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import IconButton from "@mui/material/IconButton";
 
 import AuthContext from "../../storage/auth-context";
 import Modal from "../commonUI/Modal";
 import EventService from "../../services/EventService";
-import ImageModal from "./ImageModal";
+import ImageModal from "../commonUI/ImageModal.js";
 // import PosterService from "../../services/PosterService";
 import ArtistService from "../../services/ArtistService";
 import VenueService from "../../services/VenueService";
+import AddPoster from "../commonUI/AddPoster";
 
 const SwitchHighlighted = styled(Switch)(({ theme }) => ({
   padding: 8,
@@ -67,7 +61,6 @@ const AddEventModal = ({
   getEventsData,
 }) => {
   const [state, setState] = useState({
-    posterIds: [""],
     ticketUrl: "",
     title: "",
     titleDutch: "",
@@ -78,15 +71,14 @@ const AddEventModal = ({
   const [isHighlighted, setIsHighlighted] = useState(false);
   const [startTime, setStartTime] = useState(dayjs("2023-06-17T20:30"));
   const [endTime, setEndTime] = useState(dayjs("2023-06-17T22:30"));
-  const [posterList, setPosterList] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [imageData, setImageData] = useState(null);
   const [selectedArtist, setSelectedArtist] = useState("");
   const [selectedVenue, setSelectedVenue] = useState("");
   const [artistList, setArtistList] = useState([]);
   const [venueList, setVenueList] = useState([]);
-
-  const fileInputRef = useRef(null);
+  const [fileData, setFileData] = useState(null);
+  const [eventImageData, setEventImageData] = useState([]);
 
   const { setIsLoading } = useContext(AuthContext);
 
@@ -149,36 +141,9 @@ const AddEventModal = ({
     setIsHighlighted(event.target.checked);
   };
 
-  const handleClickImage = () => {
-    fileInputRef.current.click();
-  };
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const imageInfo = { name: file.name, data: e.target.result };
-      // setPosterList((prevList) => [...prevList, imageInfo]);
-      setImageData(imageInfo);
-      setShowModal(true); // show the modal after adding the image to the list
-    };
-    reader.readAsDataURL(file);
-  };
-
   const handleCloseModal = () => {
     setShowModal(false);
     setImageData(null);
-  };
-
-  const handleDeletePoster = (posterIndex) => {
-    //delete from server this line
-    // PosterService.deletePoster(posterId);
-
-    const filteredPosters = posterList.filter(
-      (poster, index) => index !== posterIndex
-    );
-
-    setPosterList(filteredPosters);
   };
 
   const startTimeString = startTime.toString();
@@ -205,8 +170,8 @@ const AddEventModal = ({
               m: 1,
               display: "flex",
               flexDirection: "column",
-              width: "23rem",
-              margin: "16px",
+              width: "50rem",
+              margin: "24px 16px",
             },
           }}
           noValidate
@@ -239,73 +204,95 @@ const AddEventModal = ({
             variant="outlined"
             multiline={true}
           />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <FormControl sx={{ width: "47%" }}>
+              <InputLabel id="demo-simple-select-label">Artist</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={selectedArtist}
+                label="Artist"
+                onChange={changeSelectedArtist}
+              >
+                {artistList.map((artist) => {
+                  return (
+                    <MenuItem key={artist.id} value={artist.id}>
+                      {artist.fullName}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+            <FormControl sx={{ width: "47%" }}>
+              <InputLabel id="demo-simple-select-label">Venue</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={selectedVenue}
+                label="Venue"
+                onChange={changeSelectedVenue}
+              >
+                {venueList.map((venue) => {
+                  return (
+                    <MenuItem key={venue.id} value={venue.id}>
+                      {venue.country} , {venue.country} / {venue.name}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </div>
 
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Artist</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={selectedArtist}
-              label="Artist"
-              onChange={changeSelectedArtist}
-            >
-              {artistList.map((artist) => {
-                return (
-                  <MenuItem key={artist.id} value={artist.id}>
-                    {artist.fullName}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Venue</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={selectedVenue}
-              label="Venue"
-              onChange={changeSelectedVenue}
-            >
-              {venueList.map((venue) => {
-                return (
-                  <MenuItem key={venue.id} value={venue.id}>
-                    {venue.country} , {venue.country} / {venue.name}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
-            <DateTimePicker
-              label="Start Time"
-              value={startTime}
-              onChange={(newValue) => setStartTime(newValue)}
-              renderInput={(props) => <TextField {...props} />}
-            />
-          </LocalizationProvider>
-          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
-            <DateTimePicker
-              label="End Time"
-              value={endTime}
-              onChange={(newValue) => setEndTime(newValue)}
-              renderInput={(props) => <TextField {...props} />}
-            />
-          </LocalizationProvider>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Event Status</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={clientStatus}
-              label="Event Status"
-              onChange={changeClientStatus}
-            >
-              <MenuItem value={"CANCELLED"}>Cancelled</MenuItem>
-              <MenuItem value={"LAST_TICKETS"}>Last Tickets</MenuItem>
-              <MenuItem value={"SOLD_OUT"}>Sold Out</MenuItem>
-            </Select>
-          </FormControl>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
+              <DateTimePicker
+                label="Start Time"
+                value={startTime}
+                onChange={(newValue) => setStartTime(newValue)}
+                renderInput={(props) => (
+                  <TextField sx={{ width: "30%" }} {...props} />
+                )}
+              />
+            </LocalizationProvider>
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
+              <DateTimePicker
+                label="End Time"
+                value={endTime}
+                onChange={(newValue) => setEndTime(newValue)}
+                renderInput={(props) => (
+                  <TextField sx={{ width: "30%" }} {...props} />
+                )}
+              />
+            </LocalizationProvider>
+            <FormControl sx={{ width: "30%" }}>
+              <InputLabel id="demo-simple-select-label">
+                Event Status
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={clientStatus}
+                label="Event Status"
+                onChange={changeClientStatus}
+              >
+                <MenuItem value={"CANCELLED"}>Cancelled</MenuItem>
+                <MenuItem value={"LAST_TICKETS"}>Last Tickets</MenuItem>
+                <MenuItem value={"SOLD_OUT"}>Sold Out</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
 
           <TextField
             name="ticketUrl"
@@ -316,89 +303,41 @@ const AddEventModal = ({
             variant="outlined"
             multiline={true}
           />
-
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <div>
-              {" "}
-              <Button
-                onClick={handleClickImage}
-                sx={{ width: "10rem" }}
-                variant="contained"
-                startIcon={<AddCircleIcon />}
-              >
-                Add Poster
-              </Button>
-              <input
-                type="file"
-                accept="image/*"
-                style={{ display: "none" }}
-                ref={fileInputRef}
-                onChange={handleFileChange}
-              />
-            </div>
-            <div>
-              {" "}
-              <FormControlLabel
-                control={
-                  <SwitchHighlighted
-                    checked={isHighlighted}
-                    onChange={switchHighlighted}
-                  />
-                }
-                label="Highlighted"
-              />
-            </div>
-          </div>
-
-          {/* {imageData && <img src={imageData} alt="Uploaded" />} */}
-
-          <List
-            sx={{
-              width: "100%",
-              maxWidth: "23rem",
-              bgcolor: "background.paper",
-            }}
-          >
-            {posterList.map((poster, index) => (
-              <ListItem
-                key={poster.name}
-                disableGutters
-                secondaryAction={
-                  <IconButton
-                    onClick={() => handleDeletePoster(index)}
-                    aria-label="comment"
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                }
-              >
-                <ListItemText
-                  sx={{
-                    textDecoration: "underline",
-                    color: "purple",
-                    margin: "0px 16px",
-                    cursor: "pointer",
-                  }}
-                  primary={`${poster.name}`}
-                />
-              </ListItem>
-            ))}
-          </List>
         </Box>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <AddPoster
+            setImageData={setImageData}
+            setShowModal={setShowModal}
+            imagesData={eventImageData}
+            setFileData={setFileData}
+            setImagesData={setEventImageData}
+          />
+          <FormControlLabel
+            control={
+              <SwitchHighlighted
+                checked={isHighlighted}
+                onChange={switchHighlighted}
+              />
+            }
+            label="Highlighted"
+          />
+        </div>
       </Modal>
       {showModal && (
         <ImageModal
           imageData={imageData}
           onOpen={showModal}
           onClose={handleCloseModal}
-          setPosterList={setPosterList}
+          fileData={fileData}
+          setImagesData={setEventImageData}
+          posterType="EVENT_DEFAULT"
         />
       )}
     </>

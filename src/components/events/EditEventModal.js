@@ -54,7 +54,6 @@ const EditEventModal = ({
 }) => {
   const [state, setState] = useState({
     endTime: eventData.endTime,
-    posterIds: [""],
     startTime: eventData.startTime,
     ticketUrl: eventData.ticketUrl,
     title: eventData.title,
