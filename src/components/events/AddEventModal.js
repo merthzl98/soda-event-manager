@@ -20,6 +20,7 @@ import ImageModal from "../commonUI/ImageModal.js";
 import ArtistService from "../../services/ArtistService";
 import VenueService from "../../services/VenueService";
 import AddPoster from "../commonUI/AddPoster";
+import { formatIso } from "../../configs/config";
 
 const SwitchHighlighted = styled(Switch)(({ theme }) => ({
   padding: 8,
@@ -95,12 +96,16 @@ const AddEventModal = ({
   }, []);
 
   const postEventData = () => {
+    const times = formatIso(startTime, endTime);
+
+    // console.log("times-*->", times);
+
     const eventData = {
       clientStatus: clientStatus,
       artistId: selectedArtist,
       venueId: selectedVenue,
-      startTime: startIso,
-      endTime: endIso,
+      startTime: times.startIso,
+      endTime: times.endIso,
       highlighted: isHighlighted,
       posterIds: null,
       ticketUrl: state.ticketUrl,
@@ -146,14 +151,7 @@ const AddEventModal = ({
     setImageData(null);
   };
 
-  const startTimeString = startTime.toString();
-  const endTimeString = endTime.toString();
-
-  const start = new Date(startTimeString);
-  const end = new Date(endTimeString);
-
-  const startIso = start.toISOString();
-  const endIso = end.toISOString();
+  // console.log("times", startTime, endTime);
 
   return (
     <>

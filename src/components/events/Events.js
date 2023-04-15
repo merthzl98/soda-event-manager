@@ -33,7 +33,7 @@ const columns = [
     format: (value) => value.toLocaleString("en-US"),
   },
   {
-    id: "starthour",
+    id: "startHour",
     label: "Start Hour",
     minWidth: 100,
     format: (value) => value.toLocaleString("en-US"),

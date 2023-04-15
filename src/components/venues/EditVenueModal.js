@@ -21,17 +21,18 @@ const EditVenueModal = ({
     enteredName: venueData.name,
   });
 
-  // const initialCities = locationData.filter((item) => {
-  //   if (item.country_name === venueData.country_name) {
-  //     return item.states;
-  //   }
-  // });
+  const initCountry = locationData.find(
+    (item) => item.country_name === venueData.country
+  );
+  const initCity = initCountry.states.find(
+    (item) => venueData.city === item.state_name
+  );
 
   const [cities, setCities] = useState([]);
-  const [country, setCountry] = useState(venueData?.country);
-  const [inputCountry, setInputCountry] = useState(venueData?.country);
-  const [city, setCity] = useState(venueData?.city);
-  const [inputCity, setInputCity] = useState(venueData?.city);
+  const [country, setCountry] = useState(initCountry);
+  const [inputCountry, setInputCountry] = useState(initCountry);
+  const [city, setCity] = useState(initCity);
+  const [inputCity, setInputCity] = useState(initCity);
   const [fileData, setFileData] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [venueImageData, setVenueImageData] = useState(venueData.posters);
@@ -67,6 +68,11 @@ const EditVenueModal = ({
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
   };
+
+  console.log("country", country);
+  console.log("city", city);
+  console.log("cities", cities);
+  console.log("lcoationData", locationData);
 
   return (
     <>
@@ -108,7 +114,7 @@ const EditVenueModal = ({
             }}
           >
             <Autocomplete
-              value={country?.country_name}
+              value={country}
               onChange={(event, newValue) => {
                 setCountry(newValue);
               }}
@@ -125,7 +131,7 @@ const EditVenueModal = ({
               )}
             />
             <Autocomplete
-              value={city?.state_name}
+              value={city}
               onChange={(event, newValue) => {
                 setCity(newValue);
               }}

@@ -11,6 +11,9 @@ import ImageModal from "../commonUI/ImageModal.js";
 import locationData from "../../static/locationData.json";
 import AddPoster from "../commonUI/AddPoster";
 
+// const countryList = locationData.map((item) => item.country_name);
+
+
 const AddVenueModal = ({
   onHide,
   openModal,
@@ -25,9 +28,9 @@ const AddVenueModal = ({
   const [cities, setCities] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [imageData, setImageData] = useState(null);
-  const [country, setCountry] = useState("");
+  const [country, setCountry] = useState(null);
   const [inputCountry, setInputCountry] = useState("");
-  const [city, setCity] = useState("");
+  const [city, setCity] = useState(null);
   const [inputCity, setInputCity] = useState("");
   const [venueImageData, setVenueImageData] = useState([]);
   const [fileData, setFileData] = useState(null);
@@ -68,7 +71,15 @@ const AddVenueModal = ({
     setImageData(null);
   };
 
+  
+
   // console.log("country _name-->", country?.country_name);
+  console.log("country", country);
+  console.log("city", city);
+  console.log("cities", cities);
+  console.log("lcoationData", locationData);
+  // console.log("countryList", countryList);
+  
 
   return (
     <>
@@ -109,7 +120,7 @@ const AddVenueModal = ({
             }}
           >
             <Autocomplete
-              value={country?.country_name}
+              value={country}
               onChange={(event, newValue) => {
                 setCountry(newValue);
               }}
@@ -126,7 +137,7 @@ const AddVenueModal = ({
               )}
             />
             <Autocomplete
-              value={city?.state_name}
+              value={city}
               onChange={(event, newValue) => {
                 setCity(newValue);
               }}
