@@ -41,7 +41,11 @@ const ModalOverlay = (props) => {
           <Button onClick={props.onHide} color="error" autoFocus>
             Cancel
           </Button>
-          <Button autoFocus onClick={props.onRequest}>
+          <Button
+            autoFocus
+            onClick={props.onRequest}
+            disabled={props.isDisabled}
+          >
             Save
           </Button>
         </DialogActions>
@@ -61,6 +65,7 @@ const Modal = (props) => {
           onHide={props.onHide}
           onRequest={props.onRequest}
           title={props.title}
+          isDisabled = {props.isDisabled}
         >
           {props.children}
         </ModalOverlay>,

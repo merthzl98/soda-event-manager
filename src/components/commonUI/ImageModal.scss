@@ -12,3 +12,10 @@
       -moz-box-shadow: 10px 10px 5px -3px rgba(0, 0, 0, 0.12);
     }
   }
+
+.poster-type {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: right;
+}

@@ -22,12 +22,17 @@ const deleteAnnouncement = (announceId) => {
   return http.delete(ANNOUNCEMENT_BASE + `/${announceId}`);
 };
 
+const orderAnnoucements = (announceIds) => {
+  return http.put(ANNOUNCEMENT_BASE + "/order", announceIds);
+};
+
 const AnnouncementService = {
   getAnnoucements,
   createAnnouncement,
   updateAnnouncement,
   getAnnoucementsById,
-  deleteAnnouncement
+  deleteAnnouncement,
+  orderAnnoucements,
 };
 
 export default AnnouncementService;

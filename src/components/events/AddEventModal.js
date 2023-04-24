@@ -80,6 +80,7 @@ const AddEventModal = ({
   const [venueList, setVenueList] = useState([]);
   const [fileData, setFileData] = useState(null);
   const [eventImageData, setEventImageData] = useState([]);
+  const [posterType, setPosterType] = useState("");
 
   const { setIsLoading } = useContext(AuthContext);
 
@@ -95,10 +96,15 @@ const AddEventModal = ({
     );
   }, []);
 
+  console.log("eventImageData", eventImageData);
+
   const postEventData = () => {
     const times = formatIso(startTime, endTime);
 
     // console.log("times-*->", times);
+
+    const postersIds = eventImageData.map((item) => item.id);
+    console.log("postersIds-->",postersIds);
 
     const eventData = {
       clientStatus: clientStatus,
@@ -107,7 +113,7 @@ const AddEventModal = ({
       startTime: times.startIso,
       endTime: times.endIso,
       highlighted: isHighlighted,
-      posterIds: null,
+      posterIds: postersIds,
       ticketUrl: state.ticketUrl,
       title: state.title,
       titleFrench: state.titleFrench,
@@ -127,6 +133,10 @@ const AddEventModal = ({
 
   const changeClientStatus = (event) => {
     setClientStatus(event.target.value);
+  };
+
+  const changePosterType = (event) => {
+    setPosterType(event.target.value);
   };
 
   const changeSelectedArtist = (event) => {
@@ -149,6 +159,7 @@ const AddEventModal = ({
   const handleCloseModal = () => {
     setShowModal(false);
     setImageData(null);
+    setPosterType("");
   };
 
   // console.log("times", startTime, endTime);
@@ -317,6 +328,7 @@ const AddEventModal = ({
             setFileData={setFileData}
             setImagesData={setEventImageData}
           />
+
           <FormControlLabel
             control={
               <SwitchHighlighted
@@ -335,7 +347,9 @@ const AddEventModal = ({
           onClose={handleCloseModal}
           fileData={fileData}
           setImagesData={setEventImageData}
-          posterType="EVENT_DEFAULT"
+          posterType={posterType}
+          changePosterType={changePosterType}
+          setPosterType={setPosterType}
         />
       )}
     </>
