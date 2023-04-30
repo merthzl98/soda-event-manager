@@ -72,7 +72,7 @@ const AddArtistModal = ({
               display: "flex",
               flexDirection: "column",
               width: "35rem",
-              margin: "24px 16px",
+              margin: "30px",
             },
           }}
           noValidate

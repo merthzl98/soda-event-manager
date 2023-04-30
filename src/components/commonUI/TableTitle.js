@@ -1,0 +1,23 @@
+import * as React from "react";
+import PropTypes from "prop-types";
+import Typography from "@mui/material/Typography";
+
+const TableTitle = (props) => {
+  return (
+    <Typography
+      style={{ margin: "0" }}
+      component="h2"
+      variant="h6"
+      color="primary"
+      gutterBottom
+    >
+      {props.children}
+    </Typography>
+  );
+};
+
+TableTitle.propTypes = {
+  children: PropTypes.node,
+};
+
+export default TableTitle;

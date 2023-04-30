@@ -96,7 +96,7 @@ const AddEventModal = ({
     );
   }, []);
 
-  console.log("eventImageData", eventImageData);
+  // console.log("eventImageData", eventImageData);
 
   const postEventData = () => {
     const times = formatIso(startTime, endTime);
@@ -104,7 +104,7 @@ const AddEventModal = ({
     // console.log("times-*->", times);
 
     const postersIds = eventImageData.map((item) => item.id);
-    console.log("postersIds-->",postersIds);
+    // console.log("postersIds-->",postersIds);
 
     const eventData = {
       clientStatus: clientStatus,
@@ -163,6 +163,9 @@ const AddEventModal = ({
   };
 
   // console.log("times", startTime, endTime);
+
+  console.log("selected Artist-->", selectedArtist);
+  console.log("selected Venue-->", selectedVenue);
 
   return (
     <>
@@ -296,9 +299,9 @@ const AddEventModal = ({
                 label="Event Status"
                 onChange={changeClientStatus}
               >
-                <MenuItem value={"CANCELLED"}>Cancelled</MenuItem>
-                <MenuItem value={"LAST_TICKETS"}>Last Tickets</MenuItem>
-                <MenuItem value={"SOLD_OUT"}>Sold Out</MenuItem>
+                <MenuItem value="CANCELLED">Cancelled</MenuItem>
+                <MenuItem value="LAST_TICKETS">Last Tickets</MenuItem>
+                <MenuItem value="SOLD_OUT">Sold Out</MenuItem>
               </Select>
             </FormControl>
           </div>

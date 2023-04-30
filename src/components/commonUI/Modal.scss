@@ -1,0 +1,28 @@
+.modal-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(197, 196, 196, 0.5);
+  background-color: rgba(247, 247, 247, 0.6);
+  .modal-title {
+    padding: 20px 30px;
+  }
+
+  .modal-close {
+    margin-right: 30px;
+    color: rgba(197, 196, 196, 0.9);
+  }
+}
+
+.modal-content {
+  padding: 0 !important;
+}
+
+.modal-actions {
+  padding: 16px 30px !important;
+  border-top: 1px solid rgba(197, 196, 196, 0.5);
+  background-color: rgba(247, 247, 247, 0.6);
+  button {
+  }
+}

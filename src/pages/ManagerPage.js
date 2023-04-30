@@ -144,7 +144,7 @@ const ManagerPage = () => {
 
   return (
     <>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", height: "100vh" }}>
         <CssBaseline />
         <AppBar position="fixed" open={open}>
           <Toolbar>
@@ -161,7 +161,7 @@ const ManagerPage = () => {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap component="div">
-              Manager Edit Panel
+              Admin Panel
             </Typography>
           </Toolbar>
         </AppBar>
@@ -241,7 +241,7 @@ const ManagerPage = () => {
             ))}
           </List>
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Box component="main" sx={{ flexGrow: 1, p: 5, backgroundColor: "rgba(63, 103, 120, 0.10)" }}>
           <DrawerHeader />
 
           {content}

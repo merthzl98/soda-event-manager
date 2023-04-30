@@ -1,0 +1,24 @@
+.add-poster-container {
+  padding: 0px 30px;
+  .add-poster-button {
+    width: 12rem;
+  }
+
+  .poster-input {
+    display: none;
+  }
+
+  .posters-typo {
+  }
+
+  .poster-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    // padding: 15px 15px !important;
+    .list-item {
+      background-color: rgba(180, 180, 180, 0.2);
+      border-radius: 10px;
+    }
+  }
+}

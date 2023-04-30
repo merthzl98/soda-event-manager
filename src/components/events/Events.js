@@ -4,20 +4,17 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import AddIcon from "@mui/icons-material/Add";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import Fab from "@mui/material/Fab";
-import { Tooltip } from "@mui/material";
 
 import AuthContext from "../../storage/auth-context";
 import EventService from "../../services/EventService";
 import EditEventModal from "./EditEventModal";
 import AddEventModal from "./AddEventModal";
+import TableActions from "../commonUI/TableActions";
+import "./Events.scss";
+import TableHeader from "../commonUI/TableHeader";
+import TableColumnTitle from "../commonUI/TableColumnTitle";
 
 const columns = [
   {
@@ -42,6 +39,14 @@ const columns = [
   {
     id: "status",
     label: "Status",
+    minWidth: 100,
+    format: (value) => value.toLocaleString("en-US"),
+  },
+
+  {
+    id: "action",
+    label: "Action",
+    align: "center",
     minWidth: 100,
     format: (value) => value.toLocaleString("en-US"),
   },
@@ -80,23 +85,27 @@ const Events = () => {
     // eslint-disable-next-line
   }, []);
 
-  const handleDeleteevent = (clickedIndex) => {
+  const handleDeleteEvent = (clickedIndex) => {
     const eventId = eventsData[clickedIndex]?.id;
     EventService.deleteEvent(eventId).then((response) => {
       response.status === 200 && getEventsData();
     });
   };
 
-  const showAddevent = () => {
+  const showAddEvent = () => {
     setAddEventModal(true);
   };
 
-  const hideAddevent = () => {
+  const hideAddEvent = () => {
     setAddEventModal(false);
   };
 
-  const showEditevent = (clickedIndex) => {
+  const showEditEvent = (clickedIndex) => {
     const event = eventsData[clickedIndex];
+    console.log("event id-->", event.id);
+    // EventService.getEventById(event.id).then((response) => {
+    //   console.log("response-->",response);
+    // })
     setEventData(event);
     setEditEventModal(true);
   };
@@ -116,51 +125,15 @@ const Events = () => {
 
   return (
     <>
-      <Paper sx={{ width: "100%", position: "relative" }}>
+      <Paper className="paper-container">
         <TableContainer sx={{ maxHeight: 740 }}>
+          <TableHeader
+            title="Events"
+            showAddModal={showAddEvent}
+            toolTip="Add New Event"
+          />
           <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                <TableCell
-                  align="center"
-                  colSpan={columns.length}
-                  style={{ backgroundColor: "rgba(0,0,0, 0.2)" }}
-                >
-                  Events
-                </TableCell>
-                <TableCell
-                  align="right"
-                  colSpan={1}
-                  style={{ backgroundColor: "rgba(0,0,0, 0.2)", width: "7rem" }}
-                >
-                  <Tooltip title="Add New event">
-                    <Fab
-                      onClick={showAddevent}
-                      color="primary"
-                      aria-label="add"
-                      size="small"
-                    >
-                      <AddIcon />
-                    </Fab>
-                  </Tooltip>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{
-                      top: 57,
-                      minWidth: column.minWidth,
-                      backgroundColor: "rgba(0,0,0, 0.1)",
-                    }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
+            <TableColumnTitle columns={columns} />
             <TableBody>
               {eventsData
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -174,41 +147,36 @@ const Events = () => {
                     >
                       {columns.map((column) => {
                         const value = row[column.id];
-                        return (
-                          <TableCell key={column.id} align={column.align}>
+                        return column.id === "action" ? (
+                          <TableCell
+                            sx={{ padding: "0px 8px", width: "7rem" }}
+                            className="table-actions"
+                            key={column.id}
+                            align={column.align}
+                          >
+                            <TableActions
+                              handleDelete={() => handleDeleteEvent(index)}
+                              showEdit={() => showEditEvent(index)}
+                            />
+                          </TableCell>
+                        ) : (
+                          <TableCell
+                            sx={{
+                              padding: "12px 30px",
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              maxWidth: "25vw",
+                            }}
+                            key={column.id}
+                            align={column.align}
+                          >
                             {column.format && typeof value === "number"
                               ? column.format(value)
                               : value}
                           </TableCell>
                         );
                       })}
-                      <td
-                        className="actions"
-                        style={{
-                          width: "7rem",
-                          backgroundColor: "rgba(50,50,0, 0.1)",
-                          position: "absolute",
-                        }}
-                      >
-                        <Tooltip title="Edit">
-                          <IconButton
-                            onClick={() => showEditevent(index)}
-                            aria-label="edit"
-                            size="large"
-                          >
-                            <EditIcon fontSize="inherit" />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="delete">
-                          <IconButton
-                            onClick={() => handleDeleteevent(index)}
-                            aria-label="delete"
-                            size="large"
-                          >
-                            <DeleteIcon fontSize="inherit" />
-                          </IconButton>
-                        </Tooltip>
-                      </td>
                     </TableRow>
                   );
                 })}
@@ -227,7 +195,7 @@ const Events = () => {
       </Paper>
       {addEventModal && (
         <AddEventModal
-          onHide={hideAddevent}
+          onHide={hideAddEvent}
           openModal={addEventModal}
           setAddeventModal={setAddEventModal}
           geteventsData={getEventsData}

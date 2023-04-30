@@ -76,8 +76,8 @@ const EditEventModal = ({
   const [endTime, setEndTime] = useState(dayjs("2023-06-17T22:30"));
   const [artistList, setArtistList] = useState([]);
   const [venueList, setVenueList] = useState([]);
-  const [selectedArtist, setSelectedArtist] = useState("");
-  const [selectedVenue, setSelectedVenue] = useState("");
+  const [selectedArtist, setSelectedArtist] = useState(eventData?.artist?.id);
+  const [selectedVenue, setSelectedVenue] = useState(eventData?.venue?.id);
 
   useEffect(() => {
     ArtistService.getArtistsList().then(
@@ -95,7 +95,7 @@ const EditEventModal = ({
     const times = formatIso(startTime, endTime);
 
     const updatedData = {
-      // id: eventData.id,
+      id: eventData.id,
       clientStatus: clientStatus,
       startTime: times.startIso,
       endTime: times.endIso,
@@ -139,6 +139,10 @@ const EditEventModal = ({
   const changeSelectedVenue = (event) => {
     setSelectedVenue(event.target.value);
   };
+
+  console.log("titles-->", state.titleDutch, state.titleFrench );
+
+  console.log("event DATA-->", eventData);
 
   return (
     <>

@@ -13,7 +13,6 @@ import AddPoster from "../commonUI/AddPoster";
 
 // const countryList = locationData.map((item) => item.country_name);
 
-
 const AddVenueModal = ({
   onHide,
   openModal,
@@ -71,15 +70,10 @@ const AddVenueModal = ({
     setImageData(null);
   };
 
-  
-
-  // console.log("country _name-->", country?.country_name);
-  console.log("country", country);
-  console.log("city", city);
-  console.log("cities", cities);
-  console.log("lcoationData", locationData);
-  // console.log("countryList", countryList);
-  
+  // console.log("country", country);
+  // console.log("city", city);
+  // console.log("cities", cities);
+  // console.log("lcoationData", locationData);
 
   return (
     <>

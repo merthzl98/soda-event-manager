@@ -24,15 +24,21 @@ const EditVenueModal = ({
   const initCountry = locationData.find(
     (item) => item.country_name === venueData.country
   );
+
   const initCity = initCountry.states.find(
     (item) => venueData.city === item.state_name
   );
 
+  const stringCity = typeof initCity === "string" ? initCity : "";
+
+  const stringCountry = typeof initCountry === "string" ? initCountry : "";
+  
+
   const [cities, setCities] = useState([]);
   const [country, setCountry] = useState(initCountry);
-  const [inputCountry, setInputCountry] = useState(initCountry);
+  const [inputCountry, setInputCountry] = useState(stringCountry);
   const [city, setCity] = useState(initCity);
-  const [inputCity, setInputCity] = useState(initCity);
+  const [inputCity, setInputCity] = useState(stringCity);
   const [fileData, setFileData] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [venueImageData, setVenueImageData] = useState(venueData.posters);
@@ -69,14 +75,15 @@ const EditVenueModal = ({
     setState({ ...state, [name]: value });
   };
 
-  console.log("country", country);
-  console.log("city", city);
-  console.log("cities", cities);
-  console.log("lcoationData", locationData);
+  // console.log("country", country);
+  // console.log("city", city);
+  // console.log("cities", cities);
+  // console.log("lcoationData", locationData);
+  // console.log("inputCity-->", inputCity, typeof inputCity);
+  // console.log("inputCountry-->", inputCountry, typeof inputCountry);
 
   return (
     <>
-      {" "}
       <Modal
         onHide={onHide}
         openModal={openModal}

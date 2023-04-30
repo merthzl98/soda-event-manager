@@ -1,34 +1,30 @@
 import React, { useRef } from "react";
 import {
   Button,
+  Grid,
   IconButton,
   List,
   ListItem,
   ListItemText,
+  Typography,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-// import Avatar from "@mui/material/Avatar";
-// import Box from "@mui/material/Box";
-// import Paper from "@mui/material/Paper";
-// import Stack from "@mui/material/Stack";
-// import { styled } from "@mui/material/styles";
-// import Typography from "@mui/material/Typography";
+import { styled } from "@mui/material/styles";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Avatar from "@mui/material/Avatar";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import PosterService from "../../services/PosterService";
+import "./AddPoster.scss";
 
-// const Item = styled(Paper)(({ theme }) => ({
-//   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-//   ...theme.typography.body2,
-//   padding: theme.spacing(1),
-//   textAlign: "center",
-//   color: theme.palette.text.secondary,
-// }));
-
-// const message = `Truncation should be conditionally applicable on this long line of text
-//  as this is a much longer line than what the container can support.`;
+const Demo = styled("div")(({ theme }) => ({
+  backgroundColor: theme.palette.background.paper,
+}));
 
 const AddPoster = (props) => {
+  // const [dense, setDense] = React.useState(false);
+  // const [secondary, setSecondary] = React.useState(false);
+
   const fileInputRef = useRef(null);
 
   const handleClickImage = () => {
@@ -62,11 +58,13 @@ const AddPoster = (props) => {
     });
   };
 
+  console.log("image data-->", props.imageData);
+
   return (
-    <>
+    <div className="add-poster-container">
       <Button
         onClick={handleClickImage}
-        sx={{ width: "12rem", margin: "8px 16px" }}
+        className="add-poster-button"
         variant="contained"
         startIcon={<AddCircleIcon />}
       >
@@ -75,83 +73,47 @@ const AddPoster = (props) => {
       <input
         type="file"
         accept="image/*"
-        style={{ display: "none" }}
+        className="poster-input"
         ref={fileInputRef}
         onChange={handleFileChange}
       />
-      {/* {imageData && <img src={imageData} alt="Uploaded" />} */}
-      {/* <Box sx={{ flexGrow: 1, overflow: "hidden", px: 5, width: "30rem" }}>
-        <Item
-          sx={{
-            my: 1,
-            mx: "auto",
-            p: 2,
-          }}
-        >
-          <Stack spacing={2} direction="row" alignItems="center">
-            <Avatar>W</Avatar>
-            <Typography noWrap>{message}</Typography>
-            <IconButton color="error">
-              <DeleteIcon color="error" />
-            </IconButton>
-          </Stack>
-        </Item>
-        <Item
-          sx={{
-            my: 1,
-            mx: "auto",
-            p: 2,
-          }}
-        >
-          <Stack spacing={2} direction="row" alignItems="center">
-            <Stack><Avatar>W</Avatar></Stack>
-            <Stack sx={{ minWidth: 0 }}>
-              <Typography noWrap>{message}</Typography>
-            </Stack>
-            <Stack>
-              <IconButton color="error">
-                <DeleteIcon color="error" />
-              </IconButton>
-            </Stack>
-          </Stack>
-        </Item>
-      </Box> */}
 
-      <List
-        sx={{ width: "70%", maxWidth: "40rem", bgcolor: "background.paper" }}
-      >
-        {props.imagesData.map((poster, index) => (
-          <ListItem
-            key={poster.fileName}
-            disableGutters
-            sx={{
-              backgroundColor: "rgba(1,1,1, 0.1)",
-              margin: "8px 16px",
-              borderRadius: "10px",
-            }}
-            secondaryAction={
-              <IconButton
-                onClick={() => handleDeletePoster(index)}
-                aria-label="comment"
-                color="error"
+      <Grid item xs={12} md={6}>
+        <Typography className="posters-typo" variant="h6" component="div">
+          Posters
+        </Typography>
+        <Demo>
+          <List dense={false} className="poster-list">
+            {props.imagesData.map((poster, index) => (
+              <ListItem
+                key={poster.fileName}
+                className="list-item"
+                secondaryAction={
+                  <IconButton
+                    onClick={() => handleDeletePoster(index)}
+                    edge="end"
+                    aria-label="delete"
+                    color="error"
+                  >
+                    <DeleteIcon color="error" />
+                  </IconButton>
+                }
               >
-                <DeleteIcon color="error" />
-              </IconButton>
-            }
-          >
-            <ListItemText
-              sx={{
-                textDecoration: "underline",
-                color: "purple",
-                margin: "0px 16px",
-                cursor: "pointer",
-              }}
-              primary={`${poster.fileName}`}
-            />
-          </ListItem>
-        ))}
-      </List>
-    </>
+                <ListItemAvatar>
+                  <Avatar>
+                    <img src={props.imageData} alt="Uploaded" />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={`${poster.fileName}`}
+                  // secondary={secondary ? "Secondary text" : null}
+                />
+              </ListItem>
+            ))}
+          </List>
+        </Demo>
+      </Grid>
+    </div>
   );
 };
 

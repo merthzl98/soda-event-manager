@@ -4,21 +4,18 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import AddIcon from "@mui/icons-material/Add";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import Fab from "@mui/material/Fab";
-import { Tooltip } from "@mui/material";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import AuthContext from "../../storage/auth-context";
 import AnnounceService from "../../services/AnnouncementService";
 import EditAnnounceModal from "./EditAnnounceModal";
 import AddAnnounceModal from "./AddAnnounceModal";
 import "./Announcements.scss";
+import TableActions from "../commonUI/TableActions";
+import TableHeader from "../commonUI/TableHeader";
+import { Typography } from "@mui/material";
 
 const Announcements = () => {
   const [announcesData, setAnnouncesData] = useState([]);
@@ -98,40 +95,14 @@ const Announcements = () => {
   return (
     <>
       <DragDropContext onDragEnd={handleDragEnd}>
-        <Paper sx={{ width: "100%", position: "relative" }}>
-          <TableContainer sx={{ maxHeight: 740 }}>
+        <Paper className="paper-container">
+          <TableContainer>
+            <TableHeader
+              title="Announcements"
+              showAddModal={showAddAnnounce}
+              toolTip="Add New Announce"
+            />
             <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  <TableCell
-                    align="center"
-                    colSpan={5}
-                    style={{
-                      backgroundColor: "rgba(0,0,0, 0.2)",
-                      height: "4.5rem",
-                      paddingRight: "7rem",
-                    }}
-                  >
-                    Announces
-                    <Tooltip title="Add New Announce">
-                      <Fab
-                        style={{
-                          position: "absolute",
-                          top: "1rem",
-                          right: "1rem",
-                        }}
-                        onClick={showAddAnnounce}
-                        color="primary"
-                        aria-label="add"
-                        size="small"
-                      >
-                        <AddIcon />
-                      </Fab>
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-
               <Droppable droppableId="table">
                 {(provided) => (
                   <TableBody
@@ -180,41 +151,35 @@ const Announcements = () => {
                             <TableCell
                               className="actions"
                               style={{
-                                minWidth: "7rem",
-                                backgroundColor: "rgba(50,50,0, 0.1)",
+                                // minWidth: "7rem",
                                 display: "flex",
                                 flexDirection: "row",
                                 justifyContent: "center",
                                 alignItems: "center",
+                                borderBottom: "none",
                                 padding: "0",
-                                // position: "absolute",
-                                // right: "0"
                               }}
                             >
-                              <Tooltip title="Edit">
-                                <IconButton
-                                  onClick={() => showEditAnnounce(index)}
-                                  aria-label="edit"
-                                  size="large"
-                                >
-                                  <EditIcon fontSize="inherit" />
-                                </IconButton>
-                              </Tooltip>
-                              <Tooltip title="delete">
-                                <IconButton
-                                  onClick={() => handleDeleteAnnounce(index)}
-                                  aria-label="delete"
-                                  size="large"
-                                >
-                                  <DeleteIcon fontSize="inherit" />
-                                </IconButton>
-                              </Tooltip>
+                              <TableActions
+                                handleDelete={() => handleDeleteAnnounce(index)}
+                                showEdit={() => showEditAnnounce(index)}
+                              />
                             </TableCell>
                           </TableRow>
                         )}
                       </Draggable>
                     ))}
                     {provided.placeholder}
+                    <TableRow className="table-footer">
+                      <Typography
+                        color="primary"
+                        component="p"
+                        className="footer-typo"
+                      >
+                        See more announce
+                      </Typography>
+                      <ExpandMoreIcon color="primary" />
+                    </TableRow>
                   </TableBody>
                 )}
               </Droppable>

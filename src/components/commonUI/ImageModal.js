@@ -56,6 +56,9 @@ const ImageModal = (props) => {
   let isDisabled = props.posterType === "";
 
   // console.log("onOpen-->", onOpen);
+
+  console.log("image data-->", props.imageData);
+
   return (
     <Modal
       title={props.imageData.name}

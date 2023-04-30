@@ -68,7 +68,7 @@ const EditArtistModal = ({
               display: "flex",
               flexDirection: "column",
               width: "35rem",
-              margin: "16px",
+              margin: "24px",
             },
           }}
           noValidate
@@ -104,6 +104,7 @@ const EditArtistModal = ({
           />
         </Box>
         <AddPoster
+          imageData={imageData}
           setImageData={setImageData}
           setShowModal={setShowModal}
           imagesData={artistImageData}
