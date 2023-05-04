@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 
 import ArtistService from "../../services/ArtistService";
 import Modal from "../commonUI/Modal";
 import ImageModal from "../commonUI/ImageModal.js";
 import AddPoster from "../commonUI/AddPoster";
+import TextInput from "../commonUI/TextInput";
 
 const EditArtistModal = ({
   onHide,
@@ -19,7 +19,7 @@ const EditArtistModal = ({
     enteredGenre: artistData.genre,
     enteredDescription: artistData.description,
   });
-  const [showModal, setShowModal] = useState(false);
+  const [isShownImageModal, setIsShownImageModal] = useState(false);
   const [imageData, setImageData] = useState(null);
   const [fileData, setFileData] = useState(null);
   const [artistImageData, setArtistImageData] = useState(artistData.posters);
@@ -46,7 +46,7 @@ const EditArtistModal = ({
   };
 
   const handleCloseModal = () => {
-    setShowModal(false);
+    setIsShownImageModal(false);
     setImageData(null);
   };
 
@@ -57,7 +57,8 @@ const EditArtistModal = ({
       <Modal
         onHide={onHide}
         openModal={openModal}
-        title={"Edit Artist"}
+        title="Edit Artist Information"
+        acceptTypo="Save Changes"
         onRequest={updateArtistData}
       >
         <Box
@@ -68,54 +69,45 @@ const EditArtistModal = ({
               display: "flex",
               flexDirection: "column",
               width: "35rem",
-              margin: "24px",
+              margin: "20px 30px",
             },
           }}
           noValidate
           autoComplete="off"
         >
-          <TextField
+          <TextInput
             name="enteredFullName"
             onChange={handleChange}
-            value={state.enteredFullName}
-            id="outlined-basic"
             label="Full Name"
-            variant="outlined"
-            multiline={true}
+            value={state.enteredFullName}
           />
-          <TextField
+          <TextInput
             name="enteredGenre"
             onChange={handleChange}
             value={state.enteredGenre}
-            id="outlined-basic"
             label="Genre"
-            variant="outlined"
-            multiline={true}
           />
-          <TextField
+          <TextInput
             name="enteredDescription"
             onChange={handleChange}
             value={state.enteredDescription}
-            id="outlined-basic"
             label="Description"
-            variant="outlined"
-            multiline={true}
-            minRows={3}
+            minRows={4}
           />
         </Box>
         <AddPoster
           imageData={imageData}
           setImageData={setImageData}
-          setShowModal={setShowModal}
+          setIsShownImageModal={setIsShownImageModal}
           imagesData={artistImageData}
           setFileData={setFileData}
           setImagesData={setArtistImageData}
         />
       </Modal>
-      {showModal && (
+      {isShownImageModal && (
         <ImageModal
           imageData={imageData}
-          onOpen={showModal}
+          onOpen={isShownImageModal}
           onClose={handleCloseModal}
           fileData={fileData}
           setImagesData={setArtistImageData}

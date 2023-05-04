@@ -72,7 +72,7 @@ const AddEventModal = ({
   const [isHighlighted, setIsHighlighted] = useState(false);
   const [startTime, setStartTime] = useState(dayjs("2023-06-17T20:30"));
   const [endTime, setEndTime] = useState(dayjs("2023-06-17T22:30"));
-  const [showModal, setShowModal] = useState(false);
+  const [isShownImageModal, setIsShownImageModal] = useState(false);
   const [imageData, setImageData] = useState(null);
   const [selectedArtist, setSelectedArtist] = useState("");
   const [selectedVenue, setSelectedVenue] = useState("");
@@ -157,7 +157,7 @@ const AddEventModal = ({
   };
 
   const handleCloseModal = () => {
-    setShowModal(false);
+    setIsShownImageModal(false);
     setImageData(null);
     setPosterType("");
   };
@@ -172,7 +172,8 @@ const AddEventModal = ({
       <Modal
         onHide={onHide}
         openModal={openModal}
-        title={"Add event"}
+        title="New Event Add Form"
+        acceptTypo = "Add Event"
         onRequest={postEventData}
       >
         <Box
@@ -326,7 +327,7 @@ const AddEventModal = ({
         >
           <AddPoster
             setImageData={setImageData}
-            setShowModal={setShowModal}
+            setIsShownImageModal={setIsShownImageModal}
             imagesData={eventImageData}
             setFileData={setFileData}
             setImagesData={setEventImageData}
@@ -343,10 +344,10 @@ const AddEventModal = ({
           />
         </div>
       </Modal>
-      {showModal && (
+      {isShownImageModal && (
         <ImageModal
           imageData={imageData}
-          onOpen={showModal}
+          onOpen={isShownImageModal}
           onClose={handleCloseModal}
           fileData={fileData}
           setImagesData={setEventImageData}

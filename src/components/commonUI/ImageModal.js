@@ -62,6 +62,7 @@ const ImageModal = (props) => {
   return (
     <Modal
       title={props.imageData.name}
+      acceptTypo = "Upload Poster"
       onHide={props.onClose}
       openModal={props.onOpen}
       onRequest={postPoster}

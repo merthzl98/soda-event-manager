@@ -32,7 +32,6 @@ const EditVenueModal = ({
   const stringCity = typeof initCity === "string" ? initCity : "";
 
   const stringCountry = typeof initCountry === "string" ? initCountry : "";
-  
 
   const [cities, setCities] = useState([]);
   const [country, setCountry] = useState(initCountry);
@@ -40,7 +39,7 @@ const EditVenueModal = ({
   const [city, setCity] = useState(initCity);
   const [inputCity, setInputCity] = useState(stringCity);
   const [fileData, setFileData] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const [isShownImageModal, setIsShownImageModal] = useState(false);
   const [venueImageData, setVenueImageData] = useState(venueData.posters);
   const [imageData, setImageData] = useState(null);
 
@@ -66,7 +65,7 @@ const EditVenueModal = ({
   };
 
   const handleCloseModal = () => {
-    setShowModal(false);
+    setIsShownImageModal(false);
     setImageData(null);
   };
 
@@ -87,7 +86,8 @@ const EditVenueModal = ({
       <Modal
         onHide={onHide}
         openModal={openModal}
-        title={"Edit Venue"}
+        title="Edit Venue Information"
+        acceptTypo="Save changes"
         onRequest={updateVenueData}
       >
         <Box
@@ -167,16 +167,16 @@ const EditVenueModal = ({
         </Box>
         <AddPoster
           setImageData={setImageData}
-          setShowModal={setShowModal}
+          setIsShownImageModal={setIsShownImageModal}
           imagesData={venueImageData}
           setFileData={setFileData}
           setImagesData={setVenueImageData}
         />
       </Modal>
-      {showModal && (
+      {isShownImageModal && (
         <ImageModal
           imageData={imageData}
-          onOpen={showModal}
+          onOpen={isShownImageModal}
           onClose={handleCloseModal}
           fileData={fileData}
           setImagesData={setVenueImageData}

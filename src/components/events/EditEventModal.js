@@ -71,7 +71,7 @@ const EditEventModal = ({
   const [fileData, setFileData] = useState(null);
   const [eventImageData, setEventImageData] = useState([]);
   const [imageData, setImageData] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const [isShownImageModal, setIsShownImageModal] = useState(false);
   const [startTime, setStartTime] = useState(dayjs("2023-06-17T20:30"));
   const [endTime, setEndTime] = useState(dayjs("2023-06-17T22:30"));
   const [artistList, setArtistList] = useState([]);
@@ -128,7 +128,7 @@ const EditEventModal = ({
   };
 
   const handleCloseModal = () => {
-    setShowModal(false);
+    setIsShownImageModal(false);
     setImageData(null);
   };
 
@@ -140,7 +140,7 @@ const EditEventModal = ({
     setSelectedVenue(event.target.value);
   };
 
-  console.log("titles-->", state.titleDutch, state.titleFrench );
+  console.log("titles-->", state.titleDutch, state.titleFrench);
 
   console.log("event DATA-->", eventData);
 
@@ -149,7 +149,8 @@ const EditEventModal = ({
       <Modal
         onHide={onHide}
         openModal={openModal}
-        title={"Add event"}
+        title="Edit Event Information"
+        acceptTypo="Save Changes"
         onRequest={updateEventData}
       >
         <Box
@@ -303,7 +304,7 @@ const EditEventModal = ({
         >
           <AddPoster
             setImageData={setImageData}
-            setShowModal={setShowModal}
+            setIsShownImageModal={setIsShownImageModal}
             imagesData={eventImageData}
             setFileData={setFileData}
             setImagesData={setEventImageData}
@@ -319,10 +320,10 @@ const EditEventModal = ({
           />
         </div>
       </Modal>
-      {showModal && (
+      {isShownImageModal && (
         <ImageModal
           imageData={imageData}
-          onOpen={showModal}
+          onOpen={isShownImageModal}
           onClose={handleCloseModal}
           fileData={fileData}
           setImagesData={setEventImageData}

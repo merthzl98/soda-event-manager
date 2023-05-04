@@ -14,6 +14,8 @@ import "./Modal.scss";
 
 const MyPaper = styled(Paper)(({ theme }) => ({
   maxWidth: "1000px !important",
+  borderRadius: "10px",
+  padding: "0px 35px"
 }));
 
 const ModalOverlay = (props) => {
@@ -21,44 +23,41 @@ const ModalOverlay = (props) => {
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <div>
-      <Dialog
-        fullScreen={fullScreen}
-        open={props.openModal}
-        onClose={props.onHide}
-        aria-labelledby="responsive-dialog-title"
-        PaperComponent={MyPaper}
-      >
-        <div className="modal-header">
-          <DialogTitle className="modal-title" id="responsive-dialog-title">
-            {props.title}
-          </DialogTitle>
-          <CloseIcon className="modal-close" onClick={props.onHide}></CloseIcon>
-        </div>
+    <Dialog
+      fullScreen={fullScreen}
+      open={props.openModal}
+      onClose={props.onHide}
+      aria-labelledby="responsive-dialog-title"
+      PaperComponent={MyPaper}
+      sx={props.modalStyle}
+    >
+      <div className="modal-header">
+        <DialogTitle className="modal-title" id="responsive-dialog-title">
+          {props.title}
+        </DialogTitle>
+        <CloseIcon className="modal-close" onClick={props.onHide}></CloseIcon>
+      </div>
 
-        <DialogContent className="modal-content">
-          {props.children}
-        </DialogContent>
-        <DialogActions className="modal-actions">
-          <Button
-            variant="contained"
-            onClick={props.onHide}
-            color="error"
-            autoFocus
-          >
-            Cancel
-          </Button>
-          <Button
-            variant="contained"
-            autoFocus
-            onClick={props.onRequest}
-            disabled={props.isDisabled}
-          >
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+      <DialogContent className="modal-content">{props.children}</DialogContent>
+      <DialogActions className="modal-actions">
+        {/* <Button
+          variant="contained"
+          onClick={props.onHide}
+          className="close"
+          autoFocus
+        >
+          Close
+        </Button> */}
+        <Button
+          variant="contained"
+          autoFocus
+          onClick={props.onRequest}
+          disabled={props.isDisabled}
+        >
+          {props.acceptTypo}
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 
@@ -74,6 +73,8 @@ const Modal = (props) => {
           onRequest={props.onRequest}
           title={props.title}
           isDisabled={props.isDisabled}
+          acceptTypo={props.acceptTypo}
+          modalStyle={props.modalStyle}
         >
           {props.children}
         </ModalOverlay>,

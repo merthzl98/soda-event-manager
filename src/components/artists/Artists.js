@@ -176,7 +176,7 @@ const Artists = () => {
           onRowsPerPageChange={handleChangeRowsPerPage}
           style={{
             backgroundColor: "rgba(247,247,247,0.6)",
-            borderRadius: "0px 0px 20px 20px",
+            borderRadius: "0px 0px 10px 10px",
           }}
         />
       </Paper>

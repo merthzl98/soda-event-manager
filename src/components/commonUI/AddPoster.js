@@ -13,6 +13,7 @@ import { styled } from "@mui/material/styles";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 import PosterService from "../../services/PosterService";
 import "./AddPoster.scss";
@@ -39,7 +40,7 @@ const AddPoster = (props) => {
       const imageInfo = { name: file.name, data: e.target.result };
 
       props.setImageData(imageInfo);
-      props.setShowModal(true);
+      props.setIsShownImageModal(true);
     };
     reader.readAsDataURL(file);
   };
@@ -62,57 +63,65 @@ const AddPoster = (props) => {
 
   return (
     <div className="add-poster-container">
-      <Button
-        onClick={handleClickImage}
-        className="add-poster-button"
-        variant="contained"
-        startIcon={<AddCircleIcon />}
-      >
-        Add Poster
-      </Button>
-      <input
-        type="file"
-        accept="image/*"
-        className="poster-input"
-        ref={fileInputRef}
-        onChange={handleFileChange}
-      />
+      <Typography className="posters-typo" variant="h8" component="div">
+        Upload Posters
+      </Typography>
+      <div className="add-poster-field">
+        <div className="poster-head">
+          <Button
+            onClick={handleClickImage}
+            className="add-poster-button"
+            variant="contained"
+            startIcon={<AddCircleIcon />}
+          >
+            Add Poster
+          </Button>
+          <div className="add-poster-typo">
+            <CloudUploadIcon />
+            <Typography>Drop files here</Typography>
+          </div>
+        </div>
 
-      <Grid item xs={12} md={6}>
-        <Typography className="posters-typo" variant="h6" component="div">
-          Posters
-        </Typography>
-        <Demo>
-          <List dense={false} className="poster-list">
-            {props.imagesData.map((poster, index) => (
-              <ListItem
-                key={poster.fileName}
-                className="list-item"
-                secondaryAction={
-                  <IconButton
-                    onClick={() => handleDeletePoster(index)}
-                    edge="end"
-                    aria-label="delete"
-                    color="error"
-                  >
-                    <DeleteIcon color="error" />
-                  </IconButton>
-                }
-              >
-                <ListItemAvatar>
-                  <Avatar>
-                    <img src={props.imageData} alt="Uploaded" />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={`${poster.fileName}`}
-                  // secondary={secondary ? "Secondary text" : null}
-                />
-              </ListItem>
-            ))}
-          </List>
-        </Demo>
-      </Grid>
+        <input
+          type="file"
+          accept="image/*"
+          className="poster-input"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+        />
+
+        <Grid item xs={12} md={6}>
+          <Demo>
+            <List dense={true} className="poster-list">
+              {props.imagesData.map((poster, index) => (
+                <ListItem
+                  key={poster.fileName}
+                  className="list-item"
+                  secondaryAction={
+                    <IconButton
+                      onClick={() => handleDeletePoster(index)}
+                      edge="end"
+                      aria-label="delete"
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  }
+                >
+                  <ListItemAvatar>
+                    <Avatar>
+                      <img src={props.imageData} alt="Uploaded" />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={`${poster.fileName}`}
+                    // secondary={secondary ? "Secondary text" : null}
+                  />
+                </ListItem>
+              ))}
+            </List>
+          </Demo>
+        </Grid>
+      </div>
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -9,6 +8,7 @@ import Select from "@mui/material/Select";
 import AuthContext from "../../storage/auth-context";
 import Modal from "../commonUI/Modal";
 import AnnounceService from "../../services/AnnouncementService";
+import TextInput from "../commonUI/TextInput";
 
 const AddAnnounceModal = ({
   onHide,
@@ -60,7 +60,8 @@ const AddAnnounceModal = ({
       <Modal
         onHide={onHide}
         openModal={openModal}
-        title={"Add Announce"}
+        title="New Announce Add Form"
+        acceptTypo="Add Announce"
         onRequest={postAnnounceData}
       >
         <Box
@@ -71,40 +72,31 @@ const AddAnnounceModal = ({
               display: "flex",
               flexDirection: "column",
               width: "35rem",
-              margin: "24px 16px",
+              margin: "20px 30px",
             },
           }}
           noValidate
           autoComplete="off"
         >
-          <TextField
+          <TextInput
             name="enteredText"
             onChange={handleChange}
             value={state.enteredText}
-            id="standard-basic"
             label="Announce English"
-            variant="outlined"
-            multiline={true}
             minRows={3}
           />
-          <TextField
+          <TextInput
             name="enteredTextDutch"
             onChange={handleChange}
             value={state.enteredTextDutch}
-            id="standard-basic"
             label="Announce Dutch"
-            variant="outlined"
-            multiline={true}
             minRows={3}
           />
-          <TextField
+          <TextInput
             name="enteredTextFrench"
             onChange={handleChange}
             value={state.enteredTextFrench}
-            id="standard-basic"
             label="Announce French"
-            variant="outlined"
-            multiline={true}
             minRows={3}
           />
           <FormControl sx={{ marginTop: "5rem" }}>

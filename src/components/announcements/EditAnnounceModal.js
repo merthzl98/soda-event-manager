@@ -53,7 +53,8 @@ const EditAnnounceModal = ({
     <Modal
       onHide={onHide}
       openModal={openModal}
-      title={"Edit Announce"}
+      title="Edit Announce Information"
+      accepTypo = "Save Changes"
       onRequest={updateAnnounceData}
     >
       <Box

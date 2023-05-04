@@ -1,12 +1,12 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 
 import AuthContext from "../../storage/auth-context";
 import Modal from "../commonUI/Modal";
 import ArtistService from "../../services/ArtistService";
 import ImageModal from "../commonUI/ImageModal.js";
 import AddPoster from "../commonUI/AddPoster";
+import TextInput from "../commonUI/TextInput";
 
 const AddArtistModal = ({
   onHide,
@@ -20,12 +20,17 @@ const AddArtistModal = ({
     enteredDescription: "",
   });
 
-  const [showModal, setShowModal] = useState(false);
+  const [isShownImageModal, setIsShownImageModal] = useState(false);
   const [imageData, setImageData] = useState(null);
   const [fileData, setFileData] = useState(null);
   const [artistImageData, setArtistImageData] = useState([]);
+  const [isHidingAddModal, setIsHidingAddModal] = useState(false);
 
   const { setIsLoading } = useContext(AuthContext);
+
+  useEffect(() => {
+    isShownImageModal ? setIsHidingAddModal(true) : setIsHidingAddModal(false);
+  }, [isShownImageModal]);
 
   const postArtistData = () => {
     const artistData = {
@@ -47,7 +52,7 @@ const AddArtistModal = ({
   };
 
   const handleCloseModal = () => {
-    setShowModal(false);
+    setIsShownImageModal(false);
     setImageData(null);
   };
 
@@ -56,70 +61,70 @@ const AddArtistModal = ({
     setState({ ...state, [name]: value });
   };
 
+  const modalOpacity = isHidingAddModal ? "0" : "1";
+
+  const modalStyle = {
+    opacity: modalOpacity,
+  };
+
   return (
     <>
       <Modal
         onHide={onHide}
         openModal={openModal}
-        title={"Add Artist"}
+        title="New Artist Add Form"
+        modalStyle={modalStyle}
+        acceptTypo="Add Artist"
         onRequest={postArtistData}
       >
         <Box
           component="form"
           sx={{
+            borderBottom: "1px dashed rgba(197, 196, 196, 0.8)",
+            margin: "0px 5px",
             "& > :not(style)": {
               m: 1,
               display: "flex",
               flexDirection: "column",
-              width: "35rem",
-              margin: "30px",
+              width: "30rem",
+              margin: "15px 0px",
             },
           }}
           noValidate
           autoComplete="off"
         >
-          <TextField
+          <TextInput
             name="enteredFullName"
             onChange={handleChange}
-            value={state.enteredFullName}
-            id="outlined-basic"
             label="Full Name"
-            variant="outlined"
-            multiline={true}
+            value={state.enteredFullName}
           />
-          <TextField
+          <TextInput
             name="enteredGenre"
             onChange={handleChange}
             value={state.enteredGenre}
-            id="outlined-basic"
             label="Genre"
-            variant="outlined"
-            multiline={true}
           />
-
-          <TextField
+          <TextInput
             name="enteredDescription"
             onChange={handleChange}
             value={state.enteredDescription}
-            id="outlined-basic"
             label="Description"
-            variant="outlined"
-            multiline={true}
             minRows={4}
           />
         </Box>
         <AddPoster
           setImageData={setImageData}
-          setShowModal={setShowModal}
+          setIsShownImageModal={setIsShownImageModal}
           imagesData={artistImageData}
           setFileData={setFileData}
           setImagesData={setArtistImageData}
         />
       </Modal>
-      {showModal && (
+      {isShownImageModal && (
         <ImageModal
           imageData={imageData}
-          onOpen={showModal}
+          onOpen={isShownImageModal}
           onClose={handleCloseModal}
           fileData={fileData}
           setImagesData={setArtistImageData}

@@ -25,7 +25,7 @@ const AddVenueModal = ({
   });
 
   const [cities, setCities] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [isShownImageModal, setIsShownImageModal] = useState(false);
   const [imageData, setImageData] = useState(null);
   const [country, setCountry] = useState(null);
   const [inputCountry, setInputCountry] = useState("");
@@ -66,7 +66,7 @@ const AddVenueModal = ({
   };
 
   const handleCloseModal = () => {
-    setShowModal(false);
+    setIsShownImageModal(false);
     setImageData(null);
   };
 
@@ -80,7 +80,8 @@ const AddVenueModal = ({
       <Modal
         onHide={onHide}
         openModal={openModal}
-        title={"Add Venue"}
+        title="New Venue Add Form"
+        acceptTypo = "Add Venue"
         onRequest={postVenueData}
       >
         <Box
@@ -160,16 +161,16 @@ const AddVenueModal = ({
         </Box>
         <AddPoster
           setImageData={setImageData}
-          setShowModal={setShowModal}
+          setIsShownImageModal={setIsShownImageModal}
           imagesData={venueImageData}
           setFileData={setFileData}
           setImagesData={setVenueImageData}
         />
       </Modal>
-      {showModal && (
+      {isShownImageModal && (
         <ImageModal
           imageData={imageData}
-          onOpen={showModal}
+          onOpen={isShownImageModal}
           onClose={handleCloseModal}
           fileData={fileData}
           setImagesData={setVenueImageData}
