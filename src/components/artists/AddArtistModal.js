@@ -7,6 +7,7 @@ import ArtistService from "../../services/ArtistService";
 import ImageModal from "../commonUI/ImageModal.js";
 import AddPoster from "../commonUI/AddPoster";
 import TextInput from "../commonUI/TextInput";
+import "./Artists.scss";
 
 const AddArtistModal = ({
   onHide,
@@ -86,10 +87,11 @@ const AddArtistModal = ({
               m: 1,
               display: "flex",
               flexDirection: "column",
-              width: "30rem",
+              width: "100%",
               margin: "15px 0px",
             },
           }}
+          // className="artist-input-box"
           noValidate
           autoComplete="off"
         >

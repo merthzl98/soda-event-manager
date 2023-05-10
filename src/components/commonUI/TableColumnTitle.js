@@ -12,7 +12,7 @@ const TableColumnTitle = (props) => {
             style={{
               top: 50,
               minWidth: column.minWidth,
-              backgroundColor: "rgba(247,247,247,0.6)",
+              backgroundColor: "rgba(85, 85, 85, 0.02)",
               padding: "10px 30px",
               fontWeight: "bolder",
             }}

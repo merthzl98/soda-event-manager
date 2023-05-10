@@ -241,7 +241,13 @@ const ManagerPage = () => {
             ))}
           </List>
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 5, backgroundColor: "rgba(63, 103, 120, 0.10)" }}>
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            p: 5,
+          }}
+        >
           <DrawerHeader />
 
           {content}

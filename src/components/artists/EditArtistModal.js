@@ -64,12 +64,14 @@ const EditArtistModal = ({
         <Box
           component="form"
           sx={{
+            borderBottom: "1px dashed rgba(197, 196, 196, 0.8)",
+            margin: "0px 5px",
             "& > :not(style)": {
               m: 1,
               display: "flex",
               flexDirection: "column",
-              width: "35rem",
-              margin: "20px 30px",
+              width: "100%",
+              margin: "15px 0px",
             },
           }}
           noValidate

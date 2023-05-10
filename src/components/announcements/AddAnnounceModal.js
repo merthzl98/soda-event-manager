@@ -67,12 +67,13 @@ const AddAnnounceModal = ({
         <Box
           component="form"
           sx={{
+            margin: "0px 5px",
             "& > :not(style)": {
               m: 1,
               display: "flex",
               flexDirection: "column",
-              width: "35rem",
-              margin: "20px 30px",
+              width: "100%",
+              margin: "15px 0px",
             },
           }}
           noValidate
@@ -99,8 +100,21 @@ const AddAnnounceModal = ({
             label="Announce French"
             minRows={3}
           />
-          <FormControl sx={{ marginTop: "5rem" }}>
-            <InputLabel id="demo-simple-select-label">
+
+          <FormControl
+            sx={{
+              width: "10rem !important",
+            }}
+            variant="standard"
+          >
+            <InputLabel
+              sx={{
+                fontWeight: "700 !important",
+                color: "rgba(0, 0, 0, 0.6)",
+                fontSize: "1rem",
+              }}
+              id="demo-simple-select-label"
+            >
               Annnounce Status
             </InputLabel>
             <Select
@@ -109,8 +123,16 @@ const AddAnnounceModal = ({
               value={announceStatus}
               label="Announce Status"
               onChange={changeAnnounceStatus}
+              sx={{
+                backgroundColor: "rgba(85, 85, 85, 0.1)",
+                borderRadius: "4px",
+                border: "1px solid #ced4da",
+                padding: "4px 8px !important",
+              }}
             >
-              <MenuItem value={"DRAFT"}>Draft</MenuItem>
+              <MenuItem value={"DRAFT"} sx={{ paddingLeft: "15px !important" }}>
+                Draft
+              </MenuItem>
               <MenuItem value={"..."}>...</MenuItem>
               <MenuItem value={"---"}>---</MenuItem>
             </Select>

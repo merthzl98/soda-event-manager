@@ -29,7 +29,7 @@ const columns = [
   {
     id: "action",
     label: "Action",
-    align: "right",
+    align: "center",
     minWidth: 100,
     format: (value) => value.toLocaleString("en-US"),
   },
@@ -132,8 +132,7 @@ const Artists = () => {
                             : value;
                         return column.id === "action" ? (
                           <TableCell
-                            sx={{ padding: "0px 8px", width: "7rem" }}
-                            className="table-actions"
+                            className="table-cell-action"
                             key={column.id}
                             align={column.align}
                           >
@@ -144,13 +143,7 @@ const Artists = () => {
                           </TableCell>
                         ) : (
                           <TableCell
-                            sx={{
-                              padding: "12px 30px",
-                              whiteSpace: "nowrap",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              maxWidth: "25vw",
-                            }}
+                            className="table-cell-default"
                             key={column.id}
                             align={column.align}
                           >
@@ -174,10 +167,7 @@ const Artists = () => {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          style={{
-            backgroundColor: "rgba(247,247,247,0.6)",
-            borderRadius: "0px 0px 10px 10px",
-          }}
+          className="table-pagination"
         />
       </Paper>
       {addArtistModal && (

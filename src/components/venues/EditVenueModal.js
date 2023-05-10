@@ -7,6 +7,8 @@ import Modal from "../commonUI/Modal";
 import locationData from "../../static/locationData.json";
 import ImageModal from "../commonUI/ImageModal";
 import AddPoster from "../commonUI/AddPoster";
+import TextInput from "../commonUI/TextInput";
+import "./Venues.scss";
 
 const EditVenueModal = ({
   onHide,
@@ -74,13 +76,6 @@ const EditVenueModal = ({
     setState({ ...state, [name]: value });
   };
 
-  // console.log("country", country);
-  // console.log("city", city);
-  // console.log("cities", cities);
-  // console.log("lcoationData", locationData);
-  // console.log("inputCity-->", inputCity, typeof inputCity);
-  // console.log("inputCountry-->", inputCountry, typeof inputCountry);
-
   return (
     <>
       <Modal
@@ -93,26 +88,27 @@ const EditVenueModal = ({
         <Box
           component="form"
           sx={{
+            margin: "0px 5px",
+            borderBottom: "1px dashed rgba(197, 196, 196, 0.8)",
             "& > :not(style)": {
               m: 1,
               display: "flex",
               flexDirection: "column",
-              width: "35rem",
-              margin: "24px 16px",
+              width: "100%",
+              margin: "15px 0px",
             },
           }}
           noValidate
           autoComplete="off"
         >
-          <TextField
+          <TextInput
             name="enteredName"
             onChange={handleChange}
             value={state.enteredName}
-            id="standard-basic"
             label="Name"
-            variant="outlined"
             multiline={true}
           />
+
           <div
             style={{
               display: "flex",
@@ -134,7 +130,12 @@ const EditVenueModal = ({
               getOptionLabel={(option) => option.country_name}
               sx={{ width: "47%" }}
               renderInput={(params) => (
-                <TextField {...params} label="Country" />
+                <TextField
+                  className="auto-complete"
+                  variant="standard"
+                  {...params}
+                  label="Country"
+                />
               )}
             />
             <Autocomplete
@@ -150,17 +151,22 @@ const EditVenueModal = ({
               options={cities}
               getOptionLabel={(option) => option.state_name}
               sx={{ width: "47%" }}
-              renderInput={(params) => <TextField {...params} label="City" />}
+              renderInput={(params) => (
+                <TextField
+                  className="auto-complete"
+                  variant="standard"
+                  {...params}
+                  label="City"
+                />
+              )}
             />
           </div>
 
-          <TextField
+          <TextInput
             name="enteredFullAddress"
             onChange={handleChange}
             value={state.enteredFullAddress}
-            id="standard-basic"
             label="Full Address"
-            variant="outlined"
             multiline={true}
             minRows={3}
           />

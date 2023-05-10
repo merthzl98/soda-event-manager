@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -8,6 +7,7 @@ import Select from "@mui/material/Select";
 
 import AnnounceService from "../../services/AnnouncementService";
 import Modal from "../commonUI/Modal";
+import TextInput from "../commonUI/TextInput";
 
 const EditAnnounceModal = ({
   onHide,
@@ -54,68 +54,82 @@ const EditAnnounceModal = ({
       onHide={onHide}
       openModal={openModal}
       title="Edit Announce Information"
-      accepTypo = "Save Changes"
+      acceptTypo="Save Changes"
       onRequest={updateAnnounceData}
     >
       <Box
-        component="form"
         sx={{
+          margin: "0px 5px",
           "& > :not(style)": {
             m: 1,
             display: "flex",
             flexDirection: "column",
-            margin: "24px 16px",
-            width: "35rem",
+            width: "100%",
+            margin: "15px 0px",
           },
         }}
         noValidate
         autoComplete="off"
       >
-        <TextField
+        <TextInput
           name="enteredText"
           onChange={handleChange}
           value={state.enteredText}
-          id="standard-basic"
           label="Announce English"
-          variant="outlined"
-          multiline={true}
           minRows={3}
         />
-        <TextField
+        <TextInput
           name="enteredTextDutch"
           onChange={handleChange}
           value={state.enteredTextDutch}
-          id="standard-basic"
           label="Announce Dutch"
-          variant="outlined"
-          multiline={true}
           minRows={3}
         />
-        <TextField
+        <TextInput
           name="enteredTextFrench"
           onChange={handleChange}
           value={state.enteredTextFrench}
-          id="standard-basic"
           label="Announce French"
-          variant="outlined"
-          multiline={true}
           minRows={3}
         />
-      </Box>
-      <FormControl sx={{ width: "30%", margin: "8px 16px" }}>
-        <InputLabel id="demo-simple-select-label">Annnounce Status</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={announceStatus}
-          label="Announce Status"
-          onChange={changeAnnounceStatus}
+        <FormControl
+          sx={{
+            width: "10rem !important",
+            margin: "8px 16px",
+          }}
+          variant="standard"
         >
-          <MenuItem value={"DRAFT"}>Draft</MenuItem>
-          <MenuItem value={"..."}>...</MenuItem>
-          <MenuItem value={"---"}>---</MenuItem>
-        </Select>
-      </FormControl>
+          <InputLabel
+            sx={{
+              fontWeight: "700 !important",
+              color: "rgba(0, 0, 0, 0.6)",
+              fontSize: "1rem",
+            }}
+            id="demo-simple-select-label"
+          >
+            Annnounce Status
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={announceStatus}
+            label="Announce Status"
+            onChange={changeAnnounceStatus}
+            sx={{
+              backgroundColor: "rgba(85, 85, 85, 0.1)",
+              borderRadius: "4px",
+              border: "1px solid #ced4da",
+              padding: "4px 8px !important",
+            }}
+          >
+            <MenuItem value={"DRAFT"} sx={{ paddingLeft: "15px !important" }}>
+              Draft
+            </MenuItem>
+            <MenuItem value={"..."}>...</MenuItem>
+            <MenuItem value={"---"}>---</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
     </Modal>
   );
 };

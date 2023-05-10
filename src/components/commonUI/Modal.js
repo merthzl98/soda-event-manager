@@ -13,10 +13,15 @@ import CloseIcon from "@mui/icons-material/Close";
 import "./Modal.scss";
 
 const MyPaper = styled(Paper)(({ theme }) => ({
-  maxWidth: "1000px !important",
-  borderRadius: "10px",
-  padding: "0px 35px"
+  minWidth: "40rem !important",
+  maxWidth: "60rem !important",
+  borderRadius: "0.75rem",
+  padding: "0 2rem",
 }));
+
+const StyledButton = styled(Button)({
+  textTransform: "none", // Prevents capitalization
+});
 
 const ModalOverlay = (props) => {
   const theme = useTheme();
@@ -40,22 +45,14 @@ const ModalOverlay = (props) => {
 
       <DialogContent className="modal-content">{props.children}</DialogContent>
       <DialogActions className="modal-actions">
-        {/* <Button
-          variant="contained"
-          onClick={props.onHide}
-          className="close"
-          autoFocus
-        >
-          Close
-        </Button> */}
-        <Button
+        <StyledButton
           variant="contained"
           autoFocus
           onClick={props.onRequest}
           disabled={props.isDisabled}
         >
           {props.acceptTypo}
-        </Button>
+        </StyledButton>
       </DialogActions>
     </Dialog>
   );

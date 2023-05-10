@@ -23,7 +23,6 @@ const TableActions = (props) => {
           onClick={props.handleDelete}
           aria-label="delete"
           size="medium"
-          color="error"
         >
           <DeleteIcon fontSize="inherit" />
         </IconButton>

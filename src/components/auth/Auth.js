@@ -22,7 +22,6 @@ import Error from "../commonUI/Error";
 import AlertContext from "../../storage/alert-context";
 import "./Auth.scss";
 import AuthService from "../../services/AuthService";
-// import loginBg from "../../assets/bg/output-onlinejpgtools.jpg";
 
 function Copyright(props) {
   return (
@@ -80,21 +79,8 @@ const Auth = () => {
 
   const theme = createTheme();
 
-  // const loginPageStyle = {
-  //   background: `url(${loginBg})`,
-  //   backgroundSize: "cover",
-  //   width: "100%",
-  //   height: "100vh",
-  //   position: "absolute",
-  //   top: "0",
-  //   right: "0",
-  //   zIndex: "-500",
-  // };
-
   return (
-    <div 
-    // style={loginPageStyle}
-    >
+    <>
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs" sx={{ padding: "60px" }}>
           <Paper elevation={3} sx={{ padding: "0px 40px 2px 40px" }}>
@@ -182,7 +168,7 @@ const Auth = () => {
         </Container>
       </ThemeProvider>
       {hasError.open && <Error />}
-    </div>
+    </>
   );
 };
 

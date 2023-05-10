@@ -4,19 +4,21 @@ import InputBase from "@mui/material/InputBase";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 
+import "./TextInput.scss";
+
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   "label + &": {
     marginTop: theme.spacing(2),
   },
   "& .MuiInputBase-input": {
-    borderRadius: 5,
+    borderRadius: "0.25rem",
     position: "relative",
     backgroundColor:
       theme.palette.mode === "light" ? "rgba(85, 85, 85, 0.1)" : "#2b2b2b",
     border: "1px solid #ced4da",
-    fontSize: 14,
+    fontSize: "0.8rem",
     width: "100%",
-    padding: "8px 12px",
+    padding: "0.5rem 0.75rem",
     transition: theme.transitions.create([
       "border-color",
       "background-color",
@@ -45,11 +47,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 const TextInput = (props) => {
   return (
     <FormControl variant="standard">
-      <InputLabel
-        sx={{ fontWeight: "bolder", color: "rgba(0, 0, 0, 0.8)", fontSize: "16px" }}
-        shrink
-        htmlFor={props.label}
-      >
+      <InputLabel className="input-label" shrink htmlFor={props.label}>
         {props.label}
       </InputLabel>
       <BootstrapInput

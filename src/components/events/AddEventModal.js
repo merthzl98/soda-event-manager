@@ -5,9 +5,6 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { styled } from "@mui/material/styles";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
 import { LocalizationProvider, DateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
@@ -21,39 +18,9 @@ import ArtistService from "../../services/ArtistService";
 import VenueService from "../../services/VenueService";
 import AddPoster from "../commonUI/AddPoster";
 import { formatIso } from "../../configs/config";
-
-const SwitchHighlighted = styled(Switch)(({ theme }) => ({
-  padding: 8,
-  "& .MuiSwitch-track": {
-    borderRadius: 22 / 2,
-    "&:before, &:after": {
-      content: '""',
-      position: "absolute",
-      top: "50%",
-      transform: "translateY(-50%)",
-      width: 16,
-      height: 16,
-    },
-    "&:before": {
-      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
-        theme.palette.getContrastText(theme.palette.primary.main)
-      )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
-      left: 12,
-    },
-    "&:after": {
-      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
-        theme.palette.getContrastText(theme.palette.primary.main)
-      )}" d="M19,13H5V11H19V13Z" /></svg>')`,
-      right: 12,
-    },
-  },
-  "& .MuiSwitch-thumb": {
-    boxShadow: "none",
-    width: 16,
-    height: 16,
-    margin: 2,
-  },
-}));
+import TextInput from "../commonUI/TextInput";
+import SwitchToggle from "../commonUI/SwitchToggle";
+import "./Events.scss";
 
 const AddEventModal = ({
   onHide,
@@ -152,10 +119,6 @@ const AddEventModal = ({
     setState({ ...state, [name]: value });
   };
 
-  const switchHighlighted = (event) => {
-    setIsHighlighted(event.target.checked);
-  };
-
   const handleCloseModal = () => {
     setIsShownImageModal(false);
     setImageData(null);
@@ -167,54 +130,63 @@ const AddEventModal = ({
   console.log("selected Artist-->", selectedArtist);
   console.log("selected Venue-->", selectedVenue);
 
+  const selectStyle = {
+    backgroundColor: "rgba(85, 85, 85, 0.1)",
+    borderRadius: "4px",
+    border: "1px solid #ced4da",
+    padding: "4px 8px !important",
+  };
+
+  const labelStyle = {
+    fontWeight: "700 !important",
+    color: "rgba(0, 0, 0, 0.6)",
+    fontSize: "1rem",
+  };
+
   return (
     <>
       <Modal
         onHide={onHide}
         openModal={openModal}
         title="New Event Add Form"
-        acceptTypo = "Add Event"
+        acceptTypo="Add Event"
         onRequest={postEventData}
       >
         <Box
           component="form"
           sx={{
+            borderBottom: "1px dashed rgba(197, 196, 196, 0.8)",
+            margin: "0px 5px",
             "& > :not(style)": {
               m: 1,
               display: "flex",
               flexDirection: "column",
-              width: "50rem",
-              margin: "24px 16px",
+              width: "100%",
+              margin: "15px 0px",
             },
           }}
           noValidate
           autoComplete="off"
         >
-          <TextField
+          <TextInput
             name="title"
             onChange={handleChange}
             value={state.title}
-            id="standard-basic"
             label="Title"
-            variant="outlined"
             multiline={true}
           />
-          <TextField
+          <TextInput
             name="titleFrench"
             onChange={handleChange}
             value={state.titleFrench}
-            id="standard-basic"
             label="Title French"
-            variant="outlined"
             multiline={true}
           />
-          <TextField
+          <TextInput
             name="titleDutch"
             onChange={handleChange}
             value={state.titleDutch}
-            id="standard-basic"
             label="Title Dutch"
-            variant="outlined"
             multiline={true}
           />
           <div
@@ -224,14 +196,17 @@ const AddEventModal = ({
               justifyContent: "space-between",
             }}
           >
-            <FormControl sx={{ width: "47%" }}>
-              <InputLabel id="demo-simple-select-label">Artist</InputLabel>
+            <FormControl sx={{ width: "47%" }} variant="standard">
+              <InputLabel sx={labelStyle} id="demo-simple-select-label">
+                Artist
+              </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={selectedArtist}
                 label="Artist"
                 onChange={changeSelectedArtist}
+                sx={selectStyle}
               >
                 {artistList.map((artist) => {
                   return (
@@ -242,14 +217,17 @@ const AddEventModal = ({
                 })}
               </Select>
             </FormControl>
-            <FormControl sx={{ width: "47%" }}>
-              <InputLabel id="demo-simple-select-label">Venue</InputLabel>
+            <FormControl sx={{ width: "47%" }} variant="standard">
+              <InputLabel sx={labelStyle} id="demo-simple-select-label">
+                Venue
+              </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={selectedVenue}
                 label="Venue"
                 onChange={changeSelectedVenue}
+                sx={selectStyle}
               >
                 {venueList.map((venue) => {
                   return (
@@ -261,7 +239,6 @@ const AddEventModal = ({
               </Select>
             </FormControl>
           </div>
-
           <div
             style={{
               display: "flex",
@@ -275,7 +252,13 @@ const AddEventModal = ({
                 value={startTime}
                 onChange={(newValue) => setStartTime(newValue)}
                 renderInput={(props) => (
-                  <TextField sx={{ width: "30%" }} {...props} />
+                  <TextField
+                    variant="standard"
+                    sx={{
+                      width: "47%",
+                    }}
+                    {...props}
+                  />
                 )}
               />
             </LocalizationProvider>
@@ -285,12 +268,21 @@ const AddEventModal = ({
                 value={endTime}
                 onChange={(newValue) => setEndTime(newValue)}
                 renderInput={(props) => (
-                  <TextField sx={{ width: "30%" }} {...props} />
+                  <TextField sx={{ width: "47%" }} {...props} />
                 )}
               />
             </LocalizationProvider>
-            <FormControl sx={{ width: "30%" }}>
-              <InputLabel id="demo-simple-select-label">
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "left",
+              gap: "3rem",
+            }}
+          >
+            <FormControl sx={{ width: "30%" }} variant="standard">
+              <InputLabel sx={labelStyle} id="demo-simple-select-label">
                 Event Status
               </InputLabel>
               <Select
@@ -299,50 +291,36 @@ const AddEventModal = ({
                 value={clientStatus}
                 label="Event Status"
                 onChange={changeClientStatus}
+                sx={selectStyle}
               >
                 <MenuItem value="CANCELLED">Cancelled</MenuItem>
                 <MenuItem value="LAST_TICKETS">Last Tickets</MenuItem>
                 <MenuItem value="SOLD_OUT">Sold Out</MenuItem>
               </Select>
             </FormControl>
+            <SwitchToggle
+              isChecked={isHighlighted}
+              setIsChecked={setIsHighlighted}
+              switchLabel="Highlighted"
+            />
           </div>
 
-          <TextField
+          <TextInput
             name="ticketUrl"
             onChange={handleChange}
             value={state.ticketUrl}
-            id="standard-basic"
             label="Ticket Url"
-            variant="outlined"
             multiline={true}
           />
         </Box>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <AddPoster
-            setImageData={setImageData}
-            setIsShownImageModal={setIsShownImageModal}
-            imagesData={eventImageData}
-            setFileData={setFileData}
-            setImagesData={setEventImageData}
-          />
 
-          <FormControlLabel
-            control={
-              <SwitchHighlighted
-                checked={isHighlighted}
-                onChange={switchHighlighted}
-              />
-            }
-            label="Highlighted"
-          />
-        </div>
+        <AddPoster
+          setImageData={setImageData}
+          setIsShownImageModal={setIsShownImageModal}
+          imagesData={eventImageData}
+          setFileData={setFileData}
+          setImagesData={setEventImageData}
+        />
       </Modal>
       {isShownImageModal && (
         <ImageModal

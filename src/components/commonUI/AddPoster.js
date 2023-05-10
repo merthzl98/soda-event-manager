@@ -8,7 +8,6 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { styled } from "@mui/material/styles";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
@@ -21,6 +20,10 @@ import "./AddPoster.scss";
 const Demo = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
+
+const StyledButton = styled(Button)({
+  textTransform: "none", // Prevents capitalization
+});
 
 const AddPoster = (props) => {
   // const [dense, setDense] = React.useState(false);
@@ -66,19 +69,20 @@ const AddPoster = (props) => {
       <Typography className="posters-typo" variant="h8" component="div">
         Upload Posters
       </Typography>
+
       <div className="add-poster-field">
         <div className="poster-head">
-          <Button
+          <StyledButton
             onClick={handleClickImage}
             className="add-poster-button"
             variant="contained"
-            startIcon={<AddCircleIcon />}
+            size="small"
           >
-            Add Poster
-          </Button>
+            Select Files
+          </StyledButton>
           <div className="add-poster-typo">
             <CloudUploadIcon />
-            <Typography>Drop files here</Typography>
+            <span>Drop files here...</span>
           </div>
         </div>
 
