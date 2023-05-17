@@ -14,7 +14,9 @@ const ImageModal = (props) => {
         id="demo-simple-select"
         value={props.posterType}
         label="Poster Type"
-        onChange={props.changePosterType}
+        onChange={(e) => {
+          props.setPosterType(e.target.value);
+        }}
       >
         <MenuItem value={"EVENT_DEFAULT"}>Event Default</MenuItem>
         <MenuItem value={"EVENT_BIG"}>Event Big</MenuItem>
@@ -44,6 +46,7 @@ const ImageModal = (props) => {
       .then((response) => {
         console.log(response);
         props.setImagesData((prevState) => [...prevState, response.data]);
+        // props.setFileNameList((prevState) => [...prevState, props.imageData.name]);
       })
       .catch((error) => {
         console.error(error);
@@ -57,12 +60,12 @@ const ImageModal = (props) => {
 
   // console.log("onOpen-->", onOpen);
 
-  console.log("image data-->", props.imageData);
+  // console.log("image data-->", props.imageData);
 
   return (
     <Modal
       title={props.imageData.name}
-      acceptTypo = "Upload Poster"
+      acceptTypo="Upload Poster"
       onHide={props.onClose}
       openModal={props.onOpen}
       onRequest={postPoster}

@@ -35,7 +35,7 @@ const AddEventModal = ({
     titleFrench: "",
   });
 
-  const [clientStatus, setClientStatus] = useState("");
+  const [clientStatus, setClientStatus] = useState("LAST_TICKETS");
   const [isHighlighted, setIsHighlighted] = useState(false);
   const [startTime, setStartTime] = useState(dayjs("2023-06-17T20:30"));
   const [endTime, setEndTime] = useState(dayjs("2023-06-17T22:30"));
@@ -48,6 +48,11 @@ const AddEventModal = ({
   const [fileData, setFileData] = useState(null);
   const [eventImageData, setEventImageData] = useState([]);
   const [posterType, setPosterType] = useState("");
+  const [isHidingAddModal, setIsHidingAddModal] = useState(false);
+
+  useEffect(() => {
+    isShownImageModal ? setIsHidingAddModal(true) : setIsHidingAddModal(false);
+  }, [isShownImageModal]);
 
   const { setIsLoading } = useContext(AuthContext);
 
@@ -85,6 +90,7 @@ const AddEventModal = ({
       title: state.title,
       titleFrench: state.titleFrench,
       titleDutch: state.titleDutch,
+      status: "DRAFT",
     };
 
     setIsLoading(true);
@@ -100,10 +106,6 @@ const AddEventModal = ({
 
   const changeClientStatus = (event) => {
     setClientStatus(event.target.value);
-  };
-
-  const changePosterType = (event) => {
-    setPosterType(event.target.value);
   };
 
   const changeSelectedArtist = (event) => {
@@ -143,6 +145,12 @@ const AddEventModal = ({
     fontSize: "1rem",
   };
 
+  const modalOpacity = isHidingAddModal ? "0" : "1";
+
+  const modalStyle = {
+    opacity: modalOpacity,
+  };
+
   return (
     <>
       <Modal
@@ -151,6 +159,7 @@ const AddEventModal = ({
         title="New Event Add Form"
         acceptTypo="Add Event"
         onRequest={postEventData}
+        modalStyle={modalStyle}
       >
         <Box
           component="form"
@@ -330,7 +339,6 @@ const AddEventModal = ({
           fileData={fileData}
           setImagesData={setEventImageData}
           posterType={posterType}
-          changePosterType={changePosterType}
           setPosterType={setPosterType}
         />
       )}

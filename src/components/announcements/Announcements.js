@@ -6,7 +6,9 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+// import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+// import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+// import { Typography } from "@mui/material";
 
 import AuthContext from "../../storage/auth-context";
 import AnnounceService from "../../services/AnnouncementService";
@@ -15,7 +17,6 @@ import AddAnnounceModal from "./AddAnnounceModal";
 import "./Announcements.scss";
 import TableActions from "../commonUI/TableActions";
 import TableHeader from "../commonUI/TableHeader";
-import { Typography } from "@mui/material";
 
 const Announcements = () => {
   const [announcesData, setAnnouncesData] = useState([]);
@@ -32,11 +33,8 @@ const Announcements = () => {
   }, [announcesData]);
 
   useEffect(() => {
-    setIsLoading(true);
-
     AnnounceService.orderAnnoucements(announcesOrderIds).then((response) => {
-      // console.log("response-->", response);
-      response.status === 200 && setIsLoading(false);
+      response.status === 200 && console.log("response-->", response);
     });
     // eslint-disable-next-line
   }, [announcesOrderIds]);
@@ -126,7 +124,7 @@ const Announcements = () => {
                               display: "flex",
                               flexDirection: "row",
                               // justifyContent: "space-between",
-                              gap: "5rem",
+                              gap: "2rem",
                               borderBottom: "1px solid rgba(50,50,0, 0.1)",
                               alignItems: "center",
                               backgroundColor: snapshot.isDragging
@@ -135,18 +133,22 @@ const Announcements = () => {
                               ...provided.draggableProps.style,
                             }}
                           >
-                            <TableCell className="table-cell">
+                            <TableCell className="table-cell-status">
+                              {/* <FiberManualRecordIcon
+                                fontSize="0.5rem"
+                                color="error"
+                              /> */}
                               {row.status}
                             </TableCell>
                             <TableCell className="table-cell">
                               {row.text}
                             </TableCell>
-                            <TableCell className="table-cell">
+                            {/* <TableCell className="table-cell">
                               {row.textFrench}
                             </TableCell>
                             <TableCell className="table-cell">
                               {row.textDutch}
-                            </TableCell>
+                            </TableCell> */}
 
                             <TableCell
                               className="actions"
@@ -171,14 +173,14 @@ const Announcements = () => {
                     ))}
                     {provided.placeholder}
                     <TableRow className="table-footer">
-                      <Typography
+                      {/* <Typography
                         color="primary"
                         component="p"
                         className="footer-typo"
                       >
                         See more announce
                       </Typography>
-                      <ExpandMoreIcon color="primary" />
+                      <ExpandMoreIcon color="primary" /> */}
                     </TableRow>
                   </TableBody>
                 )}

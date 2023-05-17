@@ -71,7 +71,7 @@ const Auth = () => {
     AuthService.postUserCredentials(userData)
       .then((response) => {
         login(response.data);
-        history.replace("/manager");
+        history.replace("/manager/events");
       })
 
       .then(setIsLoading(false));

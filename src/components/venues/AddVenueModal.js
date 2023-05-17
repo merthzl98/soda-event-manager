@@ -26,12 +26,17 @@ const AddVenueModal = ({
   const [cities, setCities] = useState([]);
   const [isShownImageModal, setIsShownImageModal] = useState(false);
   const [imageData, setImageData] = useState(null);
-  const [country, setCountry] = useState(null);
-  const [inputCountry, setInputCountry] = useState("");
-  const [city, setCity] = useState(null);
+  const [country, setCountry] = useState(locationData[0]);
+  const [inputCountry, setInputCountry] = useState("Belgium");
+  const [city, setCity] = useState(locationData[0].states[4]);
   const [inputCity, setInputCity] = useState("");
   const [venueImageData, setVenueImageData] = useState([]);
   const [fileData, setFileData] = useState(null);
+  const [isHidingAddModal, setIsHidingAddModal] = useState(false);
+
+  useEffect(() => {
+    isShownImageModal ? setIsHidingAddModal(true) : setIsHidingAddModal(false);
+  }, [isShownImageModal]);
 
   const { setIsLoading } = useContext(AuthContext);
 
@@ -69,6 +74,12 @@ const AddVenueModal = ({
     setImageData(null);
   };
 
+  const modalOpacity = isHidingAddModal ? "0" : "1";
+
+  const modalStyle = {
+    opacity: modalOpacity,
+  };
+
   return (
     <>
       <Modal
@@ -77,6 +88,7 @@ const AddVenueModal = ({
         title="New Venue Add Form"
         acceptTypo="Add Venue"
         onRequest={postVenueData}
+        modalStyle={modalStyle}
       >
         <Box
           component="form"

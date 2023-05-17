@@ -122,6 +122,10 @@ const ManagerPage = () => {
 
   let content = null;
 
+  if (location.pathname === "/manager/events") {
+    content = <Events />;
+  }
+
   if (location.pathname === "/manager/announcements") {
     content = <Announcements />;
   }
@@ -136,10 +140,6 @@ const ManagerPage = () => {
 
   if (location.pathname === "/manager/venues") {
     content = <Venues />;
-  }
-
-  if (location.pathname === "/manager/events") {
-    content = <Events />;
   }
 
   return (
@@ -177,7 +177,7 @@ const ManagerPage = () => {
           </DrawerHeader>
           <Divider />
           <List>
-            {["Announcements", "Artists", "Posters", "Venues", "Events"].map(
+            {["Events", "Announcements", "Artists", "Posters", "Venues"].map(
               (text, index) => (
                 <ListItem key={text} disablePadding sx={{ display: "block" }}>
                   <Link
@@ -198,11 +198,11 @@ const ManagerPage = () => {
                           justifyContent: "center",
                         }}
                       >
-                        {index === 0 && <CampaignIcon />}
-                        {index === 1 && <PersonIcon />}
-                        {index === 2 && <ImageIcon />}
-                        {index === 3 && <LocationOnIcon />}
-                        {index === 4 && <EventIcon />}
+                        {index === 0 && <EventIcon />}
+                        {index === 1 && <CampaignIcon />}
+                        {index === 2 && <PersonIcon />}
+                        {index === 3 && <ImageIcon />}
+                        {index === 4 && <LocationOnIcon />}
                       </ListItemIcon>
                       <ListItemText
                         primary={text}

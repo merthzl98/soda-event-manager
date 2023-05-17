@@ -1,9 +1,5 @@
 import React, { useState, useContext } from "react";
 import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 
 import AuthContext from "../../storage/auth-context";
 import Modal from "../commonUI/Modal";
@@ -22,7 +18,6 @@ const AddAnnounceModal = ({
     enteredTextFrench: "",
     enteredTextDutch: "",
   });
-  const [announceStatus, setAnnounceStatus] = useState("DRAFT");
 
   const { setIsLoading } = useContext(AuthContext);
 
@@ -32,7 +27,7 @@ const AddAnnounceModal = ({
       text: state.enteredText,
       textDutch: state.enteredTextDutch,
       textFrench: state.enteredTextFrench,
-      announceStatus: announceStatus,
+      status: "DRAFT",
     };
 
     setIsLoading(true);
@@ -49,10 +44,6 @@ const AddAnnounceModal = ({
   const handleChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
-  };
-
-  const changeAnnounceStatus = (event) => {
-    setAnnounceStatus(event.target.value);
   };
 
   return (
@@ -100,43 +91,6 @@ const AddAnnounceModal = ({
             label="Announce French"
             minRows={3}
           />
-
-          <FormControl
-            sx={{
-              width: "10rem !important",
-            }}
-            variant="standard"
-          >
-            <InputLabel
-              sx={{
-                fontWeight: "700 !important",
-                color: "rgba(0, 0, 0, 0.6)",
-                fontSize: "1rem",
-              }}
-              id="demo-simple-select-label"
-            >
-              Annnounce Status
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={announceStatus}
-              label="Announce Status"
-              onChange={changeAnnounceStatus}
-              sx={{
-                backgroundColor: "rgba(85, 85, 85, 0.1)",
-                borderRadius: "4px",
-                border: "1px solid #ced4da",
-                padding: "4px 8px !important",
-              }}
-            >
-              <MenuItem value={"DRAFT"} sx={{ paddingLeft: "15px !important" }}>
-                Draft
-              </MenuItem>
-              <MenuItem value={"..."}>...</MenuItem>
-              <MenuItem value={"---"}>---</MenuItem>
-            </Select>
-          </FormControl>
         </Box>
       </Modal>
     </>

@@ -18,7 +18,7 @@
     background-color: rgba(85, 85, 85, 0.1);
     border: 1px dashed rgba(197, 196, 196, 0.8);
     border-radius: 5px;
-    padding: $length-sm4;
+    padding: $length-sm3;
     &::-webkit-scrollbar-track {
       box-shadow: inset 0 0 3px rgba(197, 196, 196, 0.3);
       background-color: rgba(197, 196, 196, 0.3);
@@ -38,27 +38,31 @@
       align-items: center;
       justify-content: left;
       gap: $length-md3;
-      margin-bottom: $length-sm4;
+      margin-bottom: $length-sm3;
 
-      .add-poster-typo {
-        margin: 0 !important;
-        display: flex;
-        align-items: bottom;
-        justify-content: left;
-        gap: $length-sm1;
-
-        span {
-          color: rgba(0, 0, 0, 0.6);
-          font-size: 0.75rem;
+      .drop-file {
+        width: 75%;
+        .add-poster-typo {
+          margin: 0 !important;
           display: flex;
-          align-items: center;
-          justify-content: center;
-        }
+          align-items: bottom;
+          justify-content: left;
+          gap: $length-sm1;
 
-        svg {
-          color: rgba(85, 85, 85, 0.7);
+          span {
+            color: rgba(0, 0, 0, 0.6);
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          svg {
+            color: rgba(85, 85, 85, 0.7);
+          }
         }
       }
+
       .add-poster-button {
         background-color: #fff;
         color: black;

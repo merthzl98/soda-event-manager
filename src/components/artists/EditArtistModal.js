@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 
 import ArtistService from "../../services/ArtistService";
@@ -23,6 +23,11 @@ const EditArtistModal = ({
   const [imageData, setImageData] = useState(null);
   const [fileData, setFileData] = useState(null);
   const [artistImageData, setArtistImageData] = useState(artistData.posters);
+  const [isHidingAddModal, setIsHidingAddModal] = useState(false);
+
+  useEffect(() => {
+    isShownImageModal ? setIsHidingAddModal(true) : setIsHidingAddModal(false);
+  }, [isShownImageModal]);
 
   const updateArtistData = () => {
     const updatedData = {
@@ -50,7 +55,13 @@ const EditArtistModal = ({
     setImageData(null);
   };
 
-  // console.log("artistdata-->", artistData);
+  const modalOpacity = isHidingAddModal ? "0" : "1";
+
+  const modalStyle = {
+    opacity: modalOpacity,
+  };
+
+  console.log({artistData});
 
   return (
     <>
@@ -60,6 +71,7 @@ const EditArtistModal = ({
         title="Edit Artist Information"
         acceptTypo="Save Changes"
         onRequest={updateArtistData}
+        modalStyle={modalStyle}
       >
         <Box
           component="form"

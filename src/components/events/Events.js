@@ -102,12 +102,13 @@ const Events = () => {
 
   const showEditEvent = (clickedIndex) => {
     const event = eventsData[clickedIndex];
-    console.log("event id-->", event.id);
-    // EventService.getEventById(event.id).then((response) => {
-    //   console.log("response-->",response);
-    // })
-    setEventData(event);
-    setEditEventModal(true);
+
+    EventService.getEventById(event.id).then((response) => {
+      if (response.status === 200) {
+        setEventData(response.data);
+        setEditEventModal(true);
+      }
+    });
   };
 
   const hideEditevent = () => {
@@ -197,8 +198,8 @@ const Events = () => {
         <AddEventModal
           onHide={hideAddEvent}
           openModal={addEventModal}
-          setAddeventModal={setAddEventModal}
-          geteventsData={getEventsData}
+          setAddEventModal={setAddEventModal}
+          getEventsData={getEventsData}
         />
       )}
 
@@ -206,9 +207,9 @@ const Events = () => {
         <EditEventModal
           onHide={hideEditevent}
           openModal={editEventModal}
-          setEditeventModal={setEditEventModal}
+          setEditEventModal={setEditEventModal}
           eventData={eventData}
-          geteventsData={getEventsData}
+          getEventsData={getEventsData}
         />
       )}
     </>

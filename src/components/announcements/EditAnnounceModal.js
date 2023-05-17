@@ -125,8 +125,8 @@ const EditAnnounceModal = ({
             <MenuItem value={"DRAFT"} sx={{ paddingLeft: "15px !important" }}>
               Draft
             </MenuItem>
-            <MenuItem value={"..."}>...</MenuItem>
-            <MenuItem value={"---"}>---</MenuItem>
+            <MenuItem value={"PREVIEW"}>Preview</MenuItem>
+            <MenuItem value={"LIVE"}>Live</MenuItem>
           </Select>
         </FormControl>
       </Box>

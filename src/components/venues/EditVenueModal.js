@@ -44,6 +44,11 @@ const EditVenueModal = ({
   const [isShownImageModal, setIsShownImageModal] = useState(false);
   const [venueImageData, setVenueImageData] = useState(venueData.posters);
   const [imageData, setImageData] = useState(null);
+  const [isHidingAddModal, setIsHidingAddModal] = useState(false);
+
+  useEffect(() => {
+    isShownImageModal ? setIsHidingAddModal(true) : setIsHidingAddModal(false);
+  }, [isShownImageModal]);
 
   useEffect(() => {
     country && setCities(country.states ? country.states : []);
@@ -76,6 +81,12 @@ const EditVenueModal = ({
     setState({ ...state, [name]: value });
   };
 
+  const modalOpacity = isHidingAddModal ? "0" : "1";
+
+  const modalStyle = {
+    opacity: modalOpacity,
+  };
+
   return (
     <>
       <Modal
@@ -84,6 +95,7 @@ const EditVenueModal = ({
         title="Edit Venue Information"
         acceptTypo="Save changes"
         onRequest={updateVenueData}
+        modalStyle={modalStyle}
       >
         <Box
           component="form"

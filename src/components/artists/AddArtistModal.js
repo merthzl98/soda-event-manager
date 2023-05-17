@@ -23,6 +23,7 @@ const AddArtistModal = ({
 
   const [isShownImageModal, setIsShownImageModal] = useState(false);
   const [imageData, setImageData] = useState(null);
+  const [fileNameList, setFileNameList] = useState([]);
   const [fileData, setFileData] = useState(null);
   const [artistImageData, setArtistImageData] = useState([]);
   const [isHidingAddModal, setIsHidingAddModal] = useState(false);
@@ -116,6 +117,8 @@ const AddArtistModal = ({
           />
         </Box>
         <AddPoster
+          fileNameList={fileNameList}
+          setFileNameList={setFileNameList}
           setImageData={setImageData}
           setIsShownImageModal={setIsShownImageModal}
           imagesData={artistImageData}
@@ -125,6 +128,7 @@ const AddArtistModal = ({
       </Modal>
       {isShownImageModal && (
         <ImageModal
+          setFileNameList={setFileNameList}
           imageData={imageData}
           onOpen={isShownImageModal}
           onClose={handleCloseModal}
