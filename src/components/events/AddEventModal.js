@@ -21,6 +21,7 @@ import { formatIso } from "../../configs/config";
 import TextInput from "../commonUI/TextInput";
 import SwitchToggle from "../commonUI/SwitchToggle";
 import "./Events.scss";
+import InputTab from "../commonUI/InputTab";
 
 const AddEventModal = ({
   onHide,
@@ -35,7 +36,7 @@ const AddEventModal = ({
     titleFrench: "",
   });
 
-  const [clientStatus, setClientStatus] = useState("LAST_TICKETS");
+  const [clientStatus, setClientStatus] = useState("AVAILABLE");
   const [isHighlighted, setIsHighlighted] = useState(false);
   const [startTime, setStartTime] = useState(dayjs("2023-06-17T20:30"));
   const [endTime, setEndTime] = useState(dayjs("2023-06-17T22:30"));
@@ -49,6 +50,9 @@ const AddEventModal = ({
   const [eventImageData, setEventImageData] = useState([]);
   const [posterType, setPosterType] = useState("");
   const [isHidingAddModal, setIsHidingAddModal] = useState(false);
+  const [englishDescription, setEnglishDescription] = useState("");
+  const [frenchDescription, setFrenchDescription] = useState("");
+  const [dutchDescription, setDutchDescription] = useState("");
 
   useEffect(() => {
     isShownImageModal ? setIsHidingAddModal(true) : setIsHidingAddModal(false);
@@ -78,8 +82,10 @@ const AddEventModal = ({
     const postersIds = eventImageData.map((item) => item.id);
     // console.log("postersIds-->",postersIds);
 
+    const eventStatus = clientStatus === "AVAILABLE" ? null : clientStatus;
+
     const eventData = {
-      clientStatus: clientStatus,
+      clientStatus: eventStatus,
       artistId: selectedArtist,
       venueId: selectedVenue,
       startTime: times.startIso,
@@ -90,6 +96,9 @@ const AddEventModal = ({
       title: state.title,
       titleFrench: state.titleFrench,
       titleDutch: state.titleDutch,
+      description: englishDescription,
+      descriptionFrench: frenchDescription,
+      descriptionDutch: dutchDescription,
       status: "DRAFT",
     };
 
@@ -198,56 +207,59 @@ const AddEventModal = ({
             label="Title Dutch"
             multiline={true}
           />
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <FormControl sx={{ width: "47%" }} variant="standard">
-              <InputLabel sx={labelStyle} id="demo-simple-select-label">
-                Artist
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={selectedArtist}
-                label="Artist"
-                onChange={changeSelectedArtist}
-                sx={selectStyle}
-              >
-                {artistList.map((artist) => {
-                  return (
-                    <MenuItem key={artist.id} value={artist.id}>
-                      {artist.fullName}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-            <FormControl sx={{ width: "47%" }} variant="standard">
-              <InputLabel sx={labelStyle} id="demo-simple-select-label">
-                Venue
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={selectedVenue}
-                label="Venue"
-                onChange={changeSelectedVenue}
-                sx={selectStyle}
-              >
-                {venueList.map((venue) => {
-                  return (
-                    <MenuItem key={venue.id} value={venue.id}>
-                      {venue.country} , {venue.country} / {venue.name}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-          </div>
+
+          <InputTab
+            englishDescription={englishDescription}
+            setEnglishDescription={setEnglishDescription}
+            frenchDescription={frenchDescription}
+            setFrenchDescription={setFrenchDescription}
+            dutchDescription={dutchDescription}
+            setDutchDescription={setDutchDescription}
+          />
+
+          <FormControl variant="standard">
+            <InputLabel sx={labelStyle} id="demo-simple-select-label">
+              Artist
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={selectedArtist}
+              label="Artist"
+              onChange={changeSelectedArtist}
+              sx={selectStyle}
+            >
+              {artistList.map((artist) => {
+                return (
+                  <MenuItem key={artist.id} value={artist.id}>
+                    {artist.fullName}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+          <FormControl variant="standard">
+            <InputLabel sx={labelStyle} id="demo-simple-select-label">
+              Venue
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={selectedVenue}
+              label="Venue"
+              onChange={changeSelectedVenue}
+              sx={selectStyle}
+            >
+              {venueList.map((venue) => {
+                return (
+                  <MenuItem key={venue.id} value={venue.id}>
+                    {venue.country} , {venue.country} / {venue.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+
           <div
             style={{
               display: "flex",
@@ -302,6 +314,7 @@ const AddEventModal = ({
                 onChange={changeClientStatus}
                 sx={selectStyle}
               >
+                <MenuItem value="AVAILABLE">Available</MenuItem>
                 <MenuItem value="CANCELLED">Cancelled</MenuItem>
                 <MenuItem value="LAST_TICKETS">Last Tickets</MenuItem>
                 <MenuItem value="SOLD_OUT">Sold Out</MenuItem>

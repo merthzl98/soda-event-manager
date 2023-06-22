@@ -46,7 +46,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 
 const TextInput = (props) => {
   return (
-    <FormControl variant="standard">
+    <FormControl className="input-container" variant="standard">
       <InputLabel className="input-label" shrink htmlFor={props.label}>
         {props.label}
       </InputLabel>
@@ -59,6 +59,7 @@ const TextInput = (props) => {
         variant="outlined"
         multiline={true}
         minRows={props.minRows ? props.minRows : 1}
+        placeholder= {props.placeholder}
       />
     </FormControl>
   );

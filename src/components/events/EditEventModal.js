@@ -19,6 +19,7 @@ import { formatIso } from "../../configs/config";
 import SwitchToggle from "../commonUI/SwitchToggle";
 import "./Events.scss";
 import TextInput from "../commonUI/TextInput";
+import InputTab from "../commonUI/InputTab";
 
 const EditEventModal = ({
   onHide,
@@ -33,7 +34,9 @@ const EditEventModal = ({
     titleDutch: eventData.titleDutch,
     titleFrench: eventData.titleFrench,
   });
-  const [clientStatus, setClientStatus] = useState(eventData?.clientStatus);
+  const [clientStatus, setClientStatus] = useState(() =>
+    eventData.clientStatus ? eventData.clientStatus : "AVAILABLE"
+  );
   const [isHighlighted, setIsHighlighted] = useState(eventData?.highlighted);
   const [fileData, setFileData] = useState(null);
   const [eventImageData, setEventImageData] = useState(eventData?.posters);
@@ -48,6 +51,15 @@ const EditEventModal = ({
   const [isHidingAddModal, setIsHidingAddModal] = useState(false);
   const [eventStatus, setEventStatus] = useState(eventData?.status);
   const [posterType, setPosterType] = useState("");
+  const [englishDescription, setEnglishDescription] = useState(
+    eventData?.description
+  );
+  const [frenchDescription, setFrenchDescription] = useState(
+    eventData?.descriptionFrench
+  );
+  const [dutchDescription, setDutchDescription] = useState(
+    eventData?.descriptionDutch
+  );
 
   useEffect(() => {
     isShownImageModal ? setIsHidingAddModal(true) : setIsHidingAddModal(false);
@@ -70,9 +82,11 @@ const EditEventModal = ({
 
     const postersIds = eventImageData.map((item) => item.id);
 
+    const conditionStatus = clientStatus === "AVAILABLE" ? null : clientStatus;
+
     const updatedData = {
       id: eventData.id,
-      clientStatus: clientStatus,
+      clientStatus: conditionStatus,
       startTime: times.startIso,
       endTime: times.endIso,
       highlighted: isHighlighted,
@@ -82,6 +96,9 @@ const EditEventModal = ({
       titleFrench: state.titleFrench,
       titleDutch: state.titleDutch,
       status: eventStatus,
+      description: englishDescription,
+      descriptionFrench: frenchDescription,
+      descriptionDutch: dutchDescription,
     };
     EventService.updateEvent(updatedData).then((response) => {
       if (response.status === 200) {
@@ -185,56 +202,58 @@ const EditEventModal = ({
             label="Title Dutch"
             multiline={true}
           />
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <FormControl sx={{ width: "47%" }} variant="standard">
-              <InputLabel sx={labelStyle} id="demo-simple-select-label">
-                Artist
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={selectedArtist}
-                label="Artist"
-                onChange={changeSelectedArtist}
-                sx={selectStyle}
-              >
-                {artistList.map((artist) => {
-                  return (
-                    <MenuItem key={artist.id} value={artist.id}>
-                      {artist.fullName}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-            <FormControl sx={{ width: "47%" }} variant="standard">
-              <InputLabel sx={labelStyle} id="demo-simple-select-label">
-                Venue
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={selectedVenue}
-                label="Venue"
-                onChange={changeSelectedVenue}
-                sx={selectStyle}
-              >
-                {venueList.map((venue) => {
-                  return (
-                    <MenuItem key={venue.id} value={venue.id}>
-                      {venue.country} , {venue.country} / {venue.name}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-          </div>
+
+          <InputTab
+            englishDescription={englishDescription}
+            setEnglishDescription={setEnglishDescription}
+            frenchDescription={frenchDescription}
+            setFrenchDescription={setFrenchDescription}
+            dutchDescription={dutchDescription}
+            setDutchDescription={setDutchDescription}
+          />
+
+          <FormControl variant="standard">
+            <InputLabel sx={labelStyle} id="demo-simple-select-label">
+              Artist
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={selectedArtist}
+              label="Artist"
+              onChange={changeSelectedArtist}
+              sx={selectStyle}
+            >
+              {artistList.map((artist) => {
+                return (
+                  <MenuItem key={artist.id} value={artist.id}>
+                    {artist.fullName}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+          <FormControl variant="standard">
+            <InputLabel sx={labelStyle} id="demo-simple-select-label">
+              Venue
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={selectedVenue}
+              label="Venue"
+              onChange={changeSelectedVenue}
+              sx={selectStyle}
+            >
+              {venueList.map((venue) => {
+                return (
+                  <MenuItem key={venue.id} value={venue.id}>
+                    {venue.country} , {venue.country} / {venue.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
 
           <div
             style={{
@@ -284,6 +303,7 @@ const EditEventModal = ({
                 onChange={changeClientStatus}
                 sx={selectStyle}
               >
+                <MenuItem value="AVAILABLE">Available</MenuItem>
                 <MenuItem value={"CANCELLED"}>Cancelled</MenuItem>
                 <MenuItem value={"LAST_TICKETS"}>Last Tickets</MenuItem>
                 <MenuItem value={"SOLD_OUT"}>Sold Out</MenuItem>

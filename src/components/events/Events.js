@@ -15,8 +15,16 @@ import TableActions from "../commonUI/TableActions";
 import "./Events.scss";
 import TableHeader from "../commonUI/TableHeader";
 import TableColumnTitle from "../commonUI/TableColumnTitle";
+import greenDot from "../../assets/icons/greenDot.png";
+import greyDot from "../../assets/icons/greyDot.png";
 
 const columns = [
+  {
+    id: "status",
+    label: "Status",
+    maxWidth: 100,
+    format: (value) => value.toLocaleString("en-US"),
+  },
   {
     id: "title",
     label: "Title",
@@ -32,13 +40,6 @@ const columns = [
   {
     id: "startHour",
     label: "Start Hour",
-    minWidth: 100,
-    format: (value) => value.toLocaleString("en-US"),
-  },
-
-  {
-    id: "status",
-    label: "Status",
     minWidth: 100,
     format: (value) => value.toLocaleString("en-US"),
   },
@@ -169,9 +170,32 @@ const Events = () => {
                               textOverflow: "ellipsis",
                               maxWidth: "25vw",
                             }}
+                            className="cell-item"
                             key={column.id}
                             align={column.align}
                           >
+                            {value === "LIVE" && (
+                              <img
+                                style={{
+                                  marginRight: "0.5rem",
+                                  width: "0.5rem",
+                                  height: "0.5rem",
+                                }}
+                                src={greenDot}
+                                alt="live icon"
+                              />
+                            )}
+                            {value === "DRAFT" && (
+                              <img
+                                style={{
+                                  marginRight: "0.5rem",
+                                  width: "0.5rem",
+                                  height: "0.5rem",
+                                }}
+                                src={greyDot}
+                                alt="draft icon"
+                              />
+                            )}
                             {column.format && typeof value === "number"
                               ? column.format(value)
                               : value}

@@ -17,6 +17,8 @@ import AddAnnounceModal from "./AddAnnounceModal";
 import "./Announcements.scss";
 import TableActions from "../commonUI/TableActions";
 import TableHeader from "../commonUI/TableHeader";
+import greenDot from "../../assets/icons/greenDot.png";
+import greyDot from "../../assets/icons/greyDot.png";
 
 const Announcements = () => {
   const [announcesData, setAnnouncesData] = useState([]);
@@ -138,7 +140,13 @@ const Announcements = () => {
                                 fontSize="0.5rem"
                                 color="error"
                               /> */}
-                              {row.status}
+                              {row.status === "LIVE" && (
+                                <img src={greenDot} alt="live icon" />
+                              )}
+                              {row.status === "DRAFT" && (
+                                <img src={greyDot} alt="draft icon" />
+                              )}
+                              <p>{row.status}</p>
                             </TableCell>
                             <TableCell className="table-cell">
                               {row.text}

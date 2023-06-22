@@ -1,0 +1,70 @@
+.splide__arrow--prev,
+.splide__arrow--next {
+  // background-color: #ccc;
+  // color: #fff;
+  // border: none;
+  // padding: 8px 12px;
+  // font-size: 16px;
+  position: absolute;
+  cursor: pointer;
+  z-index: 3;
+  top: 45%;
+  transform: translateY(-45%);
+  width: 2rem;
+  height: 2.7rem;
+  border-radius: 0.4rem;
+  background: rgba(216, 216, 216, 0.56);
+  border: none;
+  display: grid;
+  place-content: center;
+  &:hover {
+    background-color: #00b2fd;
+    opacity: 0.6;
+    // scale: 0.9;
+    transition: all 400ms;
+  }
+  svg {
+    width: 1.7rem;
+    height: 1.7rem;
+    // color: #fff !important;
+  }
+}
+
+.splide__arrow--prev {
+  left: 0.4rem;
+}
+
+.splide__arrow--next {
+  right: 0.4rem;
+}
+
+/* Custom styles for next button */
+//   .splide__arrow--next {
+//     background-color: #ccc;
+//     color: #fff;
+//     border: none;
+//     padding: 8px 12px;
+//     font-size: 16px;
+//   }
+
+/* Custom hover styles for buttons */
+// .splide__arrow:hover {
+//   background-color: #999;
+// }
+.splide__pagination {
+  padding: 10px;
+  width: 200px;
+  height: 50px;
+  background-color: #18dd49;
+  left: 80%;
+  top: 75%;
+  .splide__pagination--ltr {
+  }
+}
+
+.image-style {
+  transition: all 500ms;
+  &:hover {
+    filter: brightness(85%);
+  }
+}

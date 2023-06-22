@@ -12,6 +12,14 @@
   overflow: hidden;
   text-overflow: ellipsis;
   border-bottom: none !important;
+  display: flex !important;
+  align-items: center;
+  flex-direction: row;
+  gap: 0.5rem;
+  img {
+    max-width: 0.5rem;
+    height: 0.5rem;
+  }
   // display: flex;
   // align-items: center;
 }
