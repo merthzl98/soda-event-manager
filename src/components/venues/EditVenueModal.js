@@ -3,6 +3,7 @@ import { Autocomplete, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 
 import VenueService from "../../services/VenueService";
+import VenueServiceV2 from "../../services/v2/VenueService";
 import Modal from "../commonUI/Modal";
 import locationData from "../../static/locationData.json";
 import ImageModal from "../commonUI/ImageModal";
@@ -14,37 +15,51 @@ const EditVenueModal = ({
   onHide,
   openModal,
   setEditVenueModal,
-  venueData,
   getVenuesData,
+  venueId,
 }) => {
   const [state, setState] = useState({
-    enteredFullAddress: venueData.fullAddress,
-
-    enteredName: venueData.name,
+    enteredFullAddress: "",
+    enteredName: "",
   });
 
-  const initCountry = locationData.find(
-    (item) => item.country_name === venueData.country
-  );
-
-  const initCity = initCountry.states.find(
-    (item) => venueData.city === item.state_name
-  );
-
-  const stringCity = typeof initCity === "string" ? initCity : "";
-
-  const stringCountry = typeof initCountry === "string" ? initCountry : "";
-
   const [cities, setCities] = useState([]);
-  const [country, setCountry] = useState(initCountry);
-  const [inputCountry, setInputCountry] = useState(stringCountry);
-  const [city, setCity] = useState(initCity);
-  const [inputCity, setInputCity] = useState(stringCity);
+  const [country, setCountry] = useState("");
+  const [inputCountry, setInputCountry] = useState("");
+  const [city, setCity] = useState("");
+  const [inputCity, setInputCity] = useState("");
   const [fileData, setFileData] = useState(null);
   const [isShownImageModal, setIsShownImageModal] = useState(false);
-  const [venueImageData, setVenueImageData] = useState(venueData.posters);
+  const [venueImageData, setVenueImageData] = useState([]);
   const [imageData, setImageData] = useState(null);
   const [isHidingAddModal, setIsHidingAddModal] = useState(false);
+
+  useEffect(() => {
+    VenueServiceV2.getVenueById(venueId).then((response) => {
+      setState({
+        enteredName: response.data.venue.name,
+        enteredFullAddress: response.data.venue.fullAddress,
+      });
+
+      const initCountry = locationData.find(
+        (item) => item.country_name === response.data.venue.country
+      );
+      setCountry(initCountry);
+
+      const initCity = initCountry.states.find(
+        (item) => response.data.venue.city === item.state_name
+      );
+      setCity(initCity);
+
+      const stringCity = typeof initCity === "string" ? initCity : "";
+      setInputCity(stringCity);
+
+      const stringCountry = typeof initCountry === "string" ? initCountry : "";
+      setInputCountry(stringCountry);
+
+      setVenueImageData(response.data.venue.posters);
+    });
+  }, []);
 
   useEffect(() => {
     isShownImageModal ? setIsHidingAddModal(true) : setIsHidingAddModal(false);
@@ -55,15 +70,16 @@ const EditVenueModal = ({
   }, [country]);
 
   const updateVenueData = () => {
+    const posterIds = venueImageData.map((item) => item.id);
     const updatedData = {
-      id: venueData.id,
+      id: venueId,
       country: country.country_name,
       city: city.state_name,
       fullAddress: state.enteredFullAddress,
       name: state.enteredName,
-      posters: venueImageData,
+      posterIds: posterIds,
     };
-    VenueService.updateVenue(updatedData).then((response) => {
+    VenueServiceV2.updateVenue(updatedData).then((response) => {
       if (response.status === 200) {
         setEditVenueModal(false);
         getVenuesData();

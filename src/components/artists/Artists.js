@@ -10,7 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import AddArtistModal from "./AddArtistModal";
 import EditArtistModal from "./EditArtistModal";
 import AuthContext from "../../storage/auth-context";
-import ArtistService from "../../services/ArtistService";
+import ArtistServiceV2 from "../../services/v2/ArtistService";
 import TableActions from "../commonUI/TableActions";
 import "./Artists.scss";
 import TableHeader from "../commonUI/TableHeader";
@@ -48,16 +48,16 @@ const Artists = () => {
   const [artistsData, setArtistsData] = useState([]);
   const [addArtistModal, setAddArtistModal] = useState(false);
   const [editArtistModal, setEditArtistModal] = useState(false);
-  const [artistData, setArtistData] = useState({});
+  const [artistId, setArtistId] = useState();
 
   const { setIsLoading } = useContext(AuthContext);
 
   const getArtistsData = () => {
     setIsLoading(true);
     // has not any query
-    ArtistService.getArtistsList()
+    ArtistServiceV2.getArtistsList()
       .then((response) => {
-        setArtistsData(response.data.content);
+        setArtistsData(response.data.artistsPage.content);
       })
       .then(() => setIsLoading(false));
   };
@@ -69,7 +69,7 @@ const Artists = () => {
 
   const handleDeleteArtist = (clickedIndex) => {
     const artistId = artistsData[clickedIndex]?.id;
-    ArtistService.deleteArtist(artistId).then((response) => {
+    ArtistServiceV2.deleteArtist(artistId).then((response) => {
       response.status === 200 && getArtistsData();
     });
   };
@@ -83,8 +83,7 @@ const Artists = () => {
   };
 
   const showEditArtist = (clickedIndex) => {
-    const artist = artistsData[clickedIndex];
-    setArtistData(artist);
+    setArtistId(artistsData[clickedIndex].id);
     setEditArtistModal(true);
   };
 
@@ -184,8 +183,8 @@ const Artists = () => {
           onHide={hideEditArtist}
           openModal={editArtistModal}
           setEditArtistModal={setEditArtistModal}
-          artistData={artistData}
           getArtistsData={getArtistsData}
+          artistId={artistId}
         />
       )}
     </>

@@ -12,10 +12,13 @@ import dayjs from "dayjs";
 import AuthContext from "../../storage/auth-context";
 import Modal from "../commonUI/Modal";
 import EventService from "../../services/EventService";
+import EventServiceV2 from "../../services/v2/EventService";
 import ImageModal from "../commonUI/ImageModal.js";
 // import PosterService from "../../services/PosterService";
 import ArtistService from "../../services/ArtistService";
+import ArtistServiceV2 from "../../services/v2/ArtistService";
 import VenueService from "../../services/VenueService";
+import VenueServiceV2 from "../../services/v2/VenueService";
 import AddPoster from "../commonUI/AddPoster";
 import { formatIso } from "../../configs/config";
 import TextInput from "../commonUI/TextInput";
@@ -42,8 +45,8 @@ const AddEventModal = ({
   const [endTime, setEndTime] = useState(dayjs("2023-06-17T22:30"));
   const [isShownImageModal, setIsShownImageModal] = useState(false);
   const [imageData, setImageData] = useState(null);
-  const [selectedArtist, setSelectedArtist] = useState("");
-  const [selectedVenue, setSelectedVenue] = useState("");
+  const [selectedArtist, setSelectedArtist] = useState();
+  const [selectedVenue, setSelectedVenue] = useState();
   const [artistList, setArtistList] = useState([]);
   const [venueList, setVenueList] = useState([]);
   const [fileData, setFileData] = useState(null);
@@ -61,31 +64,24 @@ const AddEventModal = ({
   const { setIsLoading } = useContext(AuthContext);
 
   useEffect(() => {
-    ArtistService.getArtistsList().then(
+    ArtistServiceV2.getArtistsList().then(
       (response) =>
-        response.status === 200 && setArtistList(response.data.content)
+        response.status === 200 && setArtistList(response.data.artistsPage.content)
     );
 
-    VenueService.getVenues().then(
+    VenueServiceV2.getVenues().then(
       (response) =>
-        response.status === 200 && setVenueList(response.data.content)
+        response.status === 200 && setVenueList(response.data.venuesPage.content)
     );
   }, []);
-
-  // console.log("eventImageData", eventImageData);
 
   const postEventData = () => {
     const times = formatIso(startTime, endTime);
 
-    // console.log("times-*->", times);
-
     const postersIds = eventImageData.map((item) => item.id);
-    // console.log("postersIds-->",postersIds);
-
-    const eventStatus = clientStatus === "AVAILABLE" ? null : clientStatus;
 
     const eventData = {
-      clientStatus: eventStatus,
+      clientStatus: clientStatus,
       artistId: selectedArtist,
       venueId: selectedVenue,
       startTime: times.startIso,
@@ -104,7 +100,7 @@ const AddEventModal = ({
 
     setIsLoading(true);
 
-    EventService.createEvent(eventData).then((response) => {
+    EventServiceV2.createEvent(eventData).then((response) => {
       if (response.status === 200) {
         setIsLoading(false);
         setAddEventModal(false);
@@ -135,8 +131,6 @@ const AddEventModal = ({
     setImageData(null);
     setPosterType("");
   };
-
-  // console.log("times", startTime, endTime);
 
   console.log("selected Artist-->", selectedArtist);
   console.log("selected Venue-->", selectedVenue);
@@ -335,7 +329,6 @@ const AddEventModal = ({
             multiline={true}
           />
         </Box>
-
         <AddPoster
           setImageData={setImageData}
           setIsShownImageModal={setIsShownImageModal}

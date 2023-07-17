@@ -6,9 +6,10 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import Box from "@mui/material/Box";
 
 import AuthContext from "../../storage/auth-context";
-import EventService from "../../services/EventService";
+import EventServiceV2 from "../../services/v2/EventService";
 import EditEventModal from "./EditEventModal";
 import AddEventModal from "./AddEventModal";
 import TableActions from "../commonUI/TableActions";
@@ -17,6 +18,7 @@ import TableHeader from "../commonUI/TableHeader";
 import TableColumnTitle from "../commonUI/TableColumnTitle";
 import greenDot from "../../assets/icons/greenDot.png";
 import greyDot from "../../assets/icons/greyDot.png";
+import { Typography } from "@mui/material";
 
 const columns = [
   {
@@ -67,28 +69,27 @@ const Events = () => {
   const [eventsData, setEventsData] = useState([]);
   const [addEventModal, setAddEventModal] = useState(false);
   const [editEventModal, setEditEventModal] = useState(false);
-  const [eventData, setEventData] = useState({});
+  const [eventId, setEventId] = useState();
 
   const { setIsLoading } = useContext(AuthContext);
 
   const getEventsData = () => {
     setIsLoading(true);
-    EventService.getEvents()
+    EventServiceV2.getEvents()
       .then((response) => {
         console.log(response);
-        setEventsData(response.data.content);
+        setEventsData(response.data.eventsPage.content);
       })
       .then(() => setIsLoading(false));
   };
 
   useEffect(() => {
     getEventsData();
-    // eslint-disable-next-line
   }, []);
 
   const handleDeleteEvent = (clickedIndex) => {
     const eventId = eventsData[clickedIndex]?.id;
-    EventService.deleteEvent(eventId).then((response) => {
+    EventServiceV2.deleteEvent(eventId).then((response) => {
       response.status === 200 && getEventsData();
     });
   };
@@ -102,14 +103,9 @@ const Events = () => {
   };
 
   const showEditEvent = (clickedIndex) => {
-    const event = eventsData[clickedIndex];
-
-    EventService.getEventById(event.id).then((response) => {
-      if (response.status === 200) {
-        setEventData(response.data);
-        setEditEventModal(true);
-      }
-    });
+    const eventId = eventsData[clickedIndex]?.id;
+    setEventId(eventId);
+    setEditEventModal(true);
   };
 
   const hideEditevent = () => {
@@ -134,79 +130,85 @@ const Events = () => {
             showAddModal={showAddEvent}
             toolTip="Add New Event"
           />
-          <Table stickyHeader aria-label="sticky table">
-            <TableColumnTitle columns={columns} />
-            <TableBody>
-              {eventsData
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={Math.random()}
-                    >
-                      {columns.map((column) => {
-                        const value = row[column.id];
-                        return column.id === "action" ? (
-                          <TableCell
-                            sx={{ padding: "0px 8px", width: "7rem" }}
-                            className="table-actions"
-                            key={column.id}
-                            align={column.align}
-                          >
-                            <TableActions
-                              handleDelete={() => handleDeleteEvent(index)}
-                              showEdit={() => showEditEvent(index)}
-                            />
-                          </TableCell>
-                        ) : (
-                          <TableCell
-                            sx={{
-                              padding: "12px 30px",
-                              whiteSpace: "nowrap",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              maxWidth: "25vw",
-                            }}
-                            className="cell-item"
-                            key={column.id}
-                            align={column.align}
-                          >
-                            {value === "LIVE" && (
-                              <img
-                                style={{
-                                  marginRight: "0.5rem",
-                                  width: "0.5rem",
-                                  height: "0.5rem",
-                                }}
-                                src={greenDot}
-                                alt="live icon"
+          {eventsData.length === 0 ? (
+            <Box display="flex" sx={{ p: 2 }}>
+              <Typography variant="h6" m="auto">Event list is empty.</Typography>
+            </Box>
+          ) : (
+            <Table stickyHeader aria-label="sticky table">
+              <TableColumnTitle columns={columns} />
+              <TableBody>
+                {eventsData
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index) => {
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={Math.random()}
+                      >
+                        {columns.map((column) => {
+                          const value = row[column.id];
+                          return column.id === "action" ? (
+                            <TableCell
+                              sx={{ padding: "0px 8px", width: "7rem" }}
+                              className="table-actions"
+                              key={column.id}
+                              align={column.align}
+                            >
+                              <TableActions
+                                handleDelete={() => handleDeleteEvent(index)}
+                                showEdit={() => showEditEvent(index)}
                               />
-                            )}
-                            {value === "DRAFT" && (
-                              <img
-                                style={{
-                                  marginRight: "0.5rem",
-                                  width: "0.5rem",
-                                  height: "0.5rem",
-                                }}
-                                src={greyDot}
-                                alt="draft icon"
-                              />
-                            )}
-                            {column.format && typeof value === "number"
-                              ? column.format(value)
-                              : value}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
+                            </TableCell>
+                          ) : (
+                            <TableCell
+                              sx={{
+                                padding: "12px 30px",
+                                whiteSpace: "nowrap",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                maxWidth: "25vw",
+                              }}
+                              className="cell-item"
+                              key={column.id}
+                              align={column.align}
+                            >
+                              {value === "LIVE" && (
+                                <img
+                                  style={{
+                                    marginRight: "0.5rem",
+                                    width: "0.5rem",
+                                    height: "0.5rem",
+                                  }}
+                                  src={greenDot}
+                                  alt="live icon"
+                                />
+                              )}
+                              {value === "DRAFT" && (
+                                <img
+                                  style={{
+                                    marginRight: "0.5rem",
+                                    width: "0.5rem",
+                                    height: "0.5rem",
+                                  }}
+                                  src={greyDot}
+                                  alt="draft icon"
+                                />
+                              )}
+                              {column.format && typeof value === "number"
+                                ? column.format(value)
+                                : value}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
+              </TableBody>
+            </Table>
+          )}
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
@@ -232,8 +234,8 @@ const Events = () => {
           onHide={hideEditevent}
           openModal={editEventModal}
           setEditEventModal={setEditEventModal}
-          eventData={eventData}
           getEventsData={getEventsData}
+          eventId={eventId}
         />
       )}
     </>

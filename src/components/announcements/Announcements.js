@@ -11,9 +11,9 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 // import { Typography } from "@mui/material";
 
 import AuthContext from "../../storage/auth-context";
-import AnnounceService from "../../services/AnnouncementService";
-import EditAnnounceModal from "./EditAnnounceModal";
-import AddAnnounceModal from "./AddAnnounceModal";
+import AnnouncementServiceV2 from "../../services/v2/AnnouncementService";
+import EditAnnouncementModal from "./EditAnnouncementModal";
+import AddAnnouncementModal from "./AddAnnouncementModal";
 import "./Announcements.scss";
 import TableActions from "../commonUI/TableActions";
 import TableHeader from "../commonUI/TableHeader";
@@ -21,75 +21,80 @@ import greenDot from "../../assets/icons/greenDot.png";
 import greyDot from "../../assets/icons/greyDot.png";
 
 const Announcements = () => {
-  const [announcesData, setAnnouncesData] = useState([]);
-  const [addAnnounceModal, setAddAnnounceModal] = useState(false);
-  const [editAnnounceModal, setEditAnnounceModal] = useState(false);
-  const [announceData, setAnnounceData] = useState({});
-  const [announcesOrderIds, setAnnouncesOrderIds] = useState([]);
+  const [announcementsData, setAnnouncementsData] = useState([]);
+  const [addAnnouncementModal, setAddAnnouncementModal] = useState(false);
+  const [editAnnouncementModal, setEditAnnouncementModal] = useState(false);
+  const [announcementData, setAnnouncementData] = useState({});
+  const [announcementsOrderIds, setAnnouncementsOrderIds] = useState([]);
+  const [announcementId, setAnnouncementId] = useState();
 
   const { setIsLoading } = useContext(AuthContext);
 
   useEffect(() => {
-    const newOrders = announcesData.map((announce) => announce.id);
-    setAnnouncesOrderIds(newOrders);
-  }, [announcesData]);
+    const newOrders = announcementsData.map((announcement) => announcement.id);
+    setAnnouncementsOrderIds(newOrders);
+  }, [announcementsData]);
 
   useEffect(() => {
-    AnnounceService.orderAnnoucements(announcesOrderIds).then((response) => {
+    const orderRequest = {
+      testParam: "testParam",
+      announcementIds: announcementsOrderIds,
+    };
+    console.log(orderRequest);
+    AnnouncementServiceV2.orderAnnoucements(orderRequest).then((response) => {
       response.status === 200 && console.log("response-->", response);
     });
     // eslint-disable-next-line
-  }, [announcesOrderIds]);
+  }, [announcementsOrderIds]);
 
   const handleDragEnd = (result) => {
     if (!result.destination) return;
 
-    const items = Array.from(announcesData);
+    const items = Array.from(announcementsData);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
 
-    setAnnouncesData(items);
+    setAnnouncementsData(items);
   };
 
-  const getAnnouncesData = () => {
+  const getAnnouncementsData = () => {
     setIsLoading(true);
-    AnnounceService.getAnnoucements()
+    AnnouncementServiceV2.getAnnoucements()
       .then((response) => {
-        // console.log(response);
-
-        setAnnouncesData(response.data);
+        setAnnouncementsData(response.data.announcements);
       })
       .then(() => setIsLoading(false));
   };
 
   useEffect(() => {
-    getAnnouncesData();
+    getAnnouncementsData();
     // eslint-disable-next-line
   }, []);
 
-  const handleDeleteAnnounce = (clickedIndex) => {
-    const announceId = announcesData[clickedIndex]?.id;
-    AnnounceService.deleteAnnouncement(announceId).then((response) => {
-      response.status === 200 && getAnnouncesData();
-    });
+  const handleDeleteAnnouncement = (clickedIndex) => {
+    const announcementId = announcementsData[clickedIndex]?.id;
+    AnnouncementServiceV2.deleteAnnouncement(announcementId).then(
+      (response) => {
+        response.status === 200 && getAnnouncementsData();
+      }
+    );
   };
 
-  const showAddAnnounce = () => {
-    setAddAnnounceModal(true);
+  const showAddAnnouncement = () => {
+    setAddAnnouncementModal(true);
   };
 
-  const hideAddAnnounce = () => {
-    setAddAnnounceModal(false);
+  const hideAddAnnouncement = () => {
+    setAddAnnouncementModal(false);
   };
 
-  const showEditAnnounce = (clickedIndex) => {
-    const announce = announcesData[clickedIndex];
-    setAnnounceData(announce);
-    setEditAnnounceModal(true);
+  const showEditAnnouncement = (clickedIndex) => {
+    setAnnouncementId(announcementsData[clickedIndex].id);
+    setEditAnnouncementModal(true);
   };
 
-  const hideEditAnnounce = () => {
-    setEditAnnounceModal(false);
+  const hideEditAnnouncement = () => {
+    setEditAnnouncementModal(false);
   };
 
   return (
@@ -99,8 +104,8 @@ const Announcements = () => {
           <TableContainer>
             <TableHeader
               title="Announcements"
-              showAddModal={showAddAnnounce}
-              toolTip="Add New Announce"
+              showAddModal={showAddAnnouncement}
+              toolTip="Add New Announcement"
             />
             <Table stickyHeader aria-label="sticky table">
               <Droppable droppableId="table">
@@ -109,7 +114,7 @@ const Announcements = () => {
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                   >
-                    {announcesData.map((row, index) => (
+                    {announcementsData.map((row, index) => (
                       <Draggable
                         key={row.id}
                         draggableId={row.id}
@@ -171,8 +176,10 @@ const Announcements = () => {
                               }}
                             >
                               <TableActions
-                                handleDelete={() => handleDeleteAnnounce(index)}
-                                showEdit={() => showEditAnnounce(index)}
+                                handleDelete={() =>
+                                  handleDeleteAnnouncement(index)
+                                }
+                                showEdit={() => showEditAnnouncement(index)}
                               />
                             </TableCell>
                           </TableRow>
@@ -186,7 +193,7 @@ const Announcements = () => {
                         component="p"
                         className="footer-typo"
                       >
-                        See more announce
+                        See more announcement
                       </Typography>
                       <ExpandMoreIcon color="primary" /> */}
                     </TableRow>
@@ -197,23 +204,23 @@ const Announcements = () => {
           </TableContainer>
         </Paper>
       </DragDropContext>
-      {addAnnounceModal && (
-        <AddAnnounceModal
-          onHide={hideAddAnnounce}
-          openModal={addAnnounceModal}
-          setAddAnnounceModal={setAddAnnounceModal}
-          getAnnouncesData={getAnnouncesData}
-          orderLength={announcesData.length}
+      {addAnnouncementModal && (
+        <AddAnnouncementModal
+          onHide={hideAddAnnouncement}
+          openModal={addAnnouncementModal}
+          setAddAnnouncementModal={setAddAnnouncementModal}
+          getAnnouncementsData={getAnnouncementsData}
+          orderLength={announcementsData.length}
         />
       )}
 
-      {editAnnounceModal && (
-        <EditAnnounceModal
-          onHide={hideEditAnnounce}
-          openModal={editAnnounceModal}
-          setEditAnnounceModal={setEditAnnounceModal}
-          announceData={announceData}
-          getAnnouncesData={getAnnouncesData}
+      {editAnnouncementModal && (
+        <EditAnnouncementModal
+          onHide={hideEditAnnouncement}
+          openModal={editAnnouncementModal}
+          setEditAnnouncementModal={setEditAnnouncementModal}
+          getAnnouncementsData={getAnnouncementsData}
+          announcementId={announcementId}
         />
       )}
     </>

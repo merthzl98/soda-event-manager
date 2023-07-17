@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 
 import ArtistService from "../../services/ArtistService";
+import ArtistServiceV2 from "../../services/v2/ArtistService";
 import Modal from "../commonUI/Modal";
 import ImageModal from "../commonUI/ImageModal.js";
 import AddPoster from "../commonUI/AddPoster";
@@ -11,33 +12,45 @@ const EditArtistModal = ({
   onHide,
   openModal,
   setEditArtistModal,
-  artistData,
   getArtistsData,
+  artistId,
 }) => {
   const [state, setState] = useState({
-    enteredFullName: artistData.fullName,
-    enteredGenre: artistData.genre,
-    enteredDescription: artistData.description,
+    enteredFullName: "",
+    enteredGenre: "",
+    enteredDescription: "",
   });
   const [isShownImageModal, setIsShownImageModal] = useState(false);
   const [imageData, setImageData] = useState(null);
   const [fileData, setFileData] = useState(null);
-  const [artistImageData, setArtistImageData] = useState(artistData.posters);
+  const [artistImageData, setArtistImageData] = useState([]);
   const [isHidingAddModal, setIsHidingAddModal] = useState(false);
 
   useEffect(() => {
     isShownImageModal ? setIsHidingAddModal(true) : setIsHidingAddModal(false);
   }, [isShownImageModal]);
 
+  useEffect(() => {
+    ArtistServiceV2.getArtistById(artistId).then((response) => {
+      setState({
+        enteredFullName: response.data.artist.fullName,
+        enteredGenre: response.data.artist.genre,
+        enteredDescription: response.data.artist.description,
+      });
+      setArtistImageData(response.data.artist.posters);
+    });
+  }, []);
+
   const updateArtistData = () => {
+    const posterIds = artistImageData.map((item) => item.id);
     const updatedData = {
+      id: artistId,
       fullName: state.enteredFullName,
-      id: artistData.id,
       genre: state.enteredGenre,
       description: state.enteredDescription,
-      posters: artistImageData,
+      posterIds: posterIds,
     };
-    ArtistService.updateArtist(updatedData).then((response) => {
+    ArtistServiceV2.updateArtist(updatedData).then((response) => {
       if (response.status === 200) {
         setEditArtistModal(false);
         getArtistsData();
@@ -60,8 +73,6 @@ const EditArtistModal = ({
   const modalStyle = {
     opacity: modalOpacity,
   };
-
-  console.log({artistData});
 
   return (
     <>

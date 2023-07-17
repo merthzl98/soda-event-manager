@@ -6,6 +6,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import AuthContext from "../../storage/auth-context";
 import Modal from "../commonUI/Modal";
 import VenueService from "../../services/VenueService";
+import VenueServiceV2 from "../../services/v2/VenueService";
 import ImageModal from "../commonUI/ImageModal.js";
 import locationData from "../../static/locationData.json";
 import AddPoster from "../commonUI/AddPoster";
@@ -55,7 +56,7 @@ const AddVenueModal = ({
 
     setIsLoading(true);
 
-    VenueService.createVenue(venueData).then((response) => {
+    VenueServiceV2.createVenue(venueData).then((response) => {
       if (response.status === 200) {
         setIsLoading(false);
         setAddVenueModal(false);

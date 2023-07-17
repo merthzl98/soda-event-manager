@@ -4,39 +4,46 @@ import Box from "@mui/material/Box";
 import AuthContext from "../../storage/auth-context";
 import Modal from "../commonUI/Modal";
 import AnnounceService from "../../services/AnnouncementService";
+import AnnouncementServiceV2 from "../../services/v2/AnnouncementService";
 import TextInput from "../commonUI/TextInput";
 
-const AddAnnounceModal = ({
+const AddAnnouncementModal = ({
   onHide,
   openModal,
-  setAddAnnounceModal,
-  getAnnouncesData,
+  setAddAnnouncementModal,
+  getAnnouncementsData,
   orderLength,
 }) => {
   const [state, setState] = useState({
     enteredText: "",
     enteredTextFrench: "",
     enteredTextDutch: "",
+    enteredHighlightedText: "",
+    enteredHighlightedTextFrench: "",
+    enteredHighlightedTextDutch: "",
   });
 
   const { setIsLoading } = useContext(AuthContext);
 
   const postAnnounceData = () => {
-    const announceData = {
+    const announcementData = {
       orderNo: orderLength,
       text: state.enteredText,
       textDutch: state.enteredTextDutch,
       textFrench: state.enteredTextFrench,
+      highlightedText: state.enteredHighlightedText,
+      highlightedTextDutch: state.enteredHighlightedTextDutch,
+      highlightedTextFrench: state.enteredHighlightedTextFrench,
       status: "DRAFT",
     };
 
     setIsLoading(true);
 
-    AnnounceService.createAnnouncement(announceData).then((response) => {
+    AnnouncementServiceV2.createAnnouncement(announcementData).then((response) => {
       if (response.status === 200) {
         setIsLoading(false);
-        setAddAnnounceModal(false);
-        getAnnouncesData();
+        setAddAnnouncementModal(false);
+        getAnnouncementsData();
       }
     });
   };
@@ -52,7 +59,7 @@ const AddAnnounceModal = ({
         onHide={onHide}
         openModal={openModal}
         title="New Announce Add Form"
-        acceptTypo="Add Announce"
+        acceptTypo="Add Announcement"
         onRequest={postAnnounceData}
       >
         <Box
@@ -71,25 +78,46 @@ const AddAnnounceModal = ({
           autoComplete="off"
         >
           <TextInput
+            name="enteredHighlightedText"
+            onChange={handleChange}
+            value={state.enteredHighlightedText}
+            label="Highlighted Eng"
+            minRows={1}
+          />
+          <TextInput
+            name="enteredHighlightedTextFrench"
+            onChange={handleChange}
+            value={state.enteredHighlightedTextFrench}
+            label="Highlighted French"
+            minRows={1}
+          />
+          <TextInput
+            name="enteredHighlightedTextDutch"
+            onChange={handleChange}
+            value={state.enteredHighlightedTextDutch}
+            label="Highlighted Dutch"
+            minRows={1}
+          />
+          <TextInput
             name="enteredText"
             onChange={handleChange}
             value={state.enteredText}
-            label="Announce English"
-            minRows={3}
-          />
-          <TextInput
-            name="enteredTextDutch"
-            onChange={handleChange}
-            value={state.enteredTextDutch}
-            label="Announce Dutch"
-            minRows={3}
+            label="Eng"
+            minRows={1}
           />
           <TextInput
             name="enteredTextFrench"
             onChange={handleChange}
             value={state.enteredTextFrench}
-            label="Announce French"
-            minRows={3}
+            label="French"
+            minRows={1}
+          />
+          <TextInput
+            name="enteredTextDutch"
+            onChange={handleChange}
+            value={state.enteredTextDutch}
+            label="Dutch"
+            minRows={1}
           />
         </Box>
       </Modal>
@@ -97,4 +125,4 @@ const AddAnnounceModal = ({
   );
 };
 
-export default AddAnnounceModal;
+export default AddAnnouncementModal;

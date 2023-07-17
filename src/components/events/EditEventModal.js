@@ -10,11 +10,14 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 // import dayjs from "dayjs";
 
 import EventService from "../../services/EventService";
+import EventServiceV2 from "../../services/v2/EventService";
 import Modal from "../commonUI/Modal";
 import ImageModal from "../commonUI/ImageModal";
 import AddPoster from "../commonUI/AddPoster";
 import ArtistService from "../../services/ArtistService";
 import VenueService from "../../services/VenueService";
+import ArtistServiceV2 from "../../services/v2/ArtistService";
+import VenueServiceV2 from "../../services/v2/VenueService";
 import { formatIso } from "../../configs/config";
 import SwitchToggle from "../commonUI/SwitchToggle";
 import "./Events.scss";
@@ -25,82 +28,86 @@ const EditEventModal = ({
   onHide,
   openModal,
   setEditEventModal,
-  eventData,
   getEventsData,
+  eventId,
 }) => {
-  const [state, setState] = useState({
-    ticketUrl: eventData.ticketUrl,
-    title: eventData.title,
-    titleDutch: eventData.titleDutch,
-    titleFrench: eventData.titleFrench,
-  });
-  const [clientStatus, setClientStatus] = useState(() =>
-    eventData.clientStatus ? eventData.clientStatus : "AVAILABLE"
-  );
-  const [isHighlighted, setIsHighlighted] = useState(eventData?.highlighted);
-  const [fileData, setFileData] = useState(null);
-  const [eventImageData, setEventImageData] = useState(eventData?.posters);
-  const [imageData, setImageData] = useState(null);
+  const [title, setTitle] = useState();
+  const [titleFrench, setTitleFrench] = useState();
+  const [titleDutch, setTitleDutch] = useState();
+  const [ticketUrl, setTicketUrl] = useState();
+  const [clientStatus, setClientStatus] = useState("AVAILABLE");
+  const [isHighlighted, setIsHighlighted] = useState(false);
+  const [fileData, setFileData] = useState();
+  const [eventImageData, setEventImageData] = useState();
+  const [imageData, setImageData] = useState();
   const [isShownImageModal, setIsShownImageModal] = useState(false);
-  const [startTime, setStartTime] = useState(eventData?.startTime);
-  const [endTime, setEndTime] = useState(eventData?.endTime);
+  const [startTime, setStartTime] = useState();
+  const [endTime, setEndTime] = useState();
   const [artistList, setArtistList] = useState([]);
   const [venueList, setVenueList] = useState([]);
-  const [selectedArtist, setSelectedArtist] = useState(eventData?.artist?.id);
-  const [selectedVenue, setSelectedVenue] = useState(eventData?.venue?.id);
+  const [selectedArtist, setSelectedArtist] = useState();
+  const [selectedVenue, setSelectedVenue] = useState();
   const [isHidingAddModal, setIsHidingAddModal] = useState(false);
-  const [eventStatus, setEventStatus] = useState(eventData?.status);
+  const [eventStatus, setEventStatus] = useState("DRAFT");
   const [posterType, setPosterType] = useState("");
-  const [englishDescription, setEnglishDescription] = useState(
-    eventData?.description
-  );
-  const [frenchDescription, setFrenchDescription] = useState(
-    eventData?.descriptionFrench
-  );
-  const [dutchDescription, setDutchDescription] = useState(
-    eventData?.descriptionDutch
-  );
+  const [description, setDescription] = useState();
+  const [descriptionFrench, setDescriptionFrench] = useState();
+  const [descriptionDutch, setDescriptionDutch] = useState();
 
   useEffect(() => {
     isShownImageModal ? setIsHidingAddModal(true) : setIsHidingAddModal(false);
   }, [isShownImageModal]);
 
   useEffect(() => {
-    ArtistService.getArtistsList().then(
+    EventServiceV2.getEventById(eventId).then((response) => {
+      setTitle(response.data.event.title);
+      setTitleFrench(response.data.event.titleFrench);
+      setTitleDutch(response.data.event.titleDutch);
+      setDescription(response.data.event.description);
+      setDescriptionFrench(response.data.event.descriptionFrench);
+      setDescriptionDutch(response.data.event.descriptionDutch);
+      setTicketUrl(response.data.event.ticketUrl);
+      setClientStatus(response.data.event.clientStatus);
+      setEventStatus(response.data.event.status);
+      setIsHighlighted(response.data.event.highlighted);
+      setStartTime(response.data.event.startTime);
+      setEndTime(response.data.event.endTime);
+      setEventImageData(response.data.event.posters);
+    });
+
+    ArtistServiceV2.getArtistsList().then(
       (response) =>
-        response.status === 200 && setArtistList(response.data.content)
+        response.status === 200 && setArtistList(response.data.artistsPage.content)
     );
 
-    VenueService.getVenues().then(
+    VenueServiceV2.getVenues().then(
       (response) =>
-        response.status === 200 && setVenueList(response.data.content)
+        response.status === 200 && setVenueList(response.data.venuesPage.content)
     );
   }, []);
 
   const updateEventData = () => {
     const times = formatIso(startTime, endTime);
 
-    const postersIds = eventImageData.map((item) => item.id);
-
-    const conditionStatus = clientStatus === "AVAILABLE" ? null : clientStatus;
+    const posterIds = eventImageData.map((item) => item.id);
 
     const updatedData = {
-      id: eventData.id,
-      clientStatus: conditionStatus,
+      id: eventId,
+      clientStatus: clientStatus,
       startTime: times.startIso,
       endTime: times.endIso,
       highlighted: isHighlighted,
-      posterIds: postersIds,
-      ticketUrl: state.ticketUrl,
-      title: state.title,
-      titleFrench: state.titleFrench,
-      titleDutch: state.titleDutch,
+      posterIds: posterIds,
+      ticketUrl: ticketUrl,
+      title: title,
+      titleFrench: titleFrench,
+      titleDutch: titleDutch,
       status: eventStatus,
-      description: englishDescription,
-      descriptionFrench: frenchDescription,
-      descriptionDutch: dutchDescription,
+      description: description,
+      descriptionFrench: descriptionFrench,
+      descriptionDutch: descriptionDutch,
     };
-    EventService.updateEvent(updatedData).then((response) => {
+    EventServiceV2.updateEvent(updatedData).then((response) => {
       if (response.status === 200) {
         setEditEventModal(false);
         getEventsData();
@@ -110,11 +117,6 @@ const EditEventModal = ({
 
   const changeEventStatus = (event) => {
     setEventStatus(event.target.value);
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setState({ ...state, [name]: value });
   };
 
   const changeClientStatus = (event) => {
@@ -133,8 +135,6 @@ const EditEventModal = ({
   const changeSelectedVenue = (event) => {
     setSelectedVenue(event.target.value);
   };
-
-  console.log("event DATA-->", eventData);
 
   const selectStyle = {
     backgroundColor: "rgba(85, 85, 85, 0.1)",
@@ -183,33 +183,33 @@ const EditEventModal = ({
         >
           <TextInput
             name="title"
-            onChange={handleChange}
-            value={state.title}
+            onChange={(event) => setTitle(event.target.value)}
+            value={title}
             label="Title"
             multiline={true}
           />
           <TextInput
             name="titleFrench"
-            onChange={handleChange}
-            value={state.titleFrench}
+            onChange={(event) => setTitleFrench(event.target.value)}
+            value={titleFrench}
             label="Title French"
             multiline={true}
           />
           <TextInput
             name="titleDutch"
-            onChange={handleChange}
-            value={state.titleDutch}
+            onChange={(event) => setTitleDutch(event.target.value)}
+            value={titleDutch}
             label="Title Dutch"
             multiline={true}
           />
 
           <InputTab
-            englishDescription={englishDescription}
-            setEnglishDescription={setEnglishDescription}
-            frenchDescription={frenchDescription}
-            setFrenchDescription={setFrenchDescription}
-            dutchDescription={dutchDescription}
-            setDutchDescription={setDutchDescription}
+            englishDescription={description}
+            setEnglishDescription={setDescription}
+            frenchDescription={descriptionFrench}
+            setFrenchDescription={setDescriptionFrench}
+            dutchDescription={descriptionDutch}
+            setDutchDescription={setDescriptionDutch}
           />
 
           <FormControl variant="standard">
@@ -304,9 +304,9 @@ const EditEventModal = ({
                 sx={selectStyle}
               >
                 <MenuItem value="AVAILABLE">Available</MenuItem>
-                <MenuItem value={"CANCELLED"}>Cancelled</MenuItem>
-                <MenuItem value={"LAST_TICKETS"}>Last Tickets</MenuItem>
-                <MenuItem value={"SOLD_OUT"}>Sold Out</MenuItem>
+                <MenuItem value="CANCELLED">Cancelled</MenuItem>
+                <MenuItem value="LAST_TICKETS">Last Tickets</MenuItem>
+                <MenuItem value="SOLD_OUT">Sold Out</MenuItem>
               </Select>
             </FormControl>
             <SwitchToggle
@@ -327,21 +327,21 @@ const EditEventModal = ({
                 sx={selectStyle}
               >
                 <MenuItem
-                  value={"DRAFT"}
+                  value="DRAFT"
                   sx={{ paddingLeft: "15px !important" }}
                 >
                   Draft
                 </MenuItem>
-                <MenuItem value={"PREVIEW"}>Preview</MenuItem>
-                <MenuItem value={"LIVE"}>Live</MenuItem>
+                <MenuItem value="PREVIEW">Preview</MenuItem>
+                <MenuItem value="LIVE">Live</MenuItem>
               </Select>
             </FormControl>
           </div>
 
           <TextInput
             name="ticketUrl"
-            onChange={handleChange}
-            value={state.ticketUrl}
+            onChange={(event) => setTicketUrl(event.target.value)}
+            value={ticketUrl}
             label="Ticket Url"
             multiline={true}
           />

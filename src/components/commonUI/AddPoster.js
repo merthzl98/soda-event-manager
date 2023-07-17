@@ -25,6 +25,20 @@ const StyledButton = styled(Button)({
   textTransform: "none", // Prevents capitalization
 });
 
+const getPosterTypeText = (text) => {
+  if (text === "EVENT_HIGHLIGHTED") {
+    return "Event Highlighted";
+  } else if (text === "EVENT_LIST") {
+    return "Event List";  
+  } else if (text === "EVENT_NEXTUP") {
+    return "Event Next-up"
+  } else if (text === "EVENT_DETAIL") {
+    return "Event Detail";
+  } else {
+    return text;
+  }
+};
+
 const AddPoster = (props) => {
   const fileInputRef = useRef(null);
 
@@ -151,7 +165,7 @@ const AddPoster = (props) => {
                   </ListItemAvatar> */}
                   <ListItemText
                     primary={`${poster.fileName}`}
-                    secondary={`${poster.type}`}
+                    secondary={`${getPosterTypeText(poster.type)}`}
                   />
                 </ListItem>
               ))}

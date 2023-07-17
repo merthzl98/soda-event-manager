@@ -2,7 +2,7 @@ import axios from "axios";
 
 //Set Global baseURL
 const axiosApiGlobal = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: process.env.REACT_APP_API_URL_V2,
 });
 
 //Set Global Token in Axios
@@ -12,6 +12,23 @@ axiosApiGlobal.interceptors.request.use(
       Authorization: `${localStorage.getItem("token")}`,
       Accept: "application/json",
       "Content-Type": "application/json",
+    };
+    return config;
+  },
+  (error) => {
+    Promise.reject(error);
+  }
+);
+
+export const axiosUpload = axios.create({
+  baseURL: process.env.REACT_APP_API_URL_V2,
+});
+
+axiosUpload.interceptors.request.use(
+  async (config) => {
+    config.headers = {
+      Authorization: `${localStorage.getItem("token")}`,
+      "Content-Type": "multipart/form-data",
     };
     return config;
   },
@@ -38,6 +55,10 @@ const handleErrorResponse = (error, setHasError) => {
 
 export const registerIntercepts = (setHasError) => {
   axiosApiGlobal.interceptors.response.use(handleSuccessResponse, (error) =>
+    handleErrorResponse(error, setHasError)
+  );
+
+  axiosUpload.interceptors.response.use(handleSuccessResponse, (error) =>
     handleErrorResponse(error, setHasError)
   );
 };

@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import AuthContext from "../../storage/auth-context";
 import Modal from "../commonUI/Modal";
 import ArtistService from "../../services/ArtistService";
+import ArtistServiceV2 from "../../services/v2/ArtistService";
 import ImageModal from "../commonUI/ImageModal.js";
 import AddPoster from "../commonUI/AddPoster";
 import TextInput from "../commonUI/TextInput";
@@ -35,16 +36,17 @@ const AddArtistModal = ({
   }, [isShownImageModal]);
 
   const postArtistData = () => {
+    const posterIds = artistImageData.map((item) => item.id);
     const artistData = {
       fullName: state.enteredFullName,
       genre: state.enteredGenre,
       description: state.enteredDescription,
-      posters: artistImageData,
+      posterIds: posterIds,
     };
 
     setIsLoading(true);
 
-    ArtistService.createArtist(artistData).then((response) => {
+    ArtistServiceV2.createArtist(artistData).then((response) => {
       if (response.status === 200) {
         setIsLoading(false);
         setAddArtistModal(false);

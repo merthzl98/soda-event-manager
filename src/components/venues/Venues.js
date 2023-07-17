@@ -8,7 +8,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 
 import AuthContext from "../../storage/auth-context";
-import VenueService from "../../services/VenueService";
+import VenueServiceV2 from "../../services/v2/VenueService";
 import EditVenueModal from "./EditVenueModal";
 import AddVenueModal from "./AddVenueModal";
 import TableActions from "../commonUI/TableActions";
@@ -55,15 +55,15 @@ const Venues = () => {
   const [addVenueModal, setAddVenueModal] = useState(false);
   const [editVenueModal, setEditVenueModal] = useState(false);
   const [venueData, setVenueData] = useState({});
+  const [venueId, setVenueId] = useState();
 
   const { setIsLoading } = useContext(AuthContext);
 
   const getVenuesData = () => {
     setIsLoading(true);
-    VenueService.getVenues()
+    VenueServiceV2.getVenues()
       .then((response) => {
-        // console.log(response);
-        setVenuesData(response.data.content);
+        setVenuesData(response.data.venuesPage.content);
       })
       .then(() => setIsLoading(false));
   };
@@ -75,7 +75,7 @@ const Venues = () => {
 
   const handleDeleteVenue = (clickedIndex) => {
     const venueId = venuesData[clickedIndex]?.id;
-    VenueService.deleteVenue(venueId).then((response) => {
+    VenueServiceV2.deleteVenue(venueId).then((response) => {
       response.status === 200 && getVenuesData();
     });
   };
@@ -89,8 +89,7 @@ const Venues = () => {
   };
 
   const showEditVenue = (clickedIndex) => {
-    const venue = venuesData[clickedIndex];
-    setVenueData(venue);
+    setVenueId(venuesData[clickedIndex].id);
     setEditVenueModal(true);
   };
 
@@ -190,8 +189,8 @@ const Venues = () => {
           onHide={hideEditVenue}
           openModal={editVenueModal}
           setEditVenueModal={setEditVenueModal}
-          venueData={venueData}
           getVenuesData={getVenuesData}
+          venueId={venueId}
         />
       )}
     </>

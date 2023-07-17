@@ -21,7 +21,7 @@ import AuthContext from "../../storage/auth-context";
 import Error from "../commonUI/Error";
 import AlertContext from "../../storage/alert-context";
 import "./Auth.scss";
-import AuthService from "../../services/AuthService";
+import AuthServiceV2 from "../../services/v2/AuthService";
 
 function Copyright(props) {
   return (
@@ -68,9 +68,9 @@ const Auth = () => {
       password: enteredPassword,
     };
 
-    AuthService.postUserCredentials(userData)
+    AuthServiceV2.postUserCredentials(userData)
       .then((response) => {
-        login(response.data);
+        login(response.data.token);
         history.replace("/manager/events");
       })
 
