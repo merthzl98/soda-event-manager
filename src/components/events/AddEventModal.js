@@ -11,13 +11,10 @@ import dayjs from "dayjs";
 
 import AuthContext from "../../storage/auth-context";
 import Modal from "../commonUI/Modal";
-import EventService from "../../services/EventService";
 import EventServiceV2 from "../../services/v2/EventService";
 import ImageModal from "../commonUI/ImageModal.js";
 // import PosterService from "../../services/PosterService";
-import ArtistService from "../../services/ArtistService";
 import ArtistServiceV2 from "../../services/v2/ArtistService";
-import VenueService from "../../services/VenueService";
 import VenueServiceV2 from "../../services/v2/VenueService";
 import AddPoster from "../commonUI/AddPoster";
 import { formatIso } from "../../configs/config";

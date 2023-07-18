@@ -30,6 +30,7 @@ import Announcements from "../components/announcements/Announcements.js";
 import Events from "../components/events/Events.js";
 import Venues from "../components/venues/Venues.js";
 import Artists from "../components/artists/Artists.js";
+import MhaContents from "../components/mhacontents/mhacontents.js";
 import Posters from "../components/posters/Posters.js";
 import Error from "../components/commonUI/Error";
 import { Loading } from "../components/commonUI/Loading";
@@ -138,6 +139,10 @@ const ManagerPage = () => {
     content = <Posters />;
   }
 
+  if (location.pathname === "/manager/mhacontents") {
+    content = <MhaContents />;
+  }
+
   if (location.pathname === "/manager/venues") {
     content = <Venues />;
   }
@@ -177,7 +182,7 @@ const ManagerPage = () => {
           </DrawerHeader>
           <Divider />
           <List>
-            {["Events", "Announcements", "Artists", "Posters", "Venues"].map(
+            {["Events", "Announcements", "Artists", "MhaContents", "Venues"].map(
               (text, index) => (
                 <ListItem key={text} disablePadding sx={{ display: "block" }}>
                   <Link

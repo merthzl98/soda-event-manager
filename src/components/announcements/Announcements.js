@@ -24,7 +24,6 @@ const Announcements = () => {
   const [announcementsData, setAnnouncementsData] = useState([]);
   const [addAnnouncementModal, setAddAnnouncementModal] = useState(false);
   const [editAnnouncementModal, setEditAnnouncementModal] = useState(false);
-  const [announcementData, setAnnouncementData] = useState({});
   const [announcementsOrderIds, setAnnouncementsOrderIds] = useState([]);
   const [announcementId, setAnnouncementId] = useState();
 

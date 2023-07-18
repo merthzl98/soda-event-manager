@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 
 import AuthContext from "../../storage/auth-context";
 import Modal from "../commonUI/Modal";
-import AnnounceService from "../../services/AnnouncementService";
 import AnnouncementServiceV2 from "../../services/v2/AnnouncementService";
 import TextInput from "../commonUI/TextInput";
 
@@ -25,7 +24,7 @@ const AddAnnouncementModal = ({
 
   const { setIsLoading } = useContext(AuthContext);
 
-  const postAnnounceData = () => {
+  const postAnnouncementData = () => {
     const announcementData = {
       orderNo: orderLength,
       text: state.enteredText,
@@ -58,9 +57,9 @@ const AddAnnouncementModal = ({
       <Modal
         onHide={onHide}
         openModal={openModal}
-        title="New Announce Add Form"
+        title="New Announcement Add Form"
         acceptTypo="Add Announcement"
-        onRequest={postAnnounceData}
+        onRequest={postAnnouncementData}
       >
         <Box
           component="form"
