@@ -139,10 +139,6 @@ const MhaContents = () => {
                               }}
                             >
                               <TableCell className="table-cell-status">
-                                {/* <FiberManualRecordIcon
-                                fontSize="0.5rem"
-                                color="error"
-                              /> */}
                                 {row.status === "LIVE" && (
                                   <img src={greenDot} alt="live icon" />
                                 )}
@@ -152,15 +148,13 @@ const MhaContents = () => {
                                 <p>{row.status}</p>
                               </TableCell>
                               <TableCell className="table-cell">
-                                {row.text}
+                                <img
+                                  src={row.url}
+                                  width="250px"
+                                  height="auto"
+                                  alt="Poster"
+                                />
                               </TableCell>
-                              {/* <TableCell className="table-cell">
-                              {row.textFrench}
-                            </TableCell>
-                            <TableCell className="table-cell">
-                              {row.textDutch}
-                            </TableCell> */}
-
                               <TableCell
                                 className="actions"
                                 style={{
@@ -174,10 +168,10 @@ const MhaContents = () => {
                                 }}
                               >
                                 <TableActions
+                                  hideEdit
                                   handleDelete={() =>
                                     handleDeleteMhaContent(index)
                                   }
-                                  showEdit={() => showEditMhaContent(index)}
                                 />
                               </TableCell>
                             </TableRow>
@@ -185,16 +179,7 @@ const MhaContents = () => {
                         </Draggable>
                       ))}
                       {provided.placeholder}
-                      <TableRow className="table-footer">
-                        {/* <Typography
-                        color="primary"
-                        component="p"
-                        className="footer-typo"
-                      >
-                        See more announcement
-                      </Typography>
-                      <ExpandMoreIcon color="primary" /> */}
-                      </TableRow>
+                      <TableRow className="table-footer"></TableRow>
                     </TableBody>
                   )}
                 </Droppable>
@@ -211,15 +196,6 @@ const MhaContents = () => {
           getMhaContentsData={getMhaContentsData}
         />
       )}
-      {/* {editAnnouncementModal && (
-        <EditAnnouncementModal
-          onHide={hideEditAnnouncement}
-          openModal={editAnnouncementModal}
-          setEditAnnouncementModal={setEditAnnouncementModal}
-          getAnnouncementsData={getAnnouncementsData}
-          announcementId={announcementId}
-        />
-      )} */}
     </>
   );
 };

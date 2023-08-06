@@ -8,16 +8,18 @@ import "./TableActions.scss";
 const TableActions = (props) => {
   return (
     <>
-      <Tooltip title="Edit">
-        <IconButton
-          onClick={props.showEdit}
-          aria-label="edit"
-          size="medium"
-          color="primary"
-        >
-          <EditIcon fontSize="inherit" />
-        </IconButton>
-      </Tooltip>
+      {!props.hideEdit && (
+        <Tooltip title="Edit">
+          <IconButton
+            onClick={props.showEdit}
+            aria-label="edit"
+            size="medium"
+            color="primary"
+          >
+            <EditIcon fontSize="inherit" />
+          </IconButton>
+        </Tooltip>
+      )}
       <Tooltip title="delete">
         <IconButton
           onClick={props.handleDelete}

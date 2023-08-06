@@ -35,6 +35,7 @@ const ImageModal = ({
   );
 
   const postPoster = () => {
+    console.log(fileData);
     const formData = new FormData();
     formData.append("file", fileData);
 
