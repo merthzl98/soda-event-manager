@@ -6,6 +6,9 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Switch from "@mui/material/Switch";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import TableHeader from "../commonUI/TableHeader";
 import { Typography } from "@mui/material";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -56,6 +59,7 @@ const MhaContents = () => {
   const [addMhaContentModal, setAddMhaContentModal] = useState(false);
   const [editMhaContentModal, setEditMhaContentModal] = useState(false);
   const [mhaContentId, setMhaContentId] = useState();
+  const [orderEnable, setOrderEnable] = useState(false);
 
   const { setIsLoading } = useContext(AuthContext);
 
@@ -88,6 +92,23 @@ const MhaContents = () => {
     setEditMhaContentModal(true);
   };
 
+  const handleOrderEnableSwitch = () => {
+    setOrderEnable((prevState) => !prevState);
+  };
+
+  const saveOrder = () => {
+    const mhaContentIds = mhaContents.map((mhaContent) => mhaContent.id);
+    console.log(mhaContentIds);
+    MhaContentServiceV2.orderMhaContents({ mhaContentIds: mhaContentIds})
+      .then((response) => {
+        setOrderEnable(false);
+        getMhaContentsData();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <>
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -96,8 +117,24 @@ const MhaContents = () => {
             <TableHeader
               title="Main Highlighted Contents"
               showAddModal={() => setAddMhaContentModal(true)}
-              toolTip="Add New Event"
+              toolTip="Add New MhaContent"
             />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={orderEnable}
+                  onChange={handleOrderEnableSwitch}
+                  color="success"
+                />
+              }
+              label="Enable ordering"
+              labelPlacement="start"
+            />
+            {orderEnable && (
+              <Button variant="contained" color="success" onClick={saveOrder}>
+                Save the order
+              </Button>
+            )}
             {mhaContents.lenght === 0 ? (
               <Box display="flex" sx={{ p: 2 }}>
                 <Typography variant="h6" m="auto">

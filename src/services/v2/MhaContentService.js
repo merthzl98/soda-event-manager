@@ -22,11 +22,16 @@ const deleteMhaContents = (id) => {
   return http.delete("/delete-mhacontent", { params: { mhaContentId: id } });
 };
 
+const orderMhaContents = (mhaContentIds) => {
+  return http.put("/order-mhacontents", mhaContentIds);
+};
+
 const MhaContentService = {
   getMhaContents,
   createMhaContent,
   updateMhaContent,
   getMhaContentsById,
+  orderMhaContents,
   deleteMhaContents,
 };
 
