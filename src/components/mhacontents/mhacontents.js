@@ -18,41 +18,16 @@ import TableActions from "../commonUI/TableActions";
 import greenDot from "../../assets/icons/greenDot.png";
 import greyDot from "../../assets/icons/greyDot.png";
 import AddMhaContentModal from "./AddMhaContentModal";
+import EditMhaContentModal from "./EditMhaContentModal";
 
-const columns = [
-  {
-    id: "url",
-    label: "Url",
-    minWidth: 100,
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "status",
-    label: "Status",
-    maxWidth: 100,
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  { id: "contentType", label: "Content Type", minWidth: 100 },
-  {
-    id: "external",
-    label: "External",
-    minWidth: 100,
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "targetUrl",
-    label: "Target Url",
-    minWidth: 100,
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "action",
-    label: "Action",
-    align: "center",
-    minWidth: 100,
-    format: (value) => value.toLocaleString("en-US"),
-  },
-];
+const tableStyle = {
+  width: "100%",
+  display: "flex",
+  flexDirection: "row",
+  gap: "2rem",
+  borderBottom: "1px solid rgba(50,50,0, 0.1)",
+  alignItems: "center",
+};
 
 const MhaContents = () => {
   const [mhaContents, setMhaContents] = useState([]);
@@ -98,8 +73,7 @@ const MhaContents = () => {
 
   const saveOrder = () => {
     const mhaContentIds = mhaContents.map((mhaContent) => mhaContent.id);
-    console.log(mhaContentIds);
-    MhaContentServiceV2.orderMhaContents({ mhaContentIds: mhaContentIds})
+    MhaContentServiceV2.orderMhaContents({ mhaContentIds: mhaContentIds })
       .then((response) => {
         setOrderEnable(false);
         getMhaContentsData();
@@ -142,85 +116,21 @@ const MhaContents = () => {
                 </Typography>
               </Box>
             ) : (
-              <Table stickyHeader aria-label="sticky table">
-                <Droppable droppableId="table">
-                  {(provided) => (
-                    <TableBody
-                      ref={provided.innerRef}
-                      {...provided.droppableProps}
-                    >
-                      {mhaContents.map((row, index) => (
-                        <Draggable
-                          key={row.id}
-                          draggableId={row.id}
-                          index={index}
-                        >
-                          {(provided, snapshot) => (
-                            <TableRow
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              onDragOver={(event) => event.preventDefault()}
-                              style={{
-                                width: "100%",
-                                display: "flex",
-                                flexDirection: "row",
-                                // justifyContent: "space-between",
-                                gap: "2rem",
-                                borderBottom: "1px solid rgba(50,50,0, 0.1)",
-                                alignItems: "center",
-                                backgroundColor: snapshot.isDragging
-                                  ? "rgba(50,50,0, 0.1)"
-                                  : "white",
-                                ...provided.draggableProps.style,
-                              }}
-                            >
-                              <TableCell className="table-cell-status">
-                                {row.status === "LIVE" && (
-                                  <img src={greenDot} alt="live icon" />
-                                )}
-                                {row.status === "DRAFT" && (
-                                  <img src={greyDot} alt="draft icon" />
-                                )}
-                                <p>{row.status}</p>
-                              </TableCell>
-                              <TableCell className="table-cell">
-                                <img
-                                  src={row.url}
-                                  width="250px"
-                                  height="auto"
-                                  alt="Poster"
-                                />
-                              </TableCell>
-                              <TableCell
-                                className="actions"
-                                style={{
-                                  // minWidth: "7rem",
-                                  display: "flex",
-                                  flexDirection: "row",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                  borderBottom: "none",
-                                  padding: "0",
-                                }}
-                              >
-                                <TableActions
-                                  hideEdit
-                                  handleDelete={() =>
-                                    handleDeleteMhaContent(index)
-                                  }
-                                />
-                              </TableCell>
-                            </TableRow>
-                          )}
-                        </Draggable>
-                      ))}
-                      {provided.placeholder}
-                      <TableRow className="table-footer"></TableRow>
-                    </TableBody>
-                  )}
-                </Droppable>
-              </Table>
+              <>
+                {orderEnable ? (
+                  <DraggableContent
+                    mhaContents={mhaContents}
+                    handleDeleteMhaContent={handleDeleteMhaContent}
+                    showEditMhaContent={showEditMhaContent}
+                  />
+                ) : (
+                  <TableContent
+                    mhaContents={mhaContents}
+                    handleDeleteMhaContent={handleDeleteMhaContent}
+                    showEditMhaContent={showEditMhaContent}
+                  />
+                )}
+              </>
             )}
           </TableContainer>
         </Paper>
@@ -233,6 +143,108 @@ const MhaContents = () => {
           getMhaContentsData={getMhaContentsData}
         />
       )}
+      {editMhaContentModal && (
+        <EditMhaContentModal
+          onHide={() => setEditMhaContentModal(false)}
+          openModal={editMhaContentModal}
+          setEditMhaContentModal={setEditMhaContentModal}
+          getMhaContentsData={getMhaContentsData}
+          mhaContentId={mhaContentId}
+        />
+      )}
+    </>
+  );
+};
+
+const TableContent = ({ mhaContents, handleDeleteMhaContent, showEditMhaContent } ) => {
+  return (
+    <Table stickyHeader aria-label="sticky table">
+      <TableBody>
+        {mhaContents.map((row, index) => (
+          <TableRow style={tableStyle}>
+            <ContentColumns
+              row={row}
+              index={index}
+              handleDeleteMhaContent={handleDeleteMhaContent}
+              showEditMhaContent={showEditMhaContent}
+            />
+          </TableRow>
+        ))}
+        <TableRow className="table-footer"></TableRow>
+      </TableBody>
+    </Table>
+  );
+};
+
+const DraggableContent = ({ mhaContents, handleDeleteMhaContent, showEditMhaContent } ) => {
+  return (
+    <Table stickyHeader aria-label="sticky table">
+      <Droppable droppableId="table">
+        {(provided) => (
+          <TableBody ref={provided.innerRef} {...provided.droppableProps}>
+            {mhaContents.map((row, index) => (
+              <Draggable key={row.id} draggableId={row.id} index={index}>
+                {(provided, snapshot) => (
+                  <TableRow
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    onDragOver={(event) => event.preventDefault()}
+                    style={{
+                      ...tableStyle,
+                      backgroundColor: snapshot.isDragging
+                        ? "rgba(50,50,0, 0.1)"
+                        : "white",
+                      ...provided.draggableProps.style,
+                    }}
+                  >
+                    <ContentColumns
+                      row={row}
+                      index={index}
+                      handleDeleteMhaContent={handleDeleteMhaContent}
+                      showEditMhaContent={showEditMhaContent}
+                    />
+                  </TableRow>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+            <TableRow className="table-footer"></TableRow>
+          </TableBody>
+        )}
+      </Droppable>
+    </Table>
+  );
+};
+
+const ContentColumns = ({ row, index, handleDeleteMhaContent, showEditMhaContent }) => {
+  return (
+    <>
+      <TableCell className="table-cell-status">
+        {row.status === "LIVE" && <img src={greenDot} alt="live icon" />}
+        {row.status === "DRAFT" && <img src={greyDot} alt="draft icon" />}
+        <p>{row.status}</p>
+      </TableCell>
+      <TableCell className="table-cell">
+        <img src={row.url} width="250px" height="auto" alt="Poster" />
+      </TableCell>
+      <TableCell className="table-cell">{row.targetUrl}</TableCell>
+      <TableCell
+        className="actions"
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          borderBottom: "none",
+          padding: "0",
+        }}
+      >
+        <TableActions
+          handleDelete={() => handleDeleteMhaContent(index)}
+          showEdit={() => showEditMhaContent(index)}
+        />
+      </TableCell>
     </>
   );
 };

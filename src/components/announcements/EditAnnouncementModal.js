@@ -35,15 +35,17 @@ const EditAnnouncementModal = ({
           enteredTextFrench: response.data.announcement.textFrench,
           enteredTextDutch: response.data.announcement.textDutch,
           enteredHighlightedText: response.data.announcement.highlightedText,
-          enteredHighlightedTextFrench: response.data.announcement.highlightedTextFrench,
-          enteredHighlightedTextDutch: response.data.announcement.highlightedTextDutch,
+          enteredHighlightedTextFrench:
+            response.data.announcement.highlightedTextFrench,
+          enteredHighlightedTextDutch:
+            response.data.announcement.highlightedTextDutch,
         });
         setAnnouncementStatus(response.data.announcement.status);
       }
     );
   }, []);
 
-  const updateAnnounceData = () => {
+  const updateAnnouncementData = () => {
     const updatedData = {
       id: announcementId,
       status: announcementStatus,
@@ -77,7 +79,7 @@ const EditAnnouncementModal = ({
       openModal={openModal}
       title="Edit Announce Information"
       acceptTypo="Save Changes"
-      onRequest={updateAnnounceData}
+      onRequest={updateAnnouncementData}
     >
       <Box
         sx={{
@@ -94,47 +96,47 @@ const EditAnnouncementModal = ({
         autoComplete="off"
       >
         <TextInput
-            name="enteredHighlightedText"
-            onChange={handleChange}
-            value={state.enteredHighlightedText}
-            label="Highlighted Eng"
-            minRows={1}
-          />
-          <TextInput
-            name="enteredHighlightedTextFrench"
-            onChange={handleChange}
-            value={state.enteredHighlightedTextFrench}
-            label="Highlighted French"
-            minRows={1}
-          />
-          <TextInput
-            name="enteredHighlightedTextDutch"
-            onChange={handleChange}
-            value={state.enteredHighlightedTextDutch}
-            label="Highlighted Dutch"
-            minRows={1}
-          />
-          <TextInput
-            name="enteredText"
-            onChange={handleChange}
-            value={state.enteredText}
-            label="Eng"
-            minRows={1}
-          />
-          <TextInput
-            name="enteredTextFrench"
-            onChange={handleChange}
-            value={state.enteredTextFrench}
-            label="French"
-            minRows={1}
-          />
-          <TextInput
-            name="enteredTextDutch"
-            onChange={handleChange}
-            value={state.enteredTextDutch}
-            label="Dutch"
-            minRows={1}
-          />
+          name="enteredHighlightedText"
+          onChange={handleChange}
+          value={state.enteredHighlightedText}
+          label="Highlighted Eng"
+          minRows={1}
+        />
+        <TextInput
+          name="enteredHighlightedTextFrench"
+          onChange={handleChange}
+          value={state.enteredHighlightedTextFrench}
+          label="Highlighted French"
+          minRows={1}
+        />
+        <TextInput
+          name="enteredHighlightedTextDutch"
+          onChange={handleChange}
+          value={state.enteredHighlightedTextDutch}
+          label="Highlighted Dutch"
+          minRows={1}
+        />
+        <TextInput
+          name="enteredText"
+          onChange={handleChange}
+          value={state.enteredText}
+          label="Eng"
+          minRows={1}
+        />
+        <TextInput
+          name="enteredTextFrench"
+          onChange={handleChange}
+          value={state.enteredTextFrench}
+          label="French"
+          minRows={1}
+        />
+        <TextInput
+          name="enteredTextDutch"
+          onChange={handleChange}
+          value={state.enteredTextDutch}
+          label="Dutch"
+          minRows={1}
+        />
         <FormControl
           sx={{
             width: "10rem !important",
