@@ -7,13 +7,13 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme, styled } from "@mui/material/styles";
-import { Paper, Grid, Stack, Box } from "@mui/material";
+import { Paper } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 import "./Modal.scss";
 
 const MyPaper = styled(Paper)(({ theme }) => ({
-  minWidth: "120rem !important",
+  minWidth: "40rem !important",
   maxWidth: "120rem !important",
   borderRadius: "0.75rem",
   padding: "0 2rem",
@@ -45,31 +45,24 @@ const ModalOverlay = (props) => {
 
       <DialogContent className="modal-content">{props.children}</DialogContent>
       <DialogActions className="modal-actions">
-        <Grid container>
-          <Grid xs={10}></Grid>
-          <Grid xs={2}>
-            <Stack direction="row" spacing={1}>
-              <StyledButton
-                variant="contained"
-                autoFocus
-                color="inherit"
-                onClick={props.onHide}
-                disabled={props.isDisabled}
-              >
-                Cancel
-              </StyledButton>
-              <StyledButton
-                variant="contained"
-                color="success"
-                autoFocus
-                onClick={props.onRequest}
-                disabled={props.isDisabled}
-              >
-                {props.acceptTypo}
-              </StyledButton>
-            </Stack>
-          </Grid>
-        </Grid>
+        <StyledButton
+          variant="contained"
+          autoFocus
+          color="inherit"
+          onClick={props.onHide}
+          disabled={props.isDisabled}
+        >
+          Cancel
+        </StyledButton>
+        <StyledButton
+          variant="contained"
+          color="success"
+          autoFocus
+          onClick={props.onRequest}
+          disabled={props.isDisabled}
+        >
+          {props.acceptTypo}
+        </StyledButton>
       </DialogActions>
     </Dialog>
   );

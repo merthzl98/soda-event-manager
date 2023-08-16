@@ -11,6 +11,7 @@ import { Button, Checkbox, FormControlLabel, Grid, Stack } from "@mui/material";
 import MhaContentServiceV2 from "../../services/v2/MhaContentService";
 import PosterServiceV2 from "../../services/v2/PosterService";
 import DefaultImage from "../../static/empty_content_yet.jpg";
+import "./AddMhaContentModal.scss";
 
 const isUrlValid = (text) => {
   try {
@@ -114,20 +115,33 @@ const AddMhaContentModal = ({
       onHide={onHide}
       openModal={openModal}
       title="Add Main Highlighted Area Content"
-      acceptTypo="Add"
+      acceptTypo="Add Highlighted Poster"
       onRequest={postMhaContentData}
     >
-      <Grid container>
-        <Grid item md={8} sm={12}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xl: "row", sm: "column" },
+          gap: "2rem",
+          position: "relative",
+        }}
+      >
+        <Box
+          className="image-container"
+          // sx={{
+          //   maxWidth: "958px",
+          //   height: "540px",
+          //   border: "2px solid red",
+          // }}
+        >
           {/* {!external && fileInfo.data && contentType === "VIDEO" && (
             <video src={fileInfo.data} alt="Video" />
           )} */}
           {!external && fileInfo.data && contentType === "POSTER" && (
             <img
               src={fileInfo.data}
-              width="1158px"
-              height="540px"
               alt="Poster"
+              // style={{ maxWidth: "1058", height: "auto"}}
             />
           )}
           {/* {external && showExternalContent && contentType === "VIDEO" && (
@@ -144,16 +158,19 @@ const AddMhaContentModal = ({
           {!showExternalContent && !fileInfo.data && (
             <img
               src={DefaultImage}
-              width="1158px"
-              height="540px"
+              style={{
+                aspectRatio: "2.144",
+                // width: "1158px",
+                // height: "540px",
+              }}
               alt="Poster"
             />
           )}
-        </Grid>
-        <Grid item md={4} sm={12}>
-          <Stack spacing={3}>
-            <Stack direction="row" alignItems="center" spacing={2}>
-              {/* <FormControlLabel
+        </Box>
+
+        <Stack spacing={3} sx={{ minWidth: "215px" }}>
+          <Stack direction="row" alignItems="center" spacing={2}>
+            {/* <FormControlLabel
                 control={
                   <Checkbox
                     checked={external}
@@ -172,7 +189,7 @@ const AddMhaContentModal = ({
                   <MenuItem value="VIDEO">Video</MenuItem>
                 </Select>
               </FormControl> */}
-              {/* {!external && contentType === "VIDEO" && (
+            {/* {!external && contentType === "VIDEO" && (
                 <>
                   <Button
                     onClick={() => videoInputRef.current.click()}
@@ -192,28 +209,28 @@ const AddMhaContentModal = ({
                   />
                 </>
               )} */}
-              {!external && contentType === "POSTER" && (
-                <>
-                  <Button
-                    onClick={() => posterInputRef.current.click()}
-                    variant="contained"
-                    size="small"
-                    sx={{ minWidth: "160px" }}
-                  >
-                    Select
-                  </Button>
-                  <input
-                    ref={posterInputRef}
-                    id="fileInputPoster"
-                    type="file"
-                    accept="image/png, image/jpeg"
-                    onChange={handleFileChange}
-                    style={{ display: "none" }}
-                  />
-                </>
-              )}
-            </Stack>
-            {/* {external && (
+            {!external && contentType === "POSTER" && (
+              <>
+                <Button
+                  onClick={() => posterInputRef.current.click()}
+                  variant="contained"
+                  size="small"
+                  sx={{ minWidth: "120px" }}
+                >
+                  Select
+                </Button>
+                <input
+                  ref={posterInputRef}
+                  id="fileInputPoster"
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  onChange={handleFileChange}
+                  style={{ display: "none" }}
+                />
+              </>
+            )}
+          </Stack>
+          {/* {external && (
               <>
                 <TextInput
                   name="enteredExternalUrl"
@@ -224,16 +241,15 @@ const AddMhaContentModal = ({
                 />
               </>
             )} */}
-            <TextInput
-              name="enteredTargetUrl"
-              onChange={handleChangeEnteredTargetUrl}
-              value={enteredTargetUrl}
-              label="Target url"
-              minRows={3}
-            />
-          </Stack>
-        </Grid>
-      </Grid>
+          <TextInput
+            name="enteredTargetUrl"
+            onChange={handleChangeEnteredTargetUrl}
+            value={enteredTargetUrl}
+            label="Target url"
+            minRows={3}
+          />
+        </Stack>
+      </Box>
     </Modal>
   );
 };

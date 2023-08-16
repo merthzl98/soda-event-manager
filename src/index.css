@@ -1,5 +1,8 @@
 html {
   font-size: 16px;
+  font-family: "Roboto";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -8,15 +11,5 @@ body {
   padding: 0;
   width: 100%;
   min-height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: rgba(0,0,0, 0.8);
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  background-color: rgba(0, 0, 0, 0.8);
 }

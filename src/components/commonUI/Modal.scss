@@ -47,10 +47,9 @@
 }
 
 .modal-actions {
-  padding: $length-md2 $length-sm1 $length-md2 $length-sm1 !important;
+  padding: $length-md1 0 !important;
   width: 100%;
   button {
-    width: 100%;
-    position: relative !important;
+    width: auto;
   }
 }
