@@ -1,50 +1,15 @@
-import React, { useEffect, useState, useContext } from "react";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 
 import AddArtistModal from "./AddArtistModal";
 import EditArtistModal from "./EditArtistModal";
 import AuthContext from "../../storage/auth-context";
 import ArtistServiceV2 from "../../services/v2/ArtistService";
-import TableActions from "../commonUI/TableActions";
-import "./Artists.scss";
-import TableHeader from "../commonUI/TableHeader";
-import TableColumnTitle from "../commonUI/TableColumnTitle";
-
-const columns = [
-  { id: "fullName", label: "Full\u00a0Name", minWidth: 100 },
-  { id: "genre", label: "Genre", minWidth: 100 },
-  {
-    id: "description",
-    label: "Description",
-    minWidth: 100,
-    // align: "right",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "action",
-    label: "Action",
-    align: "center",
-    minWidth: 100,
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  // {
-  //   id: "posters",
-  //   label: "Posters",
-  //   minWidth: 100,
-  //   // align: "right",
-  //   format: (value) => value.toLocaleString("en-US"),
-  // },
-];
+import { tableConfig } from "../../configs/config";
+import TableCommon from "../commonUI/TableCommon";
 
 const Artists = () => {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [totalElements, setTotalElements] = useState(1);
   const [artistsData, setArtistsData] = useState([]);
   const [addArtistModal, setAddArtistModal] = useState(false);
   const [editArtistModal, setEditArtistModal] = useState(false);
@@ -52,20 +17,20 @@ const Artists = () => {
 
   const { setIsLoading } = useContext(AuthContext);
 
-  const getArtistsData = () => {
+  const getArtistsData = useCallback(() => {
     setIsLoading(true);
-    // has not any query
-    ArtistServiceV2.getArtistsList()
+    ArtistServiceV2.getArtistsList(null, null, tableConfig.itemCount, page)
       .then((response) => {
+        setTotalElements(response.data.artistsPage.totalElements);
         setArtistsData(response.data.artistsPage.content);
       })
       .then(() => setIsLoading(false));
-  };
+  }, [page]);
 
   useEffect(() => {
     getArtistsData();
     // eslint-disable-next-line
-  }, []);
+  }, [getArtistsData]);
 
   const handleDeleteArtist = (clickedIndex) => {
     const artistId = artistsData[clickedIndex]?.id;
@@ -95,80 +60,20 @@ const Artists = () => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
   return (
     <>
-      <Paper className="paper-container">
-        <TableContainer sx={{ maxHeight: 740 }}>
-          <TableHeader
-            title="Artists"
-            showAddModal={showAddArtist}
-            toolTip="Add New Artist"
-          />
-          <Table stickyHeader aria-label="sticky table">
-            <TableColumnTitle columns={columns} />
-            <TableBody>
-              {artistsData
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={Math.random()}
-                    >
-                      {columns.map((column) => {
-                        const value = row[column.id];
-                        const truncatedValue =
-                          typeof value === "string" &&
-                          value.length > column.maxLength
-                            ? `${value.slice(0, column.maxLength)}...`
-                            : value;
-                        return column.id === "action" ? (
-                          <TableCell
-                            className="table-cell-action"
-                            key={column.id}
-                            align={column.align}
-                          >
-                            <TableActions
-                              handleDelete={() => handleDeleteArtist(index)}
-                              showEdit={() => showEditArtist(index)}
-                            />
-                          </TableCell>
-                        ) : (
-                          <TableCell
-                            className="table-cell-default"
-                            key={column.id}
-                            align={column.align}
-                          >
-                            {column.format && typeof truncatedValue === "number"
-                              ? column.format(truncatedValue)
-                              : truncatedValue}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={artistsData.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          className="table-pagination"
-        />
-      </Paper>
+      <TableCommon
+        data={artistsData}
+        columns={tableConfig.artistsColumn}
+        handleDelete={handleDeleteArtist}
+        showEdit={showEditArtist}
+        title="Artists"
+        showAddModal={showAddArtist}
+        label="+ Add Artist"
+        page={page}
+        onPageChange={handleChangePage}
+        count={totalElements}
+      />
       {addArtistModal && (
         <AddArtistModal
           onHide={hideAddArtist}

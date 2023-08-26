@@ -1,6 +1,5 @@
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import * as ReactDOM from "react-dom";
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -11,58 +10,57 @@ import { Paper } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 import "./Modal.scss";
+import ButtonUI from "./ButtonUI";
 
 const MyPaper = styled(Paper)(({ theme }) => ({
-  minWidth: "40rem !important",
+  minWidth: "30rem !important",
   maxWidth: "120rem !important",
   borderRadius: "0.75rem",
-  padding: "0 2rem",
+  padding: "0 36px !important",
 }));
-
-const StyledButton = styled(Button)({
-  textTransform: "none", // Prevents capitalization
-});
 
 const ModalOverlay = (props) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
+  const {
+    openModal,
+    onHide,
+    modalStyle,
+    title,
+    children,
+    isDisabled,
+    onRequest,
+    acceptTypo,
+  } = props;
+
   return (
     <Dialog
       fullScreen={fullScreen}
-      open={props.openModal}
-      onClose={props.onHide}
-      aria-labelledby="responsive-dialog-title"
+      open={openModal}
+      onClose={onHide}
       PaperComponent={MyPaper}
-      sx={props.modalStyle}
+      sx={modalStyle}
     >
       <div className="modal-header">
-        <DialogTitle className="modal-title" id="responsive-dialog-title">
-          {props.title}
-        </DialogTitle>
-        <CloseIcon className="modal-close" onClick={props.onHide}></CloseIcon>
+        <DialogTitle className="modal-title">{title}</DialogTitle>
+        <CloseIcon className="modal-close" onClick={onHide}></CloseIcon>
       </div>
 
-      <DialogContent className="modal-content">{props.children}</DialogContent>
+      <DialogContent className="modal-content">{children}</DialogContent>
       <DialogActions className="modal-actions">
-        <StyledButton
-          variant="contained"
-          autoFocus
+        <ButtonUI
           color="inherit"
-          onClick={props.onHide}
-          disabled={props.isDisabled}
-        >
-          Cancel
-        </StyledButton>
-        <StyledButton
-          variant="contained"
-          color="success"
-          autoFocus
-          onClick={props.onRequest}
-          disabled={props.isDisabled}
-        >
-          {props.acceptTypo}
-        </StyledButton>
+          onClick={onHide}
+          disabled={isDisabled}
+          label="Cancel"
+        />
+
+        <ButtonUI
+          onClick={onRequest}
+          disabled={isDisabled}
+          label={acceptTypo}
+        />
       </DialogActions>
     </Dialog>
   );

@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import Box from "@mui/material/Box";
 
 import AuthContext from "../../storage/auth-context";
 import Modal from "../commonUI/Modal";
@@ -38,13 +37,15 @@ const AddAnnouncementModal = ({
 
     setIsLoading(true);
 
-    AnnouncementServiceV2.createAnnouncement(announcementData).then((response) => {
-      if (response.status === 200) {
-        setIsLoading(false);
-        setAddAnnouncementModal(false);
-        getAnnouncementsData();
+    AnnouncementServiceV2.createAnnouncement(announcementData).then(
+      (response) => {
+        if (response.status === 200) {
+          setIsLoading(false);
+          setAddAnnouncementModal(false);
+          getAnnouncementsData();
+        }
       }
-    });
+    );
   };
 
   const handleChange = (e) => {
@@ -61,64 +62,48 @@ const AddAnnouncementModal = ({
         acceptTypo="Add Announcement"
         onRequest={postAnnouncementData}
       >
-        <Box
-          component="form"
-          sx={{
-            margin: "0px 5px",
-            "& > :not(style)": {
-              m: 1,
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-              margin: "15px 0px",
-            },
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <TextInput
-            name="enteredHighlightedText"
-            onChange={handleChange}
-            value={state.enteredHighlightedText}
-            label="Highlighted Eng"
-            minRows={1}
-          />
-          <TextInput
-            name="enteredHighlightedTextFrench"
-            onChange={handleChange}
-            value={state.enteredHighlightedTextFrench}
-            label="Highlighted French"
-            minRows={1}
-          />
-          <TextInput
-            name="enteredHighlightedTextDutch"
-            onChange={handleChange}
-            value={state.enteredHighlightedTextDutch}
-            label="Highlighted Dutch"
-            minRows={1}
-          />
-          <TextInput
-            name="enteredText"
-            onChange={handleChange}
-            value={state.enteredText}
-            label="Eng"
-            minRows={1}
-          />
-          <TextInput
-            name="enteredTextFrench"
-            onChange={handleChange}
-            value={state.enteredTextFrench}
-            label="French"
-            minRows={1}
-          />
-          <TextInput
-            name="enteredTextDutch"
-            onChange={handleChange}
-            value={state.enteredTextDutch}
-            label="Dutch"
-            minRows={1}
-          />
-        </Box>
+        <TextInput
+          name="enteredHighlightedText"
+          onChange={handleChange}
+          value={state.enteredHighlightedText}
+          label="Highlighted Eng"
+          minRows={1}
+        />
+        <TextInput
+          name="enteredHighlightedTextFrench"
+          onChange={handleChange}
+          value={state.enteredHighlightedTextFrench}
+          label="Highlighted French"
+          minRows={1}
+        />
+        <TextInput
+          name="enteredHighlightedTextDutch"
+          onChange={handleChange}
+          value={state.enteredHighlightedTextDutch}
+          label="Highlighted Dutch"
+          minRows={1}
+        />
+        <TextInput
+          name="enteredText"
+          onChange={handleChange}
+          value={state.enteredText}
+          label="Eng"
+          minRows={1}
+        />
+        <TextInput
+          name="enteredTextFrench"
+          onChange={handleChange}
+          value={state.enteredTextFrench}
+          label="French"
+          minRows={1}
+        />
+        <TextInput
+          name="enteredTextDutch"
+          onChange={handleChange}
+          value={state.enteredTextDutch}
+          label="Dutch"
+          minRows={1}
+        />
       </Modal>
     </>
   );

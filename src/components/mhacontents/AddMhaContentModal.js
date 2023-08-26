@@ -7,11 +7,22 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { Button, Checkbox, FormControlLabel, Grid, Stack } from "@mui/material";
+import {
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Grid,
+  Stack,
+  Typography,
+} from "@mui/material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { styled } from "@mui/material/styles";
+
 import MhaContentServiceV2 from "../../services/v2/MhaContentService";
 import PosterServiceV2 from "../../services/v2/PosterService";
 import DefaultImage from "../../static/empty_content_yet.jpg";
 import "./AddMhaContentModal.scss";
+import FileInput from "../commonUI/FileInput";
 
 const isUrlValid = (text) => {
   try {
@@ -39,7 +50,6 @@ const AddMhaContentModal = ({
   const [enteredTargetUrl, setEnteredTargetUrl] = useState("");
   const [showExternalContent, setShowExternalContent] = useState(false);
 
-  const posterInputRef = useRef(null);
   // const videoInputRef = useRef(null);
 
   const { setIsLoading } = useContext(AuthContext);
@@ -100,16 +110,6 @@ const AddMhaContentModal = ({
     setContentType(event.target.value);
   };
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setFileData(file);
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      setFileInfo({ name: file.name, data: e.target.result });
-    };
-    reader.readAsDataURL(file);
-  };
-
   return (
     <Modal
       onHide={onHide}
@@ -121,18 +121,19 @@ const AddMhaContentModal = ({
       <Box
         sx={{
           display: "flex",
-          flexDirection: { xl: "row", sm: "column" },
-          gap: "2rem",
+          justifyContent: "space-between",
+          gap: "1rem",
           position: "relative",
         }}
       >
         <Box
-          className="image-container"
-          // sx={{
-          //   maxWidth: "958px",
-          //   height: "540px",
-          //   border: "2px solid red",
-          // }}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: "1rem",
+            alignItems: "center",
+          }}
         >
           {/* {!external && fileInfo.data && contentType === "VIDEO" && (
             <video src={fileInfo.data} alt="Video" />
@@ -141,7 +142,7 @@ const AddMhaContentModal = ({
             <img
               src={fileInfo.data}
               alt="Poster"
-              // style={{ maxWidth: "1058", height: "auto"}}
+              style={{ maxWidth: "558px", height: "auto", maxHeight: "300px" }}
             />
           )}
           {/* {external && showExternalContent && contentType === "VIDEO" && (
@@ -160,15 +161,20 @@ const AddMhaContentModal = ({
               src={DefaultImage}
               style={{
                 aspectRatio: "2.144",
-                // width: "1158px",
-                // height: "540px",
+                maxWidth: "500px",
+                height: "auto",
               }}
               alt="Poster"
             />
           )}
+          {fileInfo.name && (
+            <Typography sx={{ maxWidth: "558px", fontWeight: "bolder" }}>
+              {fileInfo?.name}
+            </Typography>
+          )}
         </Box>
 
-        <Stack spacing={3} sx={{ minWidth: "215px" }}>
+        <Stack spacing={3} sx={{ minWidth: "315px" }}>
           <Stack direction="row" alignItems="center" spacing={2}>
             {/* <FormControlLabel
                 control={
@@ -209,25 +215,15 @@ const AddMhaContentModal = ({
                   />
                 </>
               )} */}
+
             {!external && contentType === "POSTER" && (
-              <>
-                <Button
-                  onClick={() => posterInputRef.current.click()}
-                  variant="contained"
-                  size="small"
-                  sx={{ minWidth: "120px" }}
-                >
-                  Select
-                </Button>
-                <input
-                  ref={posterInputRef}
-                  id="fileInputPoster"
-                  type="file"
-                  accept="image/png, image/jpeg"
-                  onChange={handleFileChange}
-                  style={{ display: "none" }}
+              <div className="file-input">
+                <FileInput
+                  setFileData={setFileData}
+                  setImageData={setFileInfo}
+                  label="Select File"
                 />
-              </>
+              </div>
             )}
           </Stack>
           {/* {external && (
@@ -241,6 +237,7 @@ const AddMhaContentModal = ({
                 />
               </>
             )} */}
+
           <TextInput
             name="enteredTargetUrl"
             onChange={handleChangeEnteredTargetUrl}

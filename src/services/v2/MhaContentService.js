@@ -18,7 +18,7 @@ const softUpdateMhaContent = (mhaData) => {
   return http.put("/soft-update-mhacontent", mhaData);
 };
 
-const getMhaContentsById = (id) => {
+const getMhaContentById = (id) => {
   return http.get("/fetch-mhacontent-by-id", { params: { mhaContentId: id } });
 };
 
@@ -35,7 +35,7 @@ const MhaContentService = {
   createMhaContent,
   updateMhaContent,
   softUpdateMhaContent,
-  getMhaContentsById,
+  getMhaContentById,
   orderMhaContents,
   deleteMhaContents,
 };

@@ -1,14 +1,15 @@
-import React from "react";
-
+import ButtonUI from "./ButtonUI";
 import "./TableHeader.scss";
 import TableTitle from "./TableTitle";
-import AddNewButton from "./AddNewButton";
 
 const TableHeader = (props) => {
+  const { title, label, showAddModal, rightContent } = props;
   return (
     <div className="table-header">
-      <TableTitle>{props.title}</TableTitle>
-      <AddNewButton toolTip={props.toolTip} showAddModal={props.showAddModal} />
+      <TableTitle>{title}</TableTitle>
+      <ButtonUI label={label} onClick={showAddModal} />
+
+      {/* {rightContent} */}
     </div>
   );
 };

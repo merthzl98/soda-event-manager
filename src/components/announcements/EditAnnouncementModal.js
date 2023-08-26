@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -81,100 +80,85 @@ const EditAnnouncementModal = ({
       acceptTypo="Save Changes"
       onRequest={updateAnnouncementData}
     >
-      <Box
+      <TextInput
+        name="enteredHighlightedText"
+        onChange={handleChange}
+        value={state.enteredHighlightedText}
+        label="Highlighted Eng"
+        minRows={1}
+      />
+      <TextInput
+        name="enteredHighlightedTextFrench"
+        onChange={handleChange}
+        value={state.enteredHighlightedTextFrench}
+        label="Highlighted French"
+        minRows={1}
+      />
+      <TextInput
+        name="enteredHighlightedTextDutch"
+        onChange={handleChange}
+        value={state.enteredHighlightedTextDutch}
+        label="Highlighted Dutch"
+        minRows={1}
+      />
+      <TextInput
+        name="enteredText"
+        onChange={handleChange}
+        value={state.enteredText}
+        label="Eng"
+        minRows={1}
+      />
+      <TextInput
+        name="enteredTextFrench"
+        onChange={handleChange}
+        value={state.enteredTextFrench}
+        label="French"
+        minRows={1}
+      />
+      <TextInput
+        name="enteredTextDutch"
+        onChange={handleChange}
+        value={state.enteredTextDutch}
+        label="Dutch"
+        minRows={1}
+      />
+      <FormControl
         sx={{
-          margin: "0px 5px",
-          "& > :not(style)": {
-            m: 1,
-            display: "flex",
-            flexDirection: "column",
-            width: "100%",
-            margin: "15px 0px",
-          },
+          width: "10rem !important",
+          margin: "8px 16px",
         }}
-        noValidate
-        autoComplete="off"
+        variant="standard"
       >
-        <TextInput
-          name="enteredHighlightedText"
-          onChange={handleChange}
-          value={state.enteredHighlightedText}
-          label="Highlighted Eng"
-          minRows={1}
-        />
-        <TextInput
-          name="enteredHighlightedTextFrench"
-          onChange={handleChange}
-          value={state.enteredHighlightedTextFrench}
-          label="Highlighted French"
-          minRows={1}
-        />
-        <TextInput
-          name="enteredHighlightedTextDutch"
-          onChange={handleChange}
-          value={state.enteredHighlightedTextDutch}
-          label="Highlighted Dutch"
-          minRows={1}
-        />
-        <TextInput
-          name="enteredText"
-          onChange={handleChange}
-          value={state.enteredText}
-          label="Eng"
-          minRows={1}
-        />
-        <TextInput
-          name="enteredTextFrench"
-          onChange={handleChange}
-          value={state.enteredTextFrench}
-          label="French"
-          minRows={1}
-        />
-        <TextInput
-          name="enteredTextDutch"
-          onChange={handleChange}
-          value={state.enteredTextDutch}
-          label="Dutch"
-          minRows={1}
-        />
-        <FormControl
+        <InputLabel
           sx={{
-            width: "10rem !important",
-            margin: "8px 16px",
+            fontWeight: "700 !important",
+            color: "rgba(0, 0, 0, 0.6)",
+            fontSize: "1rem",
           }}
-          variant="standard"
+          id="demo-simple-select-label"
         >
-          <InputLabel
-            sx={{
-              fontWeight: "700 !important",
-              color: "rgba(0, 0, 0, 0.6)",
-              fontSize: "1rem",
-            }}
-            id="demo-simple-select-label"
-          >
-            Annnounce Status
-          </InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={announcementStatus}
-            label="Announce Status"
-            onChange={changeAnnouncementStatus}
-            sx={{
-              backgroundColor: "rgba(85, 85, 85, 0.1)",
-              borderRadius: "4px",
-              border: "1px solid #ced4da",
-              padding: "4px 8px !important",
-            }}
-          >
-            <MenuItem value={"DRAFT"} sx={{ paddingLeft: "15px !important" }}>
-              Draft
-            </MenuItem>
-            <MenuItem value={"PREVIEW"}>Preview</MenuItem>
-            <MenuItem value={"LIVE"}>Live</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
+          Annnounce Status
+        </InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={announcementStatus}
+          label="Announce Status"
+          onChange={changeAnnouncementStatus}
+          sx={{
+            backgroundColor: "rgba(85, 85, 85, 0.1)",
+            borderRadius: "4px",
+            border: "1px solid #ced4da",
+            padding: "4px 8px !important",
+          }}
+        >
+          <MenuItem value={"DRAFT"} sx={{ paddingLeft: "15px !important" }}>
+            Draft
+          </MenuItem>
+          <MenuItem value={"PREVIEW"}>Preview</MenuItem>
+          <MenuItem value={"LIVE"}>Live</MenuItem>
+        </Select>
+      </FormControl>
     </Modal>
   );
 };

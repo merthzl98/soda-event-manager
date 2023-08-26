@@ -12,6 +12,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import TableHeader from "../commonUI/TableHeader";
 import { Typography } from "@mui/material";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
 import MhaContentServiceV2 from "../../services/v2/MhaContentService";
 import AuthContext from "../../storage/auth-context";
 import TableActions from "../commonUI/TableActions";
@@ -83,6 +84,27 @@ const MhaContents = () => {
       });
   };
 
+  let rightHeadContent = (
+    <Box sx={{ display: "flex", gap: "1rem", paddingLeft: "5rem" }}>
+      <FormControlLabel
+        control={
+          <Switch
+            checked={orderEnable}
+            onChange={handleOrderEnableSwitch}
+            color="success"
+          />
+        }
+        label="Enable ordering"
+        labelPlacement="start"
+      />
+      {orderEnable && (
+        <Button variant="contained" color="success" onClick={saveOrder}>
+          Save the order
+        </Button>
+      )}
+    </Box>
+  );
+
   return (
     <>
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -91,24 +113,10 @@ const MhaContents = () => {
             <TableHeader
               title="Main Highlighted Contents"
               showAddModal={() => setAddMhaContentModal(true)}
-              toolTip="Add New MhaContent"
+              label="+ Add MhaContent"
+              rightContent={rightHeadContent}
             />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={orderEnable}
-                  onChange={handleOrderEnableSwitch}
-                  color="success"
-                />
-              }
-              label="Enable ordering"
-              labelPlacement="start"
-            />
-            {orderEnable && (
-              <Button variant="contained" color="success" onClick={saveOrder}>
-                Save the order
-              </Button>
-            )}
+
             {mhaContents.lenght === 0 ? (
               <Box display="flex" sx={{ p: 2 }}>
                 <Typography variant="h6" m="auto">
@@ -156,7 +164,11 @@ const MhaContents = () => {
   );
 };
 
-const TableContent = ({ mhaContents, handleDeleteMhaContent, showEditMhaContent } ) => {
+const TableContent = ({
+  mhaContents,
+  handleDeleteMhaContent,
+  showEditMhaContent,
+}) => {
   return (
     <Table stickyHeader aria-label="sticky table">
       <TableBody>
@@ -176,7 +188,11 @@ const TableContent = ({ mhaContents, handleDeleteMhaContent, showEditMhaContent 
   );
 };
 
-const DraggableContent = ({ mhaContents, handleDeleteMhaContent, showEditMhaContent } ) => {
+const DraggableContent = ({
+  mhaContents,
+  handleDeleteMhaContent,
+  showEditMhaContent,
+}) => {
   return (
     <Table stickyHeader aria-label="sticky table">
       <Droppable droppableId="table">
@@ -217,13 +233,18 @@ const DraggableContent = ({ mhaContents, handleDeleteMhaContent, showEditMhaCont
   );
 };
 
-const ContentColumns = ({ row, index, handleDeleteMhaContent, showEditMhaContent }) => {
+const ContentColumns = ({
+  row,
+  index,
+  handleDeleteMhaContent,
+  showEditMhaContent,
+}) => {
   return (
     <>
       <TableCell className="table-cell-status">
         {row.status === "LIVE" && <img src={greenDot} alt="live icon" />}
         {row.status === "DRAFT" && <img src={greyDot} alt="draft icon" />}
-        <p>{row.status}</p>
+        <Typography>{row.status}</Typography>
       </TableCell>
       <TableCell className="table-cell">
         <img src={row.url} width="250px" height="auto" alt="Poster" />

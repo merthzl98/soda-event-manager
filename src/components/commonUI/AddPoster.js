@@ -1,7 +1,4 @@
-import React, { useRef } from "react";
 import {
-  Button,
-  Grid,
   IconButton,
   List,
   ListItem,
@@ -12,26 +9,22 @@ import { styled } from "@mui/material/styles";
 // import ListItemAvatar from "@mui/material/ListItemAvatar";
 // import Avatar from "@mui/material/Avatar";
 import DeleteIcon from "@mui/icons-material/Delete";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 // import PosterService from "../../services/PosterService";
 import "./AddPoster.scss";
+import FileInput from "./FileInput";
 
 const Demo = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
 
-const StyledButton = styled(Button)({
-  textTransform: "none", // Prevents capitalization
-});
-
 const getPosterTypeText = (text) => {
   if (text === "EVENT_HIGHLIGHTED") {
     return "Event Highlighted";
   } else if (text === "EVENT_LIST") {
-    return "Event List";  
+    return "Event List";
   } else if (text === "EVENT_NEXTUP") {
-    return "Event Next-up"
+    return "Event Next-up";
   } else if (text === "EVENT_DETAIL") {
     return "Event Detail";
   } else {
@@ -40,42 +33,13 @@ const getPosterTypeText = (text) => {
 };
 
 const AddPoster = (props) => {
-  const fileInputRef = useRef(null);
-
-  const handleClickImage = () => {
-    fileInputRef.current.click();
-  };
-
-  function handleDragOver(e) {
-    e.preventDefault();
-  }
-
-  function handleDrop(e) {
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
-    props.setFileData(file);
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const imageInfo = { name: file.name, data: e.target.result };
-
-      props.setImageData(imageInfo);
-      props.setIsShownImageModal(true);
-    };
-    reader.readAsDataURL(file);
-  }
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    props.setFileData(file);
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const imageInfo = { name: file.name, data: e.target.result };
-
-      props.setImageData(imageInfo);
-      props.setIsShownImageModal(true);
-    };
-    reader.readAsDataURL(file);
-  };
+  const {
+    setFileData,
+    setImageData,
+    setIsShownImageModal,
+    setImagesData,
+    setFileNameList,
+  } = props;
 
   const handleDeletePoster = (posterIndex) => {
     // const deletedId = props.imagesData[posterIndex].id;
@@ -94,13 +58,13 @@ const AddPoster = (props) => {
       (poster, index) => index !== posterIndex
     );
 
-    props.setImagesData(filteredPosters);
+    setImagesData(filteredPosters);
 
     const filteredList = props.fileNameList.filter(
       (poster, index) => index !== posterIndex
     );
 
-    props.setFileNameList(filteredList);
+    setFileNameList(filteredList);
   };
 
   return (
@@ -111,67 +75,47 @@ const AddPoster = (props) => {
 
       <div className="add-poster-field">
         <div className="poster-head">
-          <StyledButton
-            onClick={handleClickImage}
-            className="add-poster-button"
-            variant="contained"
-            size="small"
-          >
-            Select Files
-          </StyledButton>
-          <div
-            className="drop-file"
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-          >
-            <label htmlFor="fileInput">
-              <div className="add-poster-typo">
-                <CloudUploadIcon />
-                <span>Drop files here...</span>
-              </div>
-            </label>
-            <input
-              ref={fileInputRef}
-              id="fileInput"
-              type="file"
-              accept="image/png, image/jpeg"
-              onChange={handleFileChange}
-              style={{ display: "none" }}
-            />
-          </div>
+          <FileInput
+            setFileData={setFileData}
+            setImageData={setImageData}
+            setIsShownImageModal={setIsShownImageModal}
+            label="Select Files"
+          />
         </div>
-
-        <Grid item xs={12} md={6}>
-          <Demo>
-            <List dense={true} className="poster-list">
-              {props.imagesData?.map((poster, index) => (
-                <ListItem
-                  key={Math.random()}
-                  className="list-item"
-                  secondaryAction={
-                    <IconButton
-                      onClick={() => handleDeletePoster(index)}
-                      edge="end"
-                      aria-label="delete"
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  }
-                >
-                  {/* <ListItemAvatar>
+        <Demo>
+          <List dense={true} className="poster-list">
+            {props.imagesData?.map((poster, index) => (
+              <ListItem
+                key={Math.random()}
+                className="list-item"
+                secondaryAction={
+                  <IconButton
+                    onClick={() => handleDeletePoster(index)}
+                    edge="end"
+                    aria-label="delete"
+                  >
+                    <DeleteIcon onClick={() => handleDeletePoster(index)} />
+                  </IconButton>
+                }
+              >
+                {/* <ListItemAvatar>
                     <Avatar>
                       <img src={props.imageData} alt="Uploaded" />
                     </Avatar>
                   </ListItemAvatar> */}
-                  <ListItemText
-                    primary={`${poster.fileName}`}
-                    secondary={`${getPosterTypeText(poster.type)}`}
-                  />
-                </ListItem>
-              ))}
-            </List>
-          </Demo>
-        </Grid>
+                <ListItemText
+                  sx={{
+                    display: "flex",
+                    gap: "1rem",
+                    fontSize: "0.75rem !important",
+                  }}
+                  primary={`${poster.fileName}`}
+                  secondary={`(${getPosterTypeText(poster.type)})`}
+                />
+              </ListItem>
+            ))}
+          </List>
+        </Demo>
       </div>
     </div>
   );

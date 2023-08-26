@@ -1,0 +1,12 @@
+@import "../../configs/StylePalette.scss";
+
+.paper-container {
+  width: 100% !important;
+  position: relative !important;
+  border-radius: 16px !important;
+
+  .table-cell-action {
+    padding: 0 $length-md1;
+    width: 8rem;
+  }
+}

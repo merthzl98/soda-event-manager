@@ -1,12 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { LocalizationProvider, DateTimePicker } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 
 import AuthContext from "../../storage/auth-context";
@@ -17,11 +14,11 @@ import ImageModal from "../commonUI/ImageModal.js";
 import ArtistServiceV2 from "../../services/v2/ArtistService";
 import VenueServiceV2 from "../../services/v2/VenueService";
 import AddPoster from "../commonUI/AddPoster";
-import { formatIso } from "../../configs/config";
+import { formatIso } from "../../utils";
 import TextInput from "../commonUI/TextInput";
 import SwitchToggle from "../commonUI/SwitchToggle";
-import "./Events.scss";
 import InputTab from "../commonUI/InputTab";
+import DatePicker from "../commonUI/DatePicker";
 
 const AddEventModal = ({
   onHide,
@@ -63,12 +60,14 @@ const AddEventModal = ({
   useEffect(() => {
     ArtistServiceV2.getArtistsList().then(
       (response) =>
-        response.status === 200 && setArtistList(response.data.artistsPage.content)
+        response.status === 200 &&
+        setArtistList(response.data.artistsPage.content)
     );
 
     VenueServiceV2.getVenues().then(
       (response) =>
-        response.status === 200 && setVenueList(response.data.venuesPage.content)
+        response.status === 200 &&
+        setVenueList(response.data.venuesPage.content)
     );
   }, []);
 
@@ -161,171 +160,135 @@ const AddEventModal = ({
         onRequest={postEventData}
         modalStyle={modalStyle}
       >
-        <Box
-          component="form"
-          sx={{
-            borderBottom: "1px dashed rgba(197, 196, 196, 0.8)",
-            margin: "0px 5px",
-            "& > :not(style)": {
-              m: 1,
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-              margin: "15px 0px",
-            },
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <TextInput
-            name="title"
-            onChange={handleChange}
-            value={state.title}
-            label="Title"
-            multiline={true}
-          />
-          <TextInput
-            name="titleFrench"
-            onChange={handleChange}
-            value={state.titleFrench}
-            label="Title French"
-            multiline={true}
-          />
-          <TextInput
-            name="titleDutch"
-            onChange={handleChange}
-            value={state.titleDutch}
-            label="Title Dutch"
-            multiline={true}
-          />
+        <TextInput
+          name="title"
+          onChange={handleChange}
+          value={state.title}
+          label="Title"
+          multiline={true}
+        />
+        <TextInput
+          name="titleFrench"
+          onChange={handleChange}
+          value={state.titleFrench}
+          label="Title French"
+          multiline={true}
+        />
+        <TextInput
+          name="titleDutch"
+          onChange={handleChange}
+          value={state.titleDutch}
+          label="Title Dutch"
+          multiline={true}
+        />
 
-          <InputTab
-            englishDescription={englishDescription}
-            setEnglishDescription={setEnglishDescription}
-            frenchDescription={frenchDescription}
-            setFrenchDescription={setFrenchDescription}
-            dutchDescription={dutchDescription}
-            setDutchDescription={setDutchDescription}
-          />
+        <InputTab
+          englishDescription={englishDescription}
+          setEnglishDescription={setEnglishDescription}
+          frenchDescription={frenchDescription}
+          setFrenchDescription={setFrenchDescription}
+          dutchDescription={dutchDescription}
+          setDutchDescription={setDutchDescription}
+        />
 
-          <FormControl variant="standard">
-            <InputLabel sx={labelStyle} id="demo-simple-select-label">
-              Artist
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={selectedArtist}
-              label="Artist"
-              onChange={changeSelectedArtist}
-              sx={selectStyle}
-            >
-              {artistList.map((artist) => {
-                return (
-                  <MenuItem key={artist.id} value={artist.id}>
-                    {artist.fullName}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-          <FormControl variant="standard">
-            <InputLabel sx={labelStyle} id="demo-simple-select-label">
-              Venue
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={selectedVenue}
-              label="Venue"
-              onChange={changeSelectedVenue}
-              sx={selectStyle}
-            >
-              {venueList.map((venue) => {
-                return (
-                  <MenuItem key={venue.id} value={venue.id}>
-                    {venue.country} , {venue.country} / {venue.name}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
+        <FormControl variant="standard">
+          <InputLabel sx={labelStyle} id="demo-simple-select-label">
+            Artist
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={selectedArtist}
+            label="Artist"
+            onChange={changeSelectedArtist}
+            sx={selectStyle}
           >
-            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
-              <DateTimePicker
-                label="Start Time"
-                value={startTime}
-                onChange={(newValue) => setStartTime(newValue)}
-                renderInput={(props) => (
-                  <TextField
-                    variant="standard"
-                    sx={{
-                      width: "47%",
-                    }}
-                    {...props}
-                  />
-                )}
-              />
-            </LocalizationProvider>
-            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
-              <DateTimePicker
-                label="End Time"
-                value={endTime}
-                onChange={(newValue) => setEndTime(newValue)}
-                renderInput={(props) => (
-                  <TextField sx={{ width: "47%" }} {...props} />
-                )}
-              />
-            </LocalizationProvider>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "left",
-              gap: "3rem",
-            }}
+            {artistList.map((artist) => {
+              return (
+                <MenuItem key={artist.id} value={artist.id}>
+                  {artist.fullName}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
+        <FormControl variant="standard">
+          <InputLabel sx={labelStyle} id="demo-simple-select-label">
+            Venue
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={selectedVenue}
+            label="Venue"
+            onChange={changeSelectedVenue}
+            sx={selectStyle}
           >
-            <FormControl sx={{ width: "30%" }} variant="standard">
-              <InputLabel sx={labelStyle} id="demo-simple-select-label">
-                Event Status
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={clientStatus}
-                label="Event Status"
-                onChange={changeClientStatus}
-                sx={selectStyle}
-              >
-                <MenuItem value="AVAILABLE">Available</MenuItem>
-                <MenuItem value="CANCELLED">Cancelled</MenuItem>
-                <MenuItem value="LAST_TICKETS">Last Tickets</MenuItem>
-                <MenuItem value="SOLD_OUT">Sold Out</MenuItem>
-              </Select>
-            </FormControl>
-            <SwitchToggle
-              isChecked={isHighlighted}
-              setIsChecked={setIsHighlighted}
-              switchLabel="Highlighted"
-            />
-          </div>
+            {venueList.map((venue) => {
+              return (
+                <MenuItem key={venue.id} value={venue.id}>
+                  {venue.country} , {venue.country} / {venue.name}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
 
-          <TextInput
-            name="ticketUrl"
-            onChange={handleChange}
-            value={state.ticketUrl}
-            label="Ticket Url"
-            multiline={true}
+        <Box>
+          <DatePicker
+            label="Start Time"
+            time={startTime}
+            setTime={setStartTime}
+            width="%47"
+          />
+          <DatePicker
+            label="End Time"
+            time={endTime}
+            setTime={setEndTime}
+            width="%47"
           />
         </Box>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "left",
+            gap: "3rem",
+          }}
+        >
+          <FormControl sx={{ width: "30%" }} variant="standard">
+            <InputLabel sx={labelStyle} id="demo-simple-select-label">
+              Live Status
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={clientStatus}
+              label="Live Status"
+              onChange={changeClientStatus}
+              sx={selectStyle}
+            >
+              <MenuItem value="AVAILABLE">Available</MenuItem>
+              <MenuItem value="CANCELLED">Cancelled</MenuItem>
+              <MenuItem value="LAST_TICKETS">Last Tickets</MenuItem>
+              <MenuItem value="SOLD_OUT">Sold Out</MenuItem>
+            </Select>
+          </FormControl>
+          <SwitchToggle
+            isChecked={isHighlighted}
+            setIsChecked={setIsHighlighted}
+            switchLabel="Highlighted"
+          />
+        </div>
+
+        <TextInput
+          name="ticketUrl"
+          onChange={handleChange}
+          value={state.ticketUrl}
+          label="Ticket Url"
+          multiline={true}
+        />
+
         <AddPoster
           setImageData={setImageData}
           setIsShownImageModal={setIsShownImageModal}

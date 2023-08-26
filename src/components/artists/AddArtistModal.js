@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import Box from "@mui/material/Box";
 
 import AuthContext from "../../storage/auth-context";
 import Modal from "../commonUI/Modal";
@@ -8,7 +7,6 @@ import ArtistServiceV2 from "../../services/v2/ArtistService";
 import ImageModal from "../commonUI/ImageModal.js";
 import AddPoster from "../commonUI/AddPoster";
 import TextInput from "../commonUI/TextInput";
-import "./Artists.scss";
 
 const AddArtistModal = ({
   onHide,
@@ -81,43 +79,26 @@ const AddArtistModal = ({
         acceptTypo="Add Artist"
         onRequest={postArtistData}
       >
-        <Box
-          component="form"
-          sx={{
-            borderBottom: "1px dashed rgba(197, 196, 196, 0.8)",
-            margin: "0px 5px",
-            "& > :not(style)": {
-              m: 1,
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-              margin: "15px 0px",
-            },
-          }}
-          // className="artist-input-box"
-          noValidate
-          autoComplete="off"
-        >
-          <TextInput
-            name="enteredFullName"
-            onChange={handleChange}
-            label="Full Name"
-            value={state.enteredFullName}
-          />
-          <TextInput
-            name="enteredGenre"
-            onChange={handleChange}
-            value={state.enteredGenre}
-            label="Genre"
-          />
-          <TextInput
-            name="enteredDescription"
-            onChange={handleChange}
-            value={state.enteredDescription}
-            label="Description"
-            minRows={4}
-          />
-        </Box>
+        <TextInput
+          name="enteredFullName"
+          onChange={handleChange}
+          label="Full Name"
+          value={state.enteredFullName}
+        />
+        <TextInput
+          name="enteredGenre"
+          onChange={handleChange}
+          value={state.enteredGenre}
+          label="Genre"
+        />
+        <TextInput
+          name="enteredDescription"
+          onChange={handleChange}
+          value={state.enteredDescription}
+          label="Description"
+          minRows={4}
+        />
+
         <AddPoster
           fileNameList={fileNameList}
           setFileNameList={setFileNameList}

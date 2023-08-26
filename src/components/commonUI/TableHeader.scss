@@ -1,11 +1,9 @@
 .table-header {
   border-bottom: none;
   display: flex;
-  justify-content: left;
+  justify-content: space-between;
   align-items: center;
-  gap: 1rem;
-  // background-color: rgba(247, 247, 247, 0.6);
   background-color: rgba(85, 85, 85, 0.02);
-  padding: 13px 18px;
+  padding: 32px;
   border-radius: 0.75rem 0.75rem 0 0;
 }

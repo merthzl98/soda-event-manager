@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Box from "@mui/material/Box";
 
 import ArtistService from "../../services/ArtistService";
 import ArtistServiceV2 from "../../services/v2/ArtistService";
@@ -84,42 +83,26 @@ const EditArtistModal = ({
         onRequest={updateArtistData}
         modalStyle={modalStyle}
       >
-        <Box
-          component="form"
-          sx={{
-            borderBottom: "1px dashed rgba(197, 196, 196, 0.8)",
-            margin: "0px 5px",
-            "& > :not(style)": {
-              m: 1,
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-              margin: "15px 0px",
-            },
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <TextInput
-            name="enteredFullName"
-            onChange={handleChange}
-            label="Full Name"
-            value={state.enteredFullName}
-          />
-          <TextInput
-            name="enteredGenre"
-            onChange={handleChange}
-            value={state.enteredGenre}
-            label="Genre"
-          />
-          <TextInput
-            name="enteredDescription"
-            onChange={handleChange}
-            value={state.enteredDescription}
-            label="Description"
-            minRows={4}
-          />
-        </Box>
+        <TextInput
+          name="enteredFullName"
+          onChange={handleChange}
+          label="Full Name"
+          value={state.enteredFullName}
+        />
+        <TextInput
+          name="enteredGenre"
+          onChange={handleChange}
+          value={state.enteredGenre}
+          label="Genre"
+        />
+        <TextInput
+          name="enteredDescription"
+          onChange={handleChange}
+          value={state.enteredDescription}
+          label="Description"
+          minRows={4}
+        />
+
         <AddPoster
           imageData={imageData}
           setImageData={setImageData}

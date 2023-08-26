@@ -1,0 +1,27 @@
+@import "../../configs/StylePalette.scss";
+
+.drop-file {
+  width: 100%;
+  border: 1px dotted rgba(197, 196, 196, 0.8);
+  padding: 3px;
+  border-radius: $length-sm1;
+  background-color: #ffffff;
+  .add-poster-typo {
+    display: flex;
+    align-items: bottom;
+    justify-content: center;
+    gap: $length-sm1;
+
+    span {
+      color: rgba(0, 0, 0, 0.6);
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    svg {
+      color: rgba(85, 85, 85, 0.7);
+    }
+  }
+}

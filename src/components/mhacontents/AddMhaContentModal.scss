@@ -1,3 +1,10 @@
-.image-container {
-//   background-image: url(../../static/empty_content_yet.jpg);
+@import "../../configs/StylePalette.scss";
+
+.file-input {
+  width: 100%;
+  display: flex;
+  background-color: rgba(85, 85, 85, 0.1);
+  border: 1px dashed rgba(197, 196, 196, 0.8);
+  border-radius: $length-sm1;
+  padding: $length-sm3;
 }

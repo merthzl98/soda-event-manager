@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Autocomplete, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 
 import VenueService from "../../services/VenueService";
@@ -9,7 +8,7 @@ import locationData from "../../static/locationData.json";
 import ImageModal from "../commonUI/ImageModal";
 import AddPoster from "../commonUI/AddPoster";
 import TextInput from "../commonUI/TextInput";
-import "./Venues.scss";
+import AutoComplete from "../commonUI/AutoComplete";
 
 const EditVenueModal = ({
   onHide,
@@ -113,92 +112,53 @@ const EditVenueModal = ({
         onRequest={updateVenueData}
         modalStyle={modalStyle}
       >
+        <TextInput
+          name="enteredName"
+          onChange={handleChange}
+          value={state.enteredName}
+          label="Name"
+          multiline={true}
+        />
+
         <Box
-          component="form"
           sx={{
-            margin: "0px 5px",
-            borderBottom: "1px dashed rgba(197, 196, 196, 0.8)",
-            "& > :not(style)": {
-              m: 1,
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-              margin: "15px 0px",
-            },
+            display: "flex",
+            flexDirection: "row",
+            width: "100%",
+            gap: "calc(6% - 0.5px)",
           }}
-          noValidate
-          autoComplete="off"
         >
-          <TextInput
-            name="enteredName"
-            onChange={handleChange}
-            value={state.enteredName}
-            label="Name"
-            multiline={true}
+          <AutoComplete
+            value={country}
+            setValue={setCountry}
+            inputValue={inputCountry}
+            setInputValue={setInputCountry}
+            options={locationData}
+            handleOption={(option) => option.country_name}
+            width="47%"
+            label="Country"
           />
-
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <Autocomplete
-              value={country}
-              onChange={(event, newValue) => {
-                setCountry(newValue);
-              }}
-              inputValue={inputCountry}
-              onInputChange={(event, newInputValue) => {
-                setInputCountry(newInputValue);
-              }}
-              id="controllable-states-demo"
-              options={locationData}
-              getOptionLabel={(option) => option.country_name}
-              sx={{ width: "47%" }}
-              renderInput={(params) => (
-                <TextField
-                  className="auto-complete"
-                  variant="standard"
-                  {...params}
-                  label="Country"
-                />
-              )}
-            />
-            <Autocomplete
-              value={city}
-              onChange={(event, newValue) => {
-                setCity(newValue);
-              }}
-              inputValue={inputCity}
-              onInputChange={(event, newInputValue) => {
-                setInputCity(newInputValue);
-              }}
-              id="controllable-states-demo"
-              options={cities}
-              getOptionLabel={(option) => option.state_name}
-              sx={{ width: "47%" }}
-              renderInput={(params) => (
-                <TextField
-                  className="auto-complete"
-                  variant="standard"
-                  {...params}
-                  label="City"
-                />
-              )}
-            />
-          </div>
-
-          <TextInput
-            name="enteredFullAddress"
-            onChange={handleChange}
-            value={state.enteredFullAddress}
-            label="Full Address"
-            multiline={true}
-            minRows={3}
+          <AutoComplete
+            value={city}
+            setValue={setCity}
+            inputValue={inputCity}
+            setInputValue={setInputCity}
+            options={cities}
+            handleOption={(option) => option.state_name}
+            width="47%"
+            label="City"
           />
         </Box>
+
+        <TextInput
+          name="enteredFullAddress"
+          onChange={handleChange}
+          value={state.enteredFullAddress}
+          label="Full Address"
+          multiline={true}
+          minRows={3}
+        />
+
         <AddPoster
           setImageData={setImageData}
           setIsShownImageModal={setIsShownImageModal}

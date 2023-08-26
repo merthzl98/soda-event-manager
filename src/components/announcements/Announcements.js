@@ -8,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 // import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 // import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-// import { Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 
 import AuthContext from "../../storage/auth-context";
 import AnnouncementServiceV2 from "../../services/v2/AnnouncementService";
@@ -104,7 +104,7 @@ const Announcements = () => {
             <TableHeader
               title="Announcements"
               showAddModal={showAddAnnouncement}
-              toolTip="Add New Announcement"
+              label="+ Add Announcement"
             />
             <Table stickyHeader aria-label="sticky table">
               <Droppable droppableId="table">
@@ -150,7 +150,7 @@ const Announcements = () => {
                               {row.status === "DRAFT" && (
                                 <img src={greyDot} alt="draft icon" />
                               )}
-                              <p>{row.status}</p>
+                              <Typography>{row.status}</Typography>
                             </TableCell>
                             <TableCell className="table-cell">
                               {row.text}

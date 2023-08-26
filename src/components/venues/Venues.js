@@ -1,77 +1,37 @@
-import React, { useEffect, useState, useContext } from "react";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 
 import AuthContext from "../../storage/auth-context";
 import VenueServiceV2 from "../../services/v2/VenueService";
 import EditVenueModal from "./EditVenueModal";
 import AddVenueModal from "./AddVenueModal";
-import TableActions from "../commonUI/TableActions";
-import "./Venues.scss";
-import TableHeader from "../commonUI/TableHeader";
-import TableColumnTitle from "../commonUI/TableColumnTitle";
-
-const columns = [
-  {
-    id: "name",
-    label: "Name",
-    minWidth: 100,
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  { id: "country", label: "Country", minWidth: 100 },
-  { id: "city", label: "City", minWidth: 100 },
-  {
-    id: "fullAddress",
-    label: "Full Address",
-    minWidth: 100,
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "action",
-    label: "Action",
-    align: "center",
-    minWidth: 100,
-    format: (value) => value.toLocaleString("en-US"),
-  },
-
-  // {
-  //   id: "posters",
-  //   label: "Posters",
-  //   minWidth: 100,
-  //   // align: "right",
-  //   format: (value) => value.toLocaleString("en-US"),
-  // },
-];
+import { tableConfig } from "../../configs/config";
+import TableCommon from "../commonUI/TableCommon";
 
 const Venues = () => {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [totalElements, setTotalElements] = useState(1);
   const [venuesData, setVenuesData] = useState([]);
   const [addVenueModal, setAddVenueModal] = useState(false);
   const [editVenueModal, setEditVenueModal] = useState(false);
-  const [venueData, setVenueData] = useState({});
   const [venueId, setVenueId] = useState();
 
   const { setIsLoading } = useContext(AuthContext);
 
-  const getVenuesData = () => {
+  const getVenuesData = useCallback(() => {
     setIsLoading(true);
-    VenueServiceV2.getVenues()
+    VenueServiceV2.getVenues(null, null, tableConfig.itemCount, null, page)
       .then((response) => {
+        console.log({ response });
+        setTotalElements(response.data.venuesPage.totalElements);
         setVenuesData(response.data.venuesPage.content);
       })
       .then(() => setIsLoading(false));
-  };
+  }, [page]);
 
   useEffect(() => {
     getVenuesData();
     // eslint-disable-next-line
-  }, []);
+  }, [getVenuesData]);
 
   const handleDeleteVenue = (clickedIndex) => {
     const venueId = venuesData[clickedIndex]?.id;
@@ -101,80 +61,21 @@ const Venues = () => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (venue) => {
-    setRowsPerPage(+venue.target.value);
-    setPage(0);
-  };
   return (
     <>
-      <Paper className="paper-container">
-        <TableContainer sx={{ maxHeight: 740 }}>
-          <TableHeader
-            title="Venues"
-            showAddModal={showAddVenue}
-            toolTip="Add New Venue"
-          />
-          <Table stickyHeader aria-label="sticky table">
-            <TableColumnTitle columns={columns} />
-            <TableBody>
-              {venuesData
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={Math.random()}
-                    >
-                      {columns.map((column) => {
-                        const value = row[column.id];
-                        return column.id === "action" ? (
-                          <TableCell
-                            sx={{ padding: "0px 8px", width: "7rem" }}
-                            className="table-actions"
-                            key={column.id}
-                            align={column.align}
-                          >
-                            <TableActions
-                              handleDelete={() => handleDeleteVenue(index)}
-                              showEdit={() => showEditVenue(index)}
-                            />
-                          </TableCell>
-                        ) : (
-                          <TableCell
-                            sx={{
-                              padding: "12px 30px",
-                              whiteSpace: "nowrap",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              maxWidth: "25vw",
-                            }}
-                            key={column.id}
-                            align={column.align}
-                          >
-                            {column.format && typeof value === "number"
-                              ? column.format(value)
-                              : value}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={venuesData.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
+      <TableCommon
+        data={venuesData}
+        columns={tableConfig.venuesColumn}
+        handleDelete={handleDeleteVenue}
+        showEdit={showEditVenue}
+        title="Venues"
+        showAddModal={showAddVenue}
+        label="+ Add Venue"
+        page={page}
+        onPageChange={handleChangePage}
+        count={totalElements}
+      />
+
       {addVenueModal && (
         <AddVenueModal
           onHide={hideAddVenue}

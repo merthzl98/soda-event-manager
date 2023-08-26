@@ -19,9 +19,10 @@ const EditMhaContentModal = ({
   const [enteredTargetUrl, setEnteredTargetUrl] = useState("");
 
   useEffect(() => {
-    MhaContentServiceV2.getMhaContentsById(mhaContentId).then((response) => {
-      setMhaContentStatus(response.data.mhaContent.status);
-      setEnteredTargetUrl(response.data.mhaContent.targetUrl);
+    MhaContentServiceV2.getMhaContentById(mhaContentId).then((response) => {
+      console.log({ response });
+      setMhaContentStatus(response.data.status);
+      setEnteredTargetUrl(response.data.targetUrl);
     });
   }, []);
 
