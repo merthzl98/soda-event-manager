@@ -55,8 +55,14 @@ const MhaContents = () => {
     // eslint-disable-next-line
   }, []);
 
-  const handleDragEnd = () => {
-    console.log("drag");
+  const handleDragEnd = (result) => {
+    if (!result.destination) return;
+
+    const items = Array.from(mhaContents);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    setMhaContents(items);
   };
 
   const handleDeleteMhaContent = (clickedIndex) => {
@@ -166,7 +172,7 @@ const TableContent = ({
     <Table stickyHeader aria-label="sticky table">
       <TableBody>
         {mhaContents.map((row, index) => (
-          <TableRow sx={tableStyle}>
+          <TableRow key={index} sx={tableStyle}>
             <ContentColumns
               row={row}
               index={index}
