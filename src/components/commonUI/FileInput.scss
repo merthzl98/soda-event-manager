@@ -1,16 +1,18 @@
-@import "../../configs/StylePalette.scss";
-
 .drop-file {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   border: 1px dotted rgba(197, 196, 196, 0.8);
   padding: 3px;
-  border-radius: $length-sm1;
+  border-radius: 4px;
   background-color: #ffffff;
+
   .add-poster-typo {
     display: flex;
     align-items: bottom;
     justify-content: center;
-    gap: $length-sm1;
+    gap: 4px;
 
     span {
       color: rgba(0, 0, 0, 0.6);

@@ -1,8 +1,9 @@
 import {
-  IconButton,
+  Box,
   List,
   ListItem,
   ListItemText,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -13,6 +14,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 // import PosterService from "../../services/PosterService";
 import "./AddPoster.scss";
 import FileInput from "./FileInput";
+import IconButtonUI from "./IconButtonUI";
 
 const Demo = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -69,7 +71,11 @@ const AddPoster = (props) => {
 
   return (
     <div className="add-poster-container">
-      <Typography className="posters-typo" variant="h8" component="div">
+      <Typography
+        className="posters-typo"
+        sx={{ fontWeight: "bold" }}
+        component="div"
+      >
         Upload Posters
       </Typography>
 
@@ -85,19 +91,7 @@ const AddPoster = (props) => {
         <Demo>
           <List dense={true} className="poster-list">
             {props.imagesData?.map((poster, index) => (
-              <ListItem
-                key={Math.random()}
-                className="list-item"
-                secondaryAction={
-                  <IconButton
-                    onClick={() => handleDeletePoster(index)}
-                    edge="end"
-                    aria-label="delete"
-                  >
-                    <DeleteIcon onClick={() => handleDeletePoster(index)} />
-                  </IconButton>
-                }
-              >
+              <ListItem key={Math.random()} className="list-item">
                 {/* <ListItemAvatar>
                     <Avatar>
                       <img src={props.imageData} alt="Uploaded" />
@@ -112,6 +106,14 @@ const AddPoster = (props) => {
                   primary={`${poster.fileName}`}
                   secondary={`(${getPosterTypeText(poster.type)})`}
                 />
+
+                <IconButtonUI
+                  onClick={() => handleDeletePoster(index)}
+                  title="Delete"
+                  bgColor="rgba(235, 59, 59, 0.2)"
+                >
+                  <DeleteIcon fontSize="medium" color="error" />
+                </IconButtonUI>
               </ListItem>
             ))}
           </List>

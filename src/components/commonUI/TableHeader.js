@@ -1,15 +1,17 @@
+import { Typography } from "@mui/material";
+
 import ButtonUI from "./ButtonUI";
 import "./TableHeader.scss";
-import TableTitle from "./TableTitle";
 
 const TableHeader = (props) => {
   const { title, label, showAddModal, rightContent } = props;
   return (
     <div className="table-header">
-      <TableTitle>{title}</TableTitle>
+      <Typography component="h5" variant="h5" color="text.primary" gutterBottom>
+        {title}
+      </Typography>
+      {rightContent}
       <ButtonUI label={label} onClick={showAddModal} />
-
-      {/* {rightContent} */}
     </div>
   );
 };

@@ -69,19 +69,29 @@ const ModalOverlay = (props) => {
 const modalRoot = document.getElementById("modal");
 
 const Modal = (props) => {
+  const {
+    openModal,
+    onHide,
+    modalStyle,
+    title,
+    children,
+    isDisabled,
+    onRequest,
+    acceptTypo,
+  } = props;
   return (
     <Fragment>
       {ReactDOM.createPortal(
         <ModalOverlay
-          openModal={props.openModal}
-          onHide={props.onHide}
-          onRequest={props.onRequest}
-          title={props.title}
-          isDisabled={props.isDisabled}
-          acceptTypo={props.acceptTypo}
-          modalStyle={props.modalStyle}
+          openModal={openModal}
+          onHide={onHide}
+          onRequest={onRequest}
+          title={title}
+          isDisabled={isDisabled}
+          acceptTypo={acceptTypo}
+          modalStyle={modalStyle}
         >
-          {props.children}
+          {children}
         </ModalOverlay>,
         modalRoot
       )}

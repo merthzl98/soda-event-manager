@@ -37,7 +37,7 @@ const SwitchHighlighted = styled(Switch)(({ theme }) => ({
   },
 }));
 
-const SwitchToggle = ({ isChecked, setIsChecked, switchLabel }) => {
+const SwitchButtonUI = ({ isChecked, setIsChecked, switchLabel }) => {
   const switchHighlighted = (event) => {
     setIsChecked(event.target.checked);
   };
@@ -52,4 +52,4 @@ const SwitchToggle = ({ isChecked, setIsChecked, switchLabel }) => {
   );
 };
 
-export default SwitchToggle;
+export default SwitchButtonUI;

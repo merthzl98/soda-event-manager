@@ -1,10 +1,7 @@
-@import "../../configs/StylePalette.scss";
-
 .add-poster-container {
   .posters-typo {
     font-size: 0.75rem !important;
-    padding-bottom: 6px;
-    font-weight: 700 !important;
+    padding-bottom: 5px;
     color: rgba(0, 0, 0, 0.6);
   }
   .add-poster-field {
@@ -14,28 +11,28 @@
     flex-direction: column;
     background-color: rgba(85, 85, 85, 0.1);
     border: 1px dashed rgba(197, 196, 196, 0.8);
-    border-radius: $length-sm1;
-    padding: $length-sm3;
+    border-radius: 4px;
+    padding: 8px;
 
     .poster-head {
       display: flex;
       align-items: center;
       justify-content: left;
-      gap: $length-sm3;
-      margin-bottom: $length-sm3;
+      gap: 8px;
+      margin-bottom: 8px;
     }
 
     .poster-list {
       display: flex;
       flex-direction: column;
-      gap: $length-sm3;
+      gap: 8px;
       border-top: 1px solid rgba(85, 85, 85, 0.25) !important;
       background-color: rgba(85, 85, 85, 0.1);
       .list-item {
+        display: flex;
+        justify-content: space-between;
         padding-left: 0;
-        div button {
-          margin-right: -$length-md3 !important;
-        }
+        padding-right: 0;
 
         div {
           span,

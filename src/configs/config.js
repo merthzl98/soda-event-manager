@@ -29,7 +29,7 @@ export const tableConfig = {
     {
       id: "action",
       label: "Action",
-      align: "center",
+      align: "right",
       minWidth: 100,
       format: (value) => value.toLocaleString("en-US"),
     },
@@ -55,7 +55,7 @@ export const tableConfig = {
     {
       id: "action",
       label: "Action",
-      align: "center",
+      align: "right",
       minWidth: 100,
       format: (value) => value.toLocaleString("en-US"),
     },
@@ -85,7 +85,7 @@ export const tableConfig = {
     {
       id: "action",
       label: "Action",
-      align: "center",
+      align: "right",
       minWidth: 100,
       format: (value) => value.toLocaleString("en-US"),
     },

@@ -20,6 +20,8 @@ import greenDot from "../../assets/icons/greenDot.png";
 import greyDot from "../../assets/icons/greyDot.png";
 import AddMhaContentModal from "./AddMhaContentModal";
 import EditMhaContentModal from "./EditMhaContentModal";
+import ButtonUI from "../commonUI/ButtonUI";
+import SwitchButtonUI from "../commonUI/SwitchButtonUI";
 
 const tableStyle = {
   width: "100%",
@@ -28,6 +30,7 @@ const tableStyle = {
   gap: "2rem",
   borderBottom: "1px solid rgba(50,50,0, 0.1)",
   alignItems: "center",
+  padding: "0 24px",
 };
 
 const MhaContents = () => {
@@ -86,22 +89,12 @@ const MhaContents = () => {
 
   let rightHeadContent = (
     <Box sx={{ display: "flex", gap: "1rem", paddingLeft: "5rem" }}>
-      <FormControlLabel
-        control={
-          <Switch
-            checked={orderEnable}
-            onChange={handleOrderEnableSwitch}
-            color="success"
-          />
-        }
-        label="Enable ordering"
-        labelPlacement="start"
+      <SwitchButtonUI
+        switchLabel="Enable ordering"
+        isChecked={orderEnable}
+        setIsChecked={setOrderEnable}
       />
-      {orderEnable && (
-        <Button variant="contained" color="success" onClick={saveOrder}>
-          Save the order
-        </Button>
-      )}
+      {orderEnable && <ButtonUI label="Save Order" onClick={saveOrder} />}
     </Box>
   );
 
@@ -173,7 +166,7 @@ const TableContent = ({
     <Table stickyHeader aria-label="sticky table">
       <TableBody>
         {mhaContents.map((row, index) => (
-          <TableRow style={tableStyle}>
+          <TableRow sx={tableStyle}>
             <ContentColumns
               row={row}
               index={index}
@@ -241,13 +234,69 @@ const ContentColumns = ({
 }) => {
   return (
     <>
-      <TableCell className="table-cell-status">
-        {row.status === "LIVE" && <img src={greenDot} alt="live icon" />}
-        {row.status === "DRAFT" && <img src={greyDot} alt="draft icon" />}
-        <Typography>{row.status}</Typography>
+      <TableCell
+        sx={{ padding: "0", fontWeight: "medium" }}
+        className="table-cell-status"
+      >
+        {row.status === "LIVE" && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              border: "1px solid green",
+              width: "75px",
+              borderRadius: "8px",
+              color: "green",
+              gap: "4px",
+              backgroundColor: "rgba(7, 233, 82, 0.1)",
+            }}
+          >
+            <img
+              style={{
+                width: "0.5rem",
+                height: "0.5rem",
+              }}
+              src={greenDot}
+              alt="live icon"
+            />
+            Live
+          </Box>
+        )}
+        {row.status === "DRAFT" && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              border: "1px solid rgba(1 ,1 ,1 ,0.25)",
+              width: "75px",
+              borderRadius: "8px",
+              color: "grey",
+              gap: "4px",
+              backgroundColor: "rgba(1 ,1 ,1 ,0.1)",
+            }}
+          >
+            <img
+              style={{
+                width: "0.5rem",
+                height: "0.5rem",
+              }}
+              src={greyDot}
+              alt="draft icon"
+            />
+            Draft
+          </Box>
+        )}
       </TableCell>
       <TableCell className="table-cell">
-        <img src={row.url} width="250px" height="auto" alt="Poster" />
+        <img
+          src={row.url}
+          style={{ borderRadius: "8px" }}
+          width="100px"
+          height="auto"
+          alt="Poster"
+        />
       </TableCell>
       <TableCell className="table-cell">{row.targetUrl}</TableCell>
       <TableCell

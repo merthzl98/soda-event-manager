@@ -14,11 +14,10 @@ import React from "react";
 
 import TableActions from "./TableActions";
 import { tableConfig } from "../../configs/config";
-import TableTitle from "./TableTitle";
 import greenDot from "../../assets/icons/greenDot.png";
 import greyDot from "../../assets/icons/greyDot.png";
 import "./TableCommon.scss";
-import ButtonUI from "./ButtonUI";
+import TableHeader from "./TableHeader";
 
 const TableCommon = (props) => {
   const {
@@ -37,10 +36,7 @@ const TableCommon = (props) => {
   return (
     <Paper className="paper-container">
       <TableContainer sx={{ maxHeight: 740 }}>
-        <div className="table-header">
-          <TableTitle>{title}</TableTitle>
-          <ButtonUI onClick={showAddModal} label={label} />
-        </div>
+        <TableHeader title={title} showAddModal={showAddModal} label={label} />
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -48,12 +44,13 @@ const TableCommon = (props) => {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{
+                  sx={{
                     top: 50,
                     minWidth: column.minWidth,
                     backgroundColor: "rgba(85, 85, 85, 0.02)",
-                    padding: "8px 32px",
-                    fontWeight: "bolder",
+                    padding: "8px 24px",
+                    color: "text.secondary",
+                    fontWeight: "medium",
                   }}
                 >
                   {column.label}
@@ -91,11 +88,12 @@ const TableCommon = (props) => {
                     ) : (
                       <TableCell
                         sx={{
-                          padding: "8px 32px",
+                          padding: "8px 24px",
                           whiteSpace: "nowrap",
                           overflow: "hidden",
                           textOverflow: "ellipsis",
                           maxWidth: "25vw",
+                          fontWeight: "medium",
                         }}
                         key={column.id}
                         align={column.align}
@@ -122,7 +120,7 @@ const TableCommon = (props) => {
                               src={greenDot}
                               alt="live icon"
                             />
-                            <Typography>Live</Typography>
+                            Live
                           </Box>
                         )}
                         {value === "DRAFT" && (
@@ -147,7 +145,7 @@ const TableCommon = (props) => {
                               src={greyDot}
                               alt="draft icon"
                             />
-                            <Typography>Draft</Typography>
+                            Draft
                           </Box>
                         )}
                         {column.format && typeof truncatedValue === "number"
@@ -165,6 +163,7 @@ const TableCommon = (props) => {
         </Table>
       </TableContainer>
       <TablePagination
+        className="table-foot"
         rowsPerPageOptions={[tableConfig.itemCount]}
         component="div"
         count={count}

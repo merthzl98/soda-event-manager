@@ -16,7 +16,7 @@ import VenueService from "../../services/VenueService";
 import ArtistServiceV2 from "../../services/v2/ArtistService";
 import VenueServiceV2 from "../../services/v2/VenueService";
 import { formatIso } from "../../utils";
-import SwitchToggle from "../commonUI/SwitchToggle";
+import SwitchButtonUI from "../commonUI/SwitchButtonUI";
 import TextInput from "../commonUI/TextInput";
 import InputTab from "../commonUI/InputTab";
 import DatePicker from "../commonUI/DatePicker";
@@ -279,7 +279,7 @@ const EditEventModal = ({
               <MenuItem value="SOLD_OUT">Sold Out</MenuItem>
             </Select>
           </FormControl>
-          <SwitchToggle
+          <SwitchButtonUI
             isChecked={isHighlighted}
             setIsChecked={setIsHighlighted}
             switchLabel="Highlighted"

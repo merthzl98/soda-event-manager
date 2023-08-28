@@ -1,12 +1,24 @@
-@import "../../configs/StylePalette.scss";
-
 .paper-container {
   width: 100% !important;
   position: relative !important;
   border-radius: 16px !important;
 
   .table-cell-action {
-    padding: 0 $length-md1;
-    width: 8rem;
+    padding: 0 24px;
+    width: 64px;
+  }
+
+  .table-foot {
+    padding: 24px 22px !important;
+    background-color: rgba(85, 85, 85, 0.02);
+    & > div > div:nth-child(3) {
+      display: flex;
+      border-radius: 8px;
+      gap: 8px;
+      button {
+        border-radius: 8px;
+        background-color: rgba(1, 1, 1, 0.05);
+      }
+    }
   }
 }

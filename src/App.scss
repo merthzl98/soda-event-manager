@@ -1,12 +1,10 @@
-@import "./configs/StylePalette.scss";
-
 html {
   height: 100%;
 }
 
 body {
   min-height: 100%;
-  background-color: $secondary-color !important;
+  background-color: #f2f5f5 !important;
 }
 
 @media (max-height: 700px) {

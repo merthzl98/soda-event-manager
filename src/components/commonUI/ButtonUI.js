@@ -16,7 +16,8 @@ const ButtonUI = (props) => {
       color={color}
       onClick={onClick}
       disabled={isDisabled}
-      sx={{ width: buttonWidth }}
+      sx={{ width: buttonWidth, color: "#fff" }}
+      size="small"
     >
       {label}
     </StyledButton>

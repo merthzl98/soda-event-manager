@@ -16,7 +16,7 @@ import VenueServiceV2 from "../../services/v2/VenueService";
 import AddPoster from "../commonUI/AddPoster";
 import { formatIso } from "../../utils";
 import TextInput from "../commonUI/TextInput";
-import SwitchToggle from "../commonUI/SwitchToggle";
+import SwitchButtonUI from "../commonUI/SwitchButtonUI";
 import InputTab from "../commonUI/InputTab";
 import DatePicker from "../commonUI/DatePicker";
 
@@ -274,7 +274,7 @@ const AddEventModal = ({
               <MenuItem value="SOLD_OUT">Sold Out</MenuItem>
             </Select>
           </FormControl>
-          <SwitchToggle
+          <SwitchButtonUI
             isChecked={isHighlighted}
             setIsChecked={setIsHighlighted}
             switchLabel="Highlighted"

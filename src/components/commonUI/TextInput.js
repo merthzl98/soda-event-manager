@@ -4,8 +4,6 @@ import InputBase from "@mui/material/InputBase";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 
-import "./TextInput.scss";
-
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   "label + &": {
     marginTop: theme.spacing(2),
@@ -34,8 +32,8 @@ const TextInput = (props) => {
   const { name, onChange, value, label, minRows, placeholder } = props;
 
   return (
-    <FormControl className="input-container" variant="standard">
-      <InputLabel className="input-label" shrink htmlFor={props.label}>
+    <FormControl fullWidth variant="standard">
+      <InputLabel sx={{ fontWeight: "bold" }} shrink htmlFor={props.label}>
         {label}
       </InputLabel>
       <BootstrapInput

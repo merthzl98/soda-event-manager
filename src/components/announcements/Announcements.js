@@ -8,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 // import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 // import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 import AuthContext from "../../storage/auth-context";
 import AnnouncementServiceV2 from "../../services/v2/AnnouncementService";
@@ -19,6 +19,16 @@ import TableActions from "../commonUI/TableActions";
 import TableHeader from "../commonUI/TableHeader";
 import greenDot from "../../assets/icons/greenDot.png";
 import greyDot from "../../assets/icons/greyDot.png";
+
+const tableStyle = {
+  width: "100%",
+  display: "flex",
+  flexDirection: "row",
+  gap: "2rem",
+  borderBottom: "1px solid rgba(50,50,0, 0.1)",
+  alignItems: "center",
+  padding: "0 24px",
+};
 
 const Announcements = () => {
   const [announcementsData, setAnnouncementsData] = useState([]);
@@ -121,36 +131,77 @@ const Announcements = () => {
                       >
                         {(provided, snapshot) => (
                           <TableRow
+                            sx={tableStyle}
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                             onDragOver={(event) => event.preventDefault()}
                             style={{
-                              width: "100%",
-                              display: "flex",
-                              flexDirection: "row",
-                              // justifyContent: "space-between",
-                              gap: "2rem",
-                              borderBottom: "1px solid rgba(50,50,0, 0.1)",
-                              alignItems: "center",
+                              ...tableStyle,
                               backgroundColor: snapshot.isDragging
                                 ? "rgba(50,50,0, 0.1)"
                                 : "white",
                               ...provided.draggableProps.style,
                             }}
                           >
-                            <TableCell className="table-cell-status">
+                            <TableCell
+                              sx={{ padding: "0", fontWeight: "medium" }}
+                              className="table-cell-status"
+                            >
                               {/* <FiberManualRecordIcon
                                 fontSize="0.5rem"
                                 color="error"
                               /> */}
                               {row.status === "LIVE" && (
-                                <img src={greenDot} alt="live icon" />
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    border: "1px solid green",
+                                    width: "75px",
+                                    borderRadius: "8px",
+                                    color: "green",
+                                    gap: "4px",
+                                    backgroundColor: "rgba(7, 233, 82, 0.1)",
+                                  }}
+                                >
+                                  <img
+                                    style={{
+                                      width: "0.5rem",
+                                      height: "0.5rem",
+                                    }}
+                                    src={greenDot}
+                                    alt="live icon"
+                                  />
+                                  Live
+                                </Box>
                               )}
                               {row.status === "DRAFT" && (
-                                <img src={greyDot} alt="draft icon" />
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    border: "1px solid rgba(1 ,1 ,1 ,0.25)",
+                                    width: "75px",
+                                    borderRadius: "8px",
+                                    color: "grey",
+                                    gap: "4px",
+                                    backgroundColor: "rgba(1 ,1 ,1 ,0.1)",
+                                  }}
+                                >
+                                  <img
+                                    style={{
+                                      width: "0.5rem",
+                                      height: "0.5rem",
+                                    }}
+                                    src={greyDot}
+                                    alt="draft icon"
+                                  />
+                                  Draft
+                                </Box>
                               )}
-                              <Typography>{row.status}</Typography>
                             </TableCell>
                             <TableCell className="table-cell">
                               {row.text}

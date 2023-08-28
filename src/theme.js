@@ -15,10 +15,15 @@ const theme = createTheme({
     },
 
     text: {
-      primary: "#0f051d",
+      primary: "#000000",
     },
   },
-  typography: { fontFamily: "inherit" },
+  typography: {
+    fontFamily: "inherit",
+    fontWeightRegular: "400",
+    fontWeightMedium: "500",
+    fontWeightBold: "600",
+  },
 });
 
 export default theme;

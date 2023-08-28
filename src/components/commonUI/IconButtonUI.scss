@@ -1,0 +1,11 @@
+.out-box {
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 400ms;
+  &:hover {
+    scale: 1.1;
+  }
+}
