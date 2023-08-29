@@ -107,6 +107,7 @@ const EditEventModal = ({
       descriptionFrench: descriptionFrench,
       descriptionDutch: descriptionDutch,
     };
+
     EventServiceV2.updateEvent(updatedData).then((response) => {
       if (response.status === 200) {
         setEditEventModal(false);
@@ -238,7 +239,6 @@ const EditEventModal = ({
             })}
           </Select>
         </FormControl>
-
         <Box>
           <DatePicker
             label="Start Time"

@@ -33,6 +33,20 @@ const TableCommon = (props) => {
     label,
   } = props;
 
+  const getFormattedHour = (time) => {
+    console.log("time: " + time);
+    const date = new Date(time);
+
+    const hour = date.getHours();
+    const minute = date.getMinutes();
+
+    return `${hour}:${minute}`;
+  };
+
+  const getFormattedDate = (time) => {
+    return new Date(time).toLocaleDateString("en-CA");
+  };
+
   return (
     <Paper className="paper-container">
       <TableContainer sx={{ maxHeight: 740 }}>
@@ -68,12 +82,20 @@ const TableCommon = (props) => {
                   key={Math.random()}
                 >
                   {columns.map((column) => {
+                    let truncatedValue = "";
                     const value = row[column.id];
-                    const truncatedValue =
-                      typeof value === "string" &&
-                      value.length > column.maxLength
-                        ? `${value.slice(0, column.maxLength)}...`
-                        : value;
+                    if (column.id === "date") {
+                      truncatedValue = getFormattedDate(row.startTime);
+                    } else if (column.id === "startHour") {
+                      truncatedValue = getFormattedHour(row.startTime);
+                    } else {
+                      truncatedValue =
+                        typeof value === "string" &&
+                        value.length > column.maxLength
+                          ? `${value.slice(0, column.maxLength)}...`
+                          : value;
+                    }
+
                     return column.id === "action" ? (
                       <TableCell
                         className="table-cell-action"
