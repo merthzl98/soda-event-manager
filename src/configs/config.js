@@ -99,3 +99,22 @@ export const tableConfig = {
     // },
   ],
 };
+
+export const statusConfig = [
+  { id: 1, value: "DRAFT", text: "Draft" },
+  { id: 2, value: "LIVE", text: "Live" },
+];
+
+export const clientStatusConfig = [
+  { id: 3, value: "AVAILABLE", text: "Available" },
+  { id: 4, value: "CANCELLED", text: "Cancelled" },
+  { id: 5, value: "LAST_TICKETS", text: "Last Tickets" },
+  { id: 6, value: "SOLD_OUT", text: "Sold Out" },
+];
+
+export const posterTypeConfig = [
+  { id: 7, value: "EVENT_HIGHLIGHTED", text: "Event Highlighted" },
+  { id: 8, value: "EVENT_LIST", text: "Event List" },
+  { id: 9, value: "EVENT_NEXTUP", text: "Event Next Up" },
+  { id: 10, value: "EVENT_DETAIL", text: "Event Detail" },
+];

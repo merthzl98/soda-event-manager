@@ -6,11 +6,9 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Switch from "@mui/material/Switch";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import TableHeader from "../commonUI/TableHeader";
 import { Typography } from "@mui/material";
+import SaveIcon from "@mui/icons-material/Save";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import MhaContentServiceV2 from "../../services/v2/MhaContentService";
@@ -20,8 +18,8 @@ import greenDot from "../../assets/icons/greenDot.png";
 import greyDot from "../../assets/icons/greyDot.png";
 import AddMhaContentModal from "./AddMhaContentModal";
 import EditMhaContentModal from "./EditMhaContentModal";
-import ButtonUI from "../commonUI/ButtonUI";
 import SwitchButtonUI from "../commonUI/SwitchButtonUI";
+import IconButtonUI from "../commonUI/IconButtonUI";
 
 const tableStyle = {
   width: "100%",
@@ -55,8 +53,14 @@ const MhaContents = () => {
     // eslint-disable-next-line
   }, []);
 
-  const handleDragEnd = () => {
-    console.log("drag");
+  const handleDragEnd = (result) => {
+    if (!result.destination) return;
+
+    const items = Array.from(mhaContents);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    setMhaContents(items);
   };
 
   const handleDeleteMhaContent = (clickedIndex) => {
@@ -88,13 +92,22 @@ const MhaContents = () => {
   };
 
   let rightHeadContent = (
-    <Box sx={{ display: "flex", gap: "1rem", paddingLeft: "5rem" }}>
+    <Box sx={{ display: "flex" }}>
       <SwitchButtonUI
         switchLabel="Enable ordering"
         isChecked={orderEnable}
         setIsChecked={setOrderEnable}
       />
-      {orderEnable && <ButtonUI label="Save Order" onClick={saveOrder} />}
+      {orderEnable && (
+        <IconButtonUI
+          title="Save Order"
+          onClick={saveOrder}
+          bgColor="rgba(15,5,29,0.15)"
+          color="primary"
+        >
+          <SaveIcon fontSize="medium" color="primary" />
+        </IconButtonUI>
+      )}
     </Box>
   );
 
@@ -166,7 +179,7 @@ const TableContent = ({
     <Table stickyHeader aria-label="sticky table">
       <TableBody>
         {mhaContents.map((row, index) => (
-          <TableRow sx={tableStyle}>
+          <TableRow key={index} sx={tableStyle}>
             <ContentColumns
               row={row}
               index={index}
@@ -289,7 +302,14 @@ const ContentColumns = ({
           </Box>
         )}
       </TableCell>
-      <TableCell className="table-cell">
+      <TableCell
+        sx={{
+          py: 1,
+          display: "flex",
+          alignItems: "center",
+        }}
+        className="table-cell"
+      >
         <img
           src={row.url}
           style={{ borderRadius: "8px" }}

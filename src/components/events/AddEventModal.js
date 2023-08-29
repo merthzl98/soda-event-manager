@@ -19,6 +19,8 @@ import TextInput from "../commonUI/TextInput";
 import SwitchButtonUI from "../commonUI/SwitchButtonUI";
 import InputTab from "../commonUI/InputTab";
 import DatePicker from "../commonUI/DatePicker";
+import { clientStatusConfig } from "../../configs/config";
+import SelectInputUI from "../commonUI/SelectInputUI";
 
 const AddEventModal = ({
   onHide,
@@ -256,24 +258,13 @@ const AddEventModal = ({
             gap: "3rem",
           }}
         >
-          <FormControl sx={{ width: "30%" }} variant="standard">
-            <InputLabel sx={labelStyle} id="demo-simple-select-label">
-              Live Status
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={clientStatus}
-              label="Live Status"
-              onChange={changeClientStatus}
-              sx={selectStyle}
-            >
-              <MenuItem value="AVAILABLE">Available</MenuItem>
-              <MenuItem value="CANCELLED">Cancelled</MenuItem>
-              <MenuItem value="LAST_TICKETS">Last Tickets</MenuItem>
-              <MenuItem value="SOLD_OUT">Sold Out</MenuItem>
-            </Select>
-          </FormControl>
+          <SelectInputUI
+            label="Live Status"
+            width="200px"
+            value={clientStatus}
+            setValue={setClientStatus}
+            data={clientStatusConfig}
+          />
           <SwitchButtonUI
             isChecked={isHighlighted}
             setIsChecked={setIsHighlighted}

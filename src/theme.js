@@ -24,6 +24,18 @@ const theme = createTheme({
     fontWeightMedium: "500",
     fontWeightBold: "600",
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: ({ ownerState }) => ({
+          "&:hover": {
+            transition: "0.5s",
+            opacity: "0.8",
+          },
+        }),
+      },
+    },
+  },
 });
 
 export default theme;

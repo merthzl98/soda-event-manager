@@ -1,12 +1,14 @@
-import React from "react";
+import { useState } from "react";
 import { styled } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
 import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import InputBase from "@mui/material/InputBase";
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   "label + &": {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(2.5),
   },
   "& .MuiInputBase-input": {
     borderRadius: "0.25rem",
@@ -28,27 +30,32 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const TextInput = (props) => {
-  const { name, onChange, value, label, minRows, placeholder } = props;
+const SelectInputUI = (props) => {
+  const { data, width, label, value, setValue } = props;
+
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
 
   return (
-    <FormControl fullWidth variant="standard">
+    <FormControl variant="standard">
       <InputLabel sx={{ fontWeight: "bold" }} shrink htmlFor={label}>
         {label}
       </InputLabel>
-      <BootstrapInput
-        name={name}
-        onChange={onChange}
+      <Select
+        sx={{ width: width }}
         value={value}
-        id="text-input"
-        label={label}
-        variant="outlined"
-        multiline={true}
-        minRows={minRows ?? 1}
-        placeholder={placeholder}
-      />
+        onChange={handleChange}
+        input={<BootstrapInput />}
+      >
+        {data.map((item) => (
+          <MenuItem key={item.id} value={item.value}>
+            {item.text}
+          </MenuItem>
+        ))}
+      </Select>
     </FormControl>
   );
 };
 
-export default TextInput;
+export default SelectInputUI;

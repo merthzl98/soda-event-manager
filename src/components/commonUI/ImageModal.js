@@ -1,9 +1,10 @@
 import React from "react";
 
 import Modal from "../commonUI/Modal";
-import "./ImageModal.scss";
 import PosterServiceV2 from "../../services/v2/PosterService";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, Box } from "@mui/material";
+import { posterTypeConfig } from "../../configs/config";
+import SelectInputUI from "./SelectInputUI";
 
 const ImageModal = ({
   posterType,
@@ -15,23 +16,13 @@ const ImageModal = ({
   onClose,
 }) => {
   const selectEventPoster = (
-    <FormControl fullWidth sx={{ marginTop: "1rem" }}>
-      <InputLabel id="demo-simple-select-label">Poster Type</InputLabel>
-      <Select
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
-        value={posterType}
-        label="Poster Type"
-        onChange={(e) => {
-          setPosterType(e.target.value);
-        }}
-      >
-        <MenuItem value={"EVENT_HIGHLIGHTED"}>Event Highlighted</MenuItem>
-        <MenuItem value={"EVENT_LIST"}>Event List</MenuItem>
-        <MenuItem value={"EVENT_NEXTUP"}>Event Next-up</MenuItem>
-        <MenuItem value={"EVENT_DETAIL"}>Event Detail</MenuItem>
-      </Select>
-    </FormControl>
+    <SelectInputUI
+      label="Select Poster Type"
+      width="150px"
+      value={posterType}
+      setValue={setPosterType}
+      data={posterTypeConfig}
+    />
   );
 
   const postPoster = () => {
@@ -62,13 +53,23 @@ const ImageModal = ({
       onRequest={postPoster}
       isDisabled={isDisabled}
     >
-      <div className="upload-image-container">
-        <img src={imageData.data} alt="Uploaded" />
-      </div>
-      <div className="poster-type">
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "2rem",
+        }}
+      >
+        <img
+          src={imageData.data}
+          alt="Uploaded"
+          style={{ maxWidth: "558px", height: "auto", maxHeight: "300px" }}
+        />
         {(posterType.includes("EVENT") || posterType.trim("").length === 0) &&
           selectEventPoster}
-      </div>
+      </Box>
     </Modal>
   );
 };

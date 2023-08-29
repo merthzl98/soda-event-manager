@@ -24,7 +24,7 @@ const deleteAnnouncement = (announcementId) => {
   });
 };
 
-const orderAnnoucements = (announcementIds) => {
+const orderAnnouncements = (announcementIds) => {
   return http.put("/order-announcements", announcementIds);
 };
 
@@ -34,7 +34,7 @@ const AnnouncementService = {
   updateAnnouncement,
   getAnnoucementById,
   deleteAnnouncement,
-  orderAnnoucements,
+  orderAnnouncements,
 };
 
 export default AnnouncementService;
