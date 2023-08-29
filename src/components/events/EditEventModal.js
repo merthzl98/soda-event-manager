@@ -20,6 +20,8 @@ import SwitchButtonUI from "../commonUI/SwitchButtonUI";
 import TextInput from "../commonUI/TextInput";
 import InputTab from "../commonUI/InputTab";
 import DatePicker from "../commonUI/DatePicker";
+import { clientStatusConfig, statusConfig } from "../../configs/config";
+import SelectInputUI from "../commonUI/SelectInputUI";
 
 const EditEventModal = ({
   onHide,
@@ -258,51 +260,28 @@ const EditEventModal = ({
             display: "flex",
             flexDirection: "row",
             justifyContent: "left",
-            gap: "3rem",
+            gap: "2rem",
           }}
         >
-          <FormControl sx={{ width: "47%" }} variant="standard">
-            <InputLabel sx={labelStyle} id="demo-simple-select-label">
-              Live Status
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={clientStatus}
-              label="Live Status"
-              onChange={changeClientStatus}
-              sx={selectStyle}
-            >
-              <MenuItem value="AVAILABLE">Available</MenuItem>
-              <MenuItem value="CANCELLED">Cancelled</MenuItem>
-              <MenuItem value="LAST_TICKETS">Last Tickets</MenuItem>
-              <MenuItem value="SOLD_OUT">Sold Out</MenuItem>
-            </Select>
-          </FormControl>
+          <SelectInputUI
+            label="Live Status"
+            width="200px"
+            value={clientStatus}
+            setValue={setClientStatus}
+            data={clientStatusConfig}
+          />
           <SwitchButtonUI
             isChecked={isHighlighted}
             setIsChecked={setIsHighlighted}
             switchLabel="Highlighted"
           />
-          <FormControl sx={{ width: "47%" }} variant="standard">
-            <InputLabel sx={labelStyle} id="demo-simple-select-label">
-              Event Status
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={eventStatus}
-              label="Event Status"
-              onChange={changeEventStatus}
-              sx={selectStyle}
-            >
-              <MenuItem value="DRAFT" sx={{ paddingLeft: "15px !important" }}>
-                Draft
-              </MenuItem>
-              <MenuItem value="PREVIEW">Preview</MenuItem>
-              <MenuItem value="LIVE">Live</MenuItem>
-            </Select>
-          </FormControl>
+          <SelectInputUI
+            label="Event Status"
+            width="100px"
+            value={eventStatus}
+            setValue={setEventStatus}
+            data={statusConfig}
+          />
         </div>
 
         <TextInput

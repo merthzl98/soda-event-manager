@@ -6,4 +6,8 @@
   background-color: rgba(85, 85, 85, 0.02);
   padding: 32px 24px;
   border-radius: 0.75rem 0.75rem 0 0;
+  .right-section {
+    display: flex;
+    gap: 1rem;
+  }
 }

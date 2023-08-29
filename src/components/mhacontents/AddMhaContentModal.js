@@ -121,34 +121,35 @@ const AddMhaContentModal = ({
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
           gap: "1rem",
-          position: "relative",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            gap: "1rem",
-            alignItems: "center",
-          }}
-        >
-          {/* {!external && fileInfo.data && contentType === "VIDEO" && (
+        {!external && contentType === "POSTER" && (
+          <div className="file-input">
+            <FileInput
+              setFileData={setFileData}
+              setImageData={setFileInfo}
+              label="Select File"
+            />
+          </div>
+        )}
+        {/* {!external && fileInfo.data && contentType === "VIDEO" && (
             <video src={fileInfo.data} alt="Video" />
           )} */}
-          {!external && fileInfo.data && contentType === "POSTER" && (
-            <img
-              src={fileInfo.data}
-              alt="Poster"
-              style={{ maxWidth: "558px", height: "auto", maxHeight: "300px" }}
-            />
-          )}
-          {/* {external && showExternalContent && contentType === "VIDEO" && (
+        {!external && fileInfo.data && contentType === "POSTER" && (
+          <img
+            src={fileInfo.data}
+            alt="Poster"
+            style={{ maxWidth: "558px", height: "auto", maxHeight: "300px" }}
+          />
+        )}
+        {/* {external && showExternalContent && contentType === "VIDEO" && (
             <iframe src={enteredExternalUrl} />
           )} */}
-          {/* {external && showExternalContent && contentType === "POSTER" && (
+        {/* {external && showExternalContent && contentType === "POSTER" && (
             <img
               src={enteredExternalUrl}
               width="1158px"
@@ -156,27 +157,24 @@ const AddMhaContentModal = ({
               alt="Poster"
             />
           )} */}
-          {!showExternalContent && !fileInfo.data && (
-            <img
-              src={DefaultImage}
-              style={{
-                aspectRatio: "2.144",
-                maxWidth: "500px",
-                height: "auto",
-              }}
-              alt="Poster"
-            />
-          )}
-          {fileInfo.name && (
-            <Typography sx={{ maxWidth: "558px", fontWeight: "bolder" }}>
-              {fileInfo?.name}
-            </Typography>
-          )}
-        </Box>
+        {!showExternalContent && !fileInfo.data && (
+          <img
+            src={DefaultImage}
+            style={{
+              aspectRatio: "2.144",
+              maxWidth: "500px",
+              height: "auto",
+            }}
+            alt="Poster"
+          />
+        )}
+        {fileInfo.name && (
+          <Typography sx={{ maxWidth: "558px", fontWeight: "bolder" }}>
+            {fileInfo?.name}
+          </Typography>
+        )}
 
-        <Stack spacing={3} sx={{ minWidth: "315px" }}>
-          <Stack direction="row" alignItems="center" spacing={2}>
-            {/* <FormControlLabel
+        {/* <FormControlLabel
                 control={
                   <Checkbox
                     checked={external}
@@ -195,7 +193,7 @@ const AddMhaContentModal = ({
                   <MenuItem value="VIDEO">Video</MenuItem>
                 </Select>
               </FormControl> */}
-            {/* {!external && contentType === "VIDEO" && (
+        {/* {!external && contentType === "VIDEO" && (
                 <>
                   <Button
                     onClick={() => videoInputRef.current.click()}
@@ -216,17 +214,7 @@ const AddMhaContentModal = ({
                 </>
               )} */}
 
-            {!external && contentType === "POSTER" && (
-              <div className="file-input">
-                <FileInput
-                  setFileData={setFileData}
-                  setImageData={setFileInfo}
-                  label="Select File"
-                />
-              </div>
-            )}
-          </Stack>
-          {/* {external && (
+        {/* {external && (
               <>
                 <TextInput
                   name="enteredExternalUrl"
@@ -238,14 +226,12 @@ const AddMhaContentModal = ({
               </>
             )} */}
 
-          <TextInput
-            name="enteredTargetUrl"
-            onChange={handleChangeEnteredTargetUrl}
-            value={enteredTargetUrl}
-            label="Target url"
-            minRows={3}
-          />
-        </Stack>
+        <TextInput
+          name="enteredTargetUrl"
+          onChange={handleChangeEnteredTargetUrl}
+          value={enteredTargetUrl}
+          label="Target url"
+        />
       </Box>
     </Modal>
   );

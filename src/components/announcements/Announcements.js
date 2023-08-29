@@ -5,9 +5,8 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
+import SaveIcon from "@mui/icons-material/Save";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-// import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-// import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Box, Typography } from "@mui/material";
 
 import AuthContext from "../../storage/auth-context";
@@ -19,6 +18,8 @@ import TableActions from "../commonUI/TableActions";
 import TableHeader from "../commonUI/TableHeader";
 import greenDot from "../../assets/icons/greenDot.png";
 import greyDot from "../../assets/icons/greyDot.png";
+import SwitchButtonUI from "../commonUI/SwitchButtonUI";
+import IconButtonUI from "../commonUI/IconButtonUI";
 
 const tableStyle = {
   width: "100%",
@@ -36,6 +37,7 @@ const Announcements = () => {
   const [editAnnouncementModal, setEditAnnouncementModal] = useState(false);
   const [announcementsOrderIds, setAnnouncementsOrderIds] = useState([]);
   const [announcementId, setAnnouncementId] = useState();
+  const [orderEnable, setOrderEnable] = useState(false);
 
   const { setIsLoading } = useContext(AuthContext);
 
@@ -50,7 +52,7 @@ const Announcements = () => {
       announcementIds: announcementsOrderIds,
     };
     console.log(orderRequest);
-    AnnouncementServiceV2.orderAnnoucements(orderRequest).then((response) => {
+    AnnouncementServiceV2.orderAnnouncements(orderRequest).then((response) => {
       response.status === 200 && console.log("response-->", response);
     });
     // eslint-disable-next-line
@@ -70,6 +72,7 @@ const Announcements = () => {
     setIsLoading(true);
     AnnouncementServiceV2.getAnnoucements()
       .then((response) => {
+        console.log({ response });
         setAnnouncementsData(response.data.announcements);
       })
       .then(() => setIsLoading(false));
@@ -106,6 +109,42 @@ const Announcements = () => {
     setEditAnnouncementModal(false);
   };
 
+  const saveOrder = () => {
+    const announcementIds = announcementsData.map(
+      (announcement) => announcement.id
+    );
+    AnnouncementServiceV2.orderAnnouncements({
+      announcementIds: announcementIds,
+    })
+      .then((response) => {
+        setOrderEnable(false);
+        getAnnouncementsData();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  let rightHeadContent = (
+    <Box sx={{ display: "flex" }}>
+      <SwitchButtonUI
+        switchLabel="Enable ordering"
+        isChecked={orderEnable}
+        setIsChecked={setOrderEnable}
+      />
+      {orderEnable && (
+        <IconButtonUI
+          title="Save Order"
+          onClick={saveOrder}
+          bgColor="rgba(15,5,29,0.15)"
+          color="primary"
+        >
+          <SaveIcon fontSize="medium" color="primary" />
+        </IconButtonUI>
+      )}
+    </Box>
+  );
+
   return (
     <>
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -115,142 +154,31 @@ const Announcements = () => {
               title="Announcements"
               showAddModal={showAddAnnouncement}
               label="+ Add Announcement"
+              rightContent={rightHeadContent}
             />
-            <Table stickyHeader aria-label="sticky table">
-              <Droppable droppableId="table">
-                {(provided) => (
-                  <TableBody
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                  >
-                    {announcementsData.map((row, index) => (
-                      <Draggable
-                        key={row.id}
-                        draggableId={row.id}
-                        index={index}
-                      >
-                        {(provided, snapshot) => (
-                          <TableRow
-                            sx={tableStyle}
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            onDragOver={(event) => event.preventDefault()}
-                            style={{
-                              ...tableStyle,
-                              backgroundColor: snapshot.isDragging
-                                ? "rgba(50,50,0, 0.1)"
-                                : "white",
-                              ...provided.draggableProps.style,
-                            }}
-                          >
-                            <TableCell
-                              sx={{ padding: "0", fontWeight: "medium" }}
-                              className="table-cell-status"
-                            >
-                              {/* <FiberManualRecordIcon
-                                fontSize="0.5rem"
-                                color="error"
-                              /> */}
-                              {row.status === "LIVE" && (
-                                <Box
-                                  sx={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    border: "1px solid green",
-                                    width: "75px",
-                                    borderRadius: "8px",
-                                    color: "green",
-                                    gap: "4px",
-                                    backgroundColor: "rgba(7, 233, 82, 0.1)",
-                                  }}
-                                >
-                                  <img
-                                    style={{
-                                      width: "0.5rem",
-                                      height: "0.5rem",
-                                    }}
-                                    src={greenDot}
-                                    alt="live icon"
-                                  />
-                                  Live
-                                </Box>
-                              )}
-                              {row.status === "DRAFT" && (
-                                <Box
-                                  sx={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    border: "1px solid rgba(1 ,1 ,1 ,0.25)",
-                                    width: "75px",
-                                    borderRadius: "8px",
-                                    color: "grey",
-                                    gap: "4px",
-                                    backgroundColor: "rgba(1 ,1 ,1 ,0.1)",
-                                  }}
-                                >
-                                  <img
-                                    style={{
-                                      width: "0.5rem",
-                                      height: "0.5rem",
-                                    }}
-                                    src={greyDot}
-                                    alt="draft icon"
-                                  />
-                                  Draft
-                                </Box>
-                              )}
-                            </TableCell>
-                            <TableCell className="table-cell">
-                              {row.text}
-                            </TableCell>
-                            {/* <TableCell className="table-cell">
-                              {row.textFrench}
-                            </TableCell>
-                            <TableCell className="table-cell">
-                              {row.textDutch}
-                            </TableCell> */}
-
-                            <TableCell
-                              className="actions"
-                              style={{
-                                // minWidth: "7rem",
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                borderBottom: "none",
-                                padding: "0",
-                              }}
-                            >
-                              <TableActions
-                                handleDelete={() =>
-                                  handleDeleteAnnouncement(index)
-                                }
-                                showEdit={() => showEditAnnouncement(index)}
-                              />
-                            </TableCell>
-                          </TableRow>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                    <TableRow className="table-footer">
-                      {/* <Typography
-                        color="primary"
-                        component="p"
-                        className="footer-typo"
-                      >
-                        See more announcement
-                      </Typography>
-                      <ExpandMoreIcon color="primary" /> */}
-                    </TableRow>
-                  </TableBody>
+            {announcementsData.lenght === 0 ? (
+              <Box display="flex" sx={{ p: 2 }}>
+                <Typography variant="h6" m="auto">
+                  Announcements list is empty.
+                </Typography>
+              </Box>
+            ) : (
+              <>
+                {orderEnable ? (
+                  <DraggableContent
+                    announcementsData={announcementsData}
+                    handleDeleteAnnouncement={handleDeleteAnnouncement}
+                    showEditAnnouncement={showEditAnnouncement}
+                  />
+                ) : (
+                  <TableContent
+                    announcementsData={announcementsData}
+                    handleDeleteAnnouncement={handleDeleteAnnouncement}
+                    showEditAnnouncement={showEditAnnouncement}
+                  />
                 )}
-              </Droppable>
-            </Table>
+              </>
+            )}
           </TableContainer>
         </Paper>
       </DragDropContext>
@@ -273,6 +201,168 @@ const Announcements = () => {
           announcementId={announcementId}
         />
       )}
+    </>
+  );
+};
+
+const TableContent = ({
+  announcementsData,
+  handleDeleteAnnouncement,
+  showEditAnnouncement,
+}) => {
+  return (
+    <Table stickyHeader aria-label="sticky table">
+      <TableBody>
+        {announcementsData.map((row, index) => (
+          <TableRow key={row.id} sx={tableStyle}>
+            <ContentColumns
+              row={row}
+              index={index}
+              handleDeleteAnnouncement={handleDeleteAnnouncement}
+              showEditAnnouncement={showEditAnnouncement}
+            />
+          </TableRow>
+        ))}
+        <TableRow className="table-footer"></TableRow>
+      </TableBody>
+    </Table>
+  );
+};
+
+const DraggableContent = ({
+  announcementsData,
+  handleDeleteAnnouncement,
+  showEditAnnouncement,
+}) => {
+  return (
+    <Table stickyHeader aria-label="sticky table">
+      <Droppable droppableId="table">
+        {(provided) => (
+          <TableBody ref={provided.innerRef} {...provided.droppableProps}>
+            {announcementsData.map((row, index) => (
+              <Draggable key={row.id} draggableId={row.id} index={index}>
+                {(provided, snapshot) => (
+                  <TableRow
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    onDragOver={(event) => event.preventDefault()}
+                    style={{
+                      ...tableStyle,
+                      backgroundColor: snapshot.isDragging
+                        ? "rgba(50,50,0, 0.1)"
+                        : "white",
+                      ...provided.draggableProps.style,
+                    }}
+                  >
+                    <ContentColumns
+                      row={row}
+                      index={index}
+                      handleDeleteAnnouncement={handleDeleteAnnouncement}
+                      showEditAnnouncement={showEditAnnouncement}
+                    />
+                  </TableRow>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+            <TableRow className="table-footer"></TableRow>
+          </TableBody>
+        )}
+      </Droppable>
+    </Table>
+  );
+};
+
+const ContentColumns = ({
+  row,
+  index,
+  handleDeleteAnnouncement,
+  showEditAnnouncement,
+}) => {
+  return (
+    <>
+      <TableCell
+        sx={{ padding: "0", fontWeight: "medium" }}
+        className="table-cell-status"
+      >
+        {row.status === "LIVE" && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              border: "1px solid green",
+              width: "75px",
+              borderRadius: "8px",
+              color: "green",
+              gap: "4px",
+              backgroundColor: "rgba(7, 233, 82, 0.1)",
+            }}
+          >
+            <img
+              style={{
+                width: "0.5rem",
+                height: "0.5rem",
+              }}
+              src={greenDot}
+              alt="live icon"
+            />
+            Live
+          </Box>
+        )}
+        {row.status === "DRAFT" && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              border: "1px solid rgba(1 ,1 ,1 ,0.25)",
+              width: "75px",
+              borderRadius: "8px",
+              color: "grey",
+              gap: "4px",
+              backgroundColor: "rgba(1 ,1 ,1 ,0.1)",
+            }}
+          >
+            <img
+              style={{
+                width: "0.5rem",
+                height: "0.5rem",
+              }}
+              src={greyDot}
+              alt="draft icon"
+            />
+            Draft
+          </Box>
+        )}
+      </TableCell>
+      <TableCell className="table-cell">{row.highlightedText}</TableCell>
+      <TableCell className="table-cell">{row.text}</TableCell>
+      {/* <TableCell className="table-cell">
+                              {row.textFrench}
+                            </TableCell>
+                            <TableCell className="table-cell">
+                              {row.textDutch}
+                            </TableCell> */}
+
+      <TableCell
+        className="actions"
+        style={{
+          // minWidth: "7rem",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          borderBottom: "none",
+          padding: "0",
+        }}
+      >
+        <TableActions
+          handleDelete={() => handleDeleteAnnouncement(index)}
+          showEdit={() => showEditAnnouncement(index)}
+        />
+      </TableCell>
     </>
   );
 };
