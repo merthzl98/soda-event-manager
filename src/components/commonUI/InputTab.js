@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import { Box } from "@mui/material";
 
 import "./InputTab.scss";
 import TextInput from "./TextInput";
@@ -30,7 +31,7 @@ const InputTab = (props) => {
   };
 
   return (
-    <div>
+    <Box>
       <Tabs value={activeTab} onChange={handleTabChange}>
         <Tab label="En" />
         <Tab label="Fr" />
@@ -72,7 +73,7 @@ const InputTab = (props) => {
           />
         </div>
       )}
-    </div>
+    </Box>
   );
 };
 

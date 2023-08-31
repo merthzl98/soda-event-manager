@@ -1,13 +1,7 @@
 .date-picker {
-    label {
-      font-weight: 700 !important;
-      color: rgba(0, 0, 0, 0.6);
-      font-size: 1rem;
-    }
-    & > div {
-      background-color: rgba(85, 85, 85, 0.1);
-      border-radius: 4px;
-      border: 1px solid #ced4da;
-      padding: 4px 8px !important;
-    }
+  background-color: rgba(85, 85, 85, 0.1);
+  & > div > input {
+    font-size: 0.75rem !important;
+    padding: 12px;
   }
+}

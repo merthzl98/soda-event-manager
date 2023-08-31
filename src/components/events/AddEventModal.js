@@ -1,10 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
 import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import dayjs from "dayjs";
 
 import AuthContext from "../../storage/auth-context";
 import Modal from "../commonUI/Modal";
@@ -21,6 +16,9 @@ import InputTab from "../commonUI/InputTab";
 import DatePicker from "../commonUI/DatePicker";
 import { clientStatusConfig } from "../../configs/config";
 import SelectInputUI from "../commonUI/SelectInputUI";
+import AutoComplete from "../commonUI/AutoComplete";
+
+const currentTime = new Date().toISOString();
 
 const AddEventModal = ({
   onHide,
@@ -37,14 +35,16 @@ const AddEventModal = ({
 
   const [clientStatus, setClientStatus] = useState("AVAILABLE");
   const [isHighlighted, setIsHighlighted] = useState(false);
-  const [startTime, setStartTime] = useState(dayjs("2023-06-17T20:30"));
-  const [endTime, setEndTime] = useState(dayjs("2023-06-17T22:30"));
+  const [startTime, setStartTime] = useState(currentTime);
+  const [endTime, setEndTime] = useState(currentTime);
   const [isShownImageModal, setIsShownImageModal] = useState(false);
   const [imageData, setImageData] = useState(null);
   const [selectedArtist, setSelectedArtist] = useState();
   const [selectedVenue, setSelectedVenue] = useState();
   const [artistList, setArtistList] = useState([]);
   const [venueList, setVenueList] = useState([]);
+  const [inputArtist, setInputArtist] = useState("");
+  const [inputVenue, setInputVenue] = useState("");
   const [fileData, setFileData] = useState(null);
   const [eventImageData, setEventImageData] = useState([]);
   const [posterType, setPosterType] = useState("");
@@ -80,8 +80,8 @@ const AddEventModal = ({
 
     const eventData = {
       clientStatus: clientStatus,
-      artistId: selectedArtist,
-      venueId: selectedVenue,
+      artistId: selectedArtist.id,
+      venueId: selectedVenue.id,
       startTime: times.startIso,
       endTime: times.endIso,
       highlighted: isHighlighted,
@@ -107,18 +107,6 @@ const AddEventModal = ({
     });
   };
 
-  const changeClientStatus = (event) => {
-    setClientStatus(event.target.value);
-  };
-
-  const changeSelectedArtist = (event) => {
-    setSelectedArtist(event.target.value);
-  };
-
-  const changeSelectedVenue = (event) => {
-    setSelectedVenue(event.target.value);
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
@@ -132,19 +120,6 @@ const AddEventModal = ({
 
   console.log("selected Artist-->", selectedArtist);
   console.log("selected Venue-->", selectedVenue);
-
-  const selectStyle = {
-    backgroundColor: "rgba(85, 85, 85, 0.1)",
-    borderRadius: "4px",
-    border: "1px solid #ced4da",
-    padding: "4px 8px !important",
-  };
-
-  const labelStyle = {
-    fontWeight: "700 !important",
-    color: "rgba(0, 0, 0, 0.6)",
-    fontSize: "1rem",
-  };
 
   const modalOpacity = isHidingAddModal ? "0" : "1";
 
@@ -192,75 +167,69 @@ const AddEventModal = ({
           dutchDescription={dutchDescription}
           setDutchDescription={setDutchDescription}
         />
-
-        <FormControl variant="standard">
-          <InputLabel sx={labelStyle} id="demo-simple-select-label">
-            Artist
-          </InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
+        <Box
+          sx={{
+            width: "99.89%",
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+          }}
+        >
+          <AutoComplete
             value={selectedArtist}
+            setValue={setSelectedArtist}
+            inputValue={inputArtist}
+            setInputValue={setInputArtist}
+            options={artistList}
+            handleOption={(option) => option.fullName}
             label="Artist"
-            onChange={changeSelectedArtist}
-            sx={selectStyle}
-          >
-            {artistList.map((artist) => {
-              return (
-                <MenuItem key={artist.id} value={artist.id}>
-                  {artist.fullName}
-                </MenuItem>
-              );
-            })}
-          </Select>
-        </FormControl>
-        <FormControl variant="standard">
-          <InputLabel sx={labelStyle} id="demo-simple-select-label">
-            Venue
-          </InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
+          />
+          <AutoComplete
             value={selectedVenue}
+            setValue={setSelectedVenue}
+            inputValue={inputVenue}
+            setInputValue={setInputVenue}
+            options={venueList}
+            handleOption={(option) => {
+              return `${option.country}, ${option.city} /  ${option.name}`;
+            }}
             label="Venue"
-            onChange={changeSelectedVenue}
-            sx={selectStyle}
-          >
-            {venueList.map((venue) => {
-              return (
-                <MenuItem key={venue.id} value={venue.id}>
-                  {venue.country} , {venue.country} / {venue.name}
-                </MenuItem>
-              );
-            })}
-          </Select>
-        </FormControl>
+          />
+        </Box>
 
-        <Box>
+        <Box
+          sx={{
+            display: "flex",
+            width: "100%",
+            gap: "48px",
+            paddingBottom: "5px",
+          }}
+        >
           <DatePicker
             label="Start Time"
             time={startTime}
             setTime={setStartTime}
-            width="%47"
+            width="%100"
           />
           <DatePicker
             label="End Time"
             time={endTime}
             setTime={setEndTime}
-            width="%47"
+            width="%100"
           />
         </Box>
-        <div
-          style={{
+        <Box
+          sx={{
             display: "flex",
-            flexDirection: "row",
             justifyContent: "left",
-            gap: "3rem",
+            alignItems: "flex-end",
+            gap: "48px",
+            paddingBottom: "5px",
           }}
         >
           <SelectInputUI
             label="Live Status"
-            width="200px"
+            width="225px"
             value={clientStatus}
             setValue={setClientStatus}
             data={clientStatusConfig}
@@ -270,7 +239,7 @@ const AddEventModal = ({
             setIsChecked={setIsHighlighted}
             switchLabel="Highlighted"
           />
-        </div>
+        </Box>
 
         <TextInput
           name="ticketUrl"

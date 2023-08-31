@@ -34,7 +34,6 @@ const TableCommon = (props) => {
   } = props;
 
   const getFormattedHour = (time) => {
-    console.log("time: " + time);
     const date = new Date(time);
 
     const hour = date.getHours();

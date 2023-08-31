@@ -9,6 +9,7 @@ import ImageModal from "../commonUI/ImageModal";
 import AddPoster from "../commonUI/AddPoster";
 import TextInput from "../commonUI/TextInput";
 import AutoComplete from "../commonUI/AutoComplete";
+import { Autocomplete, TextField } from "@mui/material";
 
 const EditVenueModal = ({
   onHide,
@@ -22,7 +23,10 @@ const EditVenueModal = ({
     enteredName: "",
   });
 
-  const [cities, setCities] = useState([]);
+  const [cities, setCities] = useState([
+    // { state_id: "2585", state_name: "Amsterdam", country_id: "155" },
+    // { state_id: "2586", state_name: "Benelux", country_id: "155" },
+  ]);
   const [country, setCountry] = useState("");
   const [inputCountry, setInputCountry] = useState("");
   const [city, setCity] = useState("");
@@ -32,6 +36,7 @@ const EditVenueModal = ({
   const [venueImageData, setVenueImageData] = useState([]);
   const [imageData, setImageData] = useState(null);
   const [isHidingAddModal, setIsHidingAddModal] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   useEffect(() => {
     VenueServiceV2.getVenueById(venueId).then((response) => {
@@ -63,6 +68,14 @@ const EditVenueModal = ({
   useEffect(() => {
     isShownImageModal ? setIsHidingAddModal(true) : setIsHidingAddModal(false);
   }, [isShownImageModal]);
+
+  useEffect(() => {
+    if (!country && !inputCountry) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [country, inputCountry]);
 
   useEffect(() => {
     country && setCities(country.states ? country.states : []);
@@ -124,8 +137,8 @@ const EditVenueModal = ({
           sx={{
             display: "flex",
             flexDirection: "row",
-            width: "100%",
-            gap: "calc(6% - 0.5px)",
+            width: "99.85%",
+            gap: "48px",
           }}
         >
           <AutoComplete
@@ -134,8 +147,7 @@ const EditVenueModal = ({
             inputValue={inputCountry}
             setInputValue={setInputCountry}
             options={locationData}
-            handleOption={(option) => option.country_name}
-            width="47%"
+            handleOption={(option) => option?.country_name}
             label="Country"
           />
           <AutoComplete
@@ -144,9 +156,9 @@ const EditVenueModal = ({
             inputValue={inputCity}
             setInputValue={setInputCity}
             options={cities}
-            handleOption={(option) => option.state_name}
-            width="47%"
+            handleOption={(option) => option?.state_name}
             label="City"
+            isDisabled={isDisabled}
           />
         </Box>
 

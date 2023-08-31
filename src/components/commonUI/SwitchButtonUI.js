@@ -1,11 +1,12 @@
-import React from "react";
-
 import { FormControlLabel } from "@mui/material";
 import Switch from "@mui/material/Switch";
 import { styled } from "@mui/material/styles";
 
+import "./SwitchButtonUI.scss";
+
 const SwitchHighlighted = styled(Switch)(({ theme }) => ({
   padding: 8,
+
   "& .MuiSwitch-track": {
     borderRadius: 22 / 2,
     "&:before, &:after": {
@@ -44,11 +45,12 @@ const SwitchButtonUI = ({ isChecked, setIsChecked, switchLabel }) => {
 
   return (
     <FormControlLabel
+    className="switch"
       control={
         <SwitchHighlighted checked={isChecked} onChange={switchHighlighted} />
       }
       label={switchLabel}
-    />
+    ></FormControlLabel>
   );
 };
 

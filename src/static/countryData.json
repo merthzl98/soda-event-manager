@@ -5047,7 +5047,7 @@
   {
     "country_id": "155",
     "sortname": "NL",
-    "country_name": "Netherlands The",
+    "country_name": "Netherlands",
     "states": [
       { "state_id": "2585", "state_name": "Amsterdam", "country_id": "155" },
       { "state_id": "2586", "state_name": "Benelux", "country_id": "155" },

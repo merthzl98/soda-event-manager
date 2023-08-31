@@ -1,4 +1,4 @@
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, Box, TextField, Typography } from "@mui/material";
 
 import "./AutoComplete.scss";
 
@@ -10,32 +10,41 @@ const AutoComplete = (props) => {
     setInputValue,
     options,
     handleOption,
-    width,
     label,
+    isDisabled,
   } = props;
 
+  console.log({ label, options });
+
   return (
-    <Autocomplete
-      value={value}
-      onChange={(event, newValue) => {
-        setValue(newValue);
-      }}
-      inputValue={inputValue}
-      onInputChange={(event, newInputValue) => {
-        setInputValue(newInputValue);
-      }}
-      options={options}
-      getOptionLabel={handleOption}
-      sx={{ width: width }}
-      renderInput={(params) => (
-        <TextField
-          className="auto-complete"
-          variant="standard"
-          {...params}
-          label={label}
-        />
-      )}
-    />
+    <Box sx={{ width: "100%" }}>
+      <Typography
+        sx={{
+          fontSize: "0.75rem !important",
+          paddingBottom: "4px",
+          color: "rgba(0, 0, 0, 0.6)",
+          fontWeight: "bold",
+        }}
+      >
+        {label}
+      </Typography>
+      <Autocomplete
+        value={value}
+        onChange={(event, newValue) => {
+          setValue(newValue);
+        }}
+        inputValue={inputValue}
+        onInputChange={(event, newInputValue) => {
+          setInputValue(newInputValue);
+        }}
+        options={options}
+        getOptionLabel={handleOption}
+        renderInput={(params) => (
+          <TextField className="auto-complete" variant="standard" {...params} />
+        )}
+        disabled={isDisabled}
+      />
+    </Box>
   );
 };
 

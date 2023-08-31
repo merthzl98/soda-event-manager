@@ -10,7 +10,6 @@ import locationData from "../../static/locationData.json";
 import AddPoster from "../commonUI/AddPoster";
 import TextInput from "../commonUI/TextInput";
 import AutoComplete from "../commonUI/AutoComplete";
-import TryAutoComplete from "../commonUI/TryAutoComplete";
 
 const AddVenueModal = ({
   onHide,
@@ -33,12 +32,21 @@ const AddVenueModal = ({
   const [venueImageData, setVenueImageData] = useState([]);
   const [fileData, setFileData] = useState(null);
   const [isHidingAddModal, setIsHidingAddModal] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  const { setIsLoading } = useContext(AuthContext);
 
   useEffect(() => {
     isShownImageModal ? setIsHidingAddModal(true) : setIsHidingAddModal(false);
   }, [isShownImageModal]);
 
-  const { setIsLoading } = useContext(AuthContext);
+  useEffect(() => {
+    if (!country && !inputCountry) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [country, inputCountry]);
 
   useEffect(() => {
     country && setCities(country.states);
@@ -102,8 +110,8 @@ const AddVenueModal = ({
           sx={{
             display: "flex",
             flexDirection: "row",
-            width: "100%",
-            gap: "calc(6% - 0.5px)",
+            width: "99.85%",
+            gap: "48px",
           }}
         >
           <AutoComplete
@@ -113,7 +121,6 @@ const AddVenueModal = ({
             setInputValue={setInputCountry}
             options={locationData}
             handleOption={(option) => option.country_name}
-            width="47%"
             label="Country"
           />
           <AutoComplete
@@ -123,12 +130,10 @@ const AddVenueModal = ({
             setInputValue={setInputCity}
             options={cities}
             handleOption={(option) => option.state_name}
-            width="47%"
             label="City"
+            isDisabled={isDisabled}
           />
         </Box>
-
-        <TryAutoComplete />
 
         <TextInput
           name="enteredFullAddress"
