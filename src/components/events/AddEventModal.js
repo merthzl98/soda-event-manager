@@ -60,18 +60,20 @@ const AddEventModal = ({
   const { setIsLoading } = useContext(AuthContext);
 
   useEffect(() => {
-    ArtistServiceV2.getArtistsList().then(
+    ArtistServiceV2.getArtistsList(inputArtist, null, null, null).then(
       (response) =>
         response.status === 200 &&
         setArtistList(response.data.artistsPage.content)
     );
+  }, [inputArtist]);
 
-    VenueServiceV2.getVenues().then(
+  useEffect(() => {
+    VenueServiceV2.getVenues(null, null, null, inputVenue, null).then(
       (response) =>
         response.status === 200 &&
         setVenueList(response.data.venuesPage.content)
     );
-  }, []);
+  }, [inputVenue]);
 
   const postEventData = () => {
     const times = formatIso(startTime, endTime);
@@ -117,9 +119,6 @@ const AddEventModal = ({
     setImageData(null);
     setPosterType("");
   };
-
-  console.log("selected Artist-->", selectedArtist);
-  console.log("selected Venue-->", selectedVenue);
 
   const modalOpacity = isHidingAddModal ? "0" : "1";
 
@@ -190,9 +189,7 @@ const AddEventModal = ({
             inputValue={inputVenue}
             setInputValue={setInputVenue}
             options={venueList}
-            handleOption={(option) => {
-              return `${option.country}, ${option.city} /  ${option.name}`;
-            }}
+            handleOption={(option) => option.name}
             label="Venue"
           />
         </Box>

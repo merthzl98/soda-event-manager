@@ -14,8 +14,6 @@ const AutoComplete = (props) => {
     isDisabled,
   } = props;
 
-  console.log({ label, options });
-
   return (
     <Box sx={{ width: "100%" }}>
       <Typography

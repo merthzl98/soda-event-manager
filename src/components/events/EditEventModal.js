@@ -74,28 +74,23 @@ const EditEventModal = ({
       setSelectedArtist(response.data.event.artist);
       setSelectedVenue(response.data.event.venue);
     });
+  }, []);
 
-    ArtistServiceV2.getArtistsList().then(
+  useEffect(() => {
+    ArtistServiceV2.getArtistsList(inputArtist, null, null, null).then(
       (response) =>
         response.status === 200 &&
         setArtistList(response.data.artistsPage.content)
     );
+  }, [inputArtist]);
 
-    VenueServiceV2.getVenues().then(
+  useEffect(() => {
+    VenueServiceV2.getVenues(null, null, null, inputVenue, null).then(
       (response) =>
         response.status === 200 &&
         setVenueList(response.data.venuesPage.content)
     );
-  }, []);
-
-  // useEffect(() => {
-  //   ArtistServiceV2.getArtistsList().then(
-  //     (response) =>
-  //       response.status === 200 &&
-  //       // setArtistList(response.data.artistsPage.content)
-  //       console.log(response.data.artistsPage.content)
-  //   );
-  // }, [inputArtist]);
+  }, [inputVenue]);
 
   const updateEventData = () => {
     const times = formatIso(startTime, endTime);
@@ -139,9 +134,6 @@ const EditEventModal = ({
   const modalStyle = {
     opacity: modalOpacity,
   };
-
-  // console.log("selected Artist-->", selectedArtist);
-  // console.log("selected Venue-->", selectedVenue);
 
   return (
     <>
@@ -206,9 +198,7 @@ const EditEventModal = ({
             inputValue={inputVenue}
             setInputValue={setInputVenue}
             options={venueList}
-            handleOption={(option) => {
-              return `${option.country}, ${option.city} /  ${option.name}`;
-            }}
+            handleOption={(option) => option.name}
             label="Venue"
           />
         </Box>
