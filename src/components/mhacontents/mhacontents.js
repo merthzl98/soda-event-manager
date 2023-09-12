@@ -25,9 +25,9 @@ const tableStyle = {
   width: "100%",
   display: "flex",
   flexDirection: "row",
-  gap: "2rem",
   borderBottom: "1px solid rgba(50,50,0, 0.1)",
   alignItems: "center",
+  justifyContent: "space-between",
   padding: "0 24px",
 };
 
@@ -115,7 +115,7 @@ const MhaContents = () => {
     <>
       <DragDropContext onDragEnd={handleDragEnd}>
         <Paper className="paper-container">
-          <TableContainer sx={{ maxHeight: 740 }}>
+          <TableContainer>
             <TableHeader
               title="Main Highlighted Contents"
               showAddModal={() => setAddMhaContentModal(true)}

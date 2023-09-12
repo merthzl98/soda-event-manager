@@ -113,7 +113,7 @@ const TableCommon = (props) => {
                           whiteSpace: "nowrap",
                           overflow: "hidden",
                           textOverflow: "ellipsis",
-                          maxWidth: "25vw",
+                          maxWidth: "300px",
                           fontWeight: "medium",
                         }}
                         key={column.id}
