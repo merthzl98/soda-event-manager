@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 
-import EventService from "../../services/EventService";
+
 import EventServiceV2 from "../../services/v2/EventService";
 import Modal from "../commonUI/Modal";
 import ImageModal from "../commonUI/ImageModal";
 import AddPoster from "../commonUI/AddPoster";
-import ArtistService from "../../services/ArtistService";
-import VenueService from "../../services/VenueService";
 import ArtistServiceV2 from "../../services/v2/ArtistService";
 import VenueServiceV2 from "../../services/v2/VenueService";
 import { formatIso } from "../../utils";

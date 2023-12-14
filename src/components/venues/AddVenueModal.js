@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 
 import AuthContext from "../../storage/auth-context";
 import Modal from "../commonUI/Modal";
-import VenueService from "../../services/VenueService";
 import VenueServiceV2 from "../../services/v2/VenueService";
 import ImageModal from "../commonUI/ImageModal.js";
 import locationData from "../../static/locationData.json";

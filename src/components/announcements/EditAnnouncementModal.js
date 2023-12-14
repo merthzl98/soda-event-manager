@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import AnnounceService from "../../services/AnnouncementService";
 import AnnouncementServiceV2 from "../../services/v2/AnnouncementService";
 import Modal from "../commonUI/Modal";
 import TextInput from "../commonUI/TextInput";

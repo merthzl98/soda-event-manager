@@ -5,7 +5,6 @@ import AuthContext from "../../storage/auth-context";
 import Modal from "../commonUI/Modal";
 import EventServiceV2 from "../../services/v2/EventService";
 import ImageModal from "../commonUI/ImageModal.js";
-// import PosterService from "../../services/PosterService";
 import ArtistServiceV2 from "../../services/v2/ArtistService";
 import VenueServiceV2 from "../../services/v2/VenueService";
 import AddPoster from "../commonUI/AddPoster";

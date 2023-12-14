@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import ArtistService from "../../services/ArtistService";
 import ArtistServiceV2 from "../../services/v2/ArtistService";
 import Modal from "../commonUI/Modal";
 import ImageModal from "../commonUI/ImageModal.js";

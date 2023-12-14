@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from "react";
 
 import AuthContext from "../../storage/auth-context";
 import Modal from "../commonUI/Modal";
-import ArtistService from "../../services/ArtistService";
 import ArtistServiceV2 from "../../services/v2/ArtistService";
 import ImageModal from "../commonUI/ImageModal.js";
 import AddPoster from "../commonUI/AddPoster";
